@@ -2,3 +2,7 @@
 .env
 .DS_Store
 .npmrc
+
+# KPort generated artifacts
+db/sources-cache.json
+generated/dep-map-candidates.yml
