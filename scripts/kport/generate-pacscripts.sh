@@ -593,7 +593,8 @@ $(printf '%b' "$kuse_block")\
 # ── Build ─────────────────────────────────────────────────────────────────────
 
 build() {
-  [[ -f /usr/lib/kport/use-helpers.sh ]] && source /usr/lib/kport/use-helpers.sh
+  _kport_lib="\${KPORT_LIB_DIR:-/usr/lib/kport}/use-helpers.sh"
+  [[ -f "\$_kport_lib" ]] && source "\$_kport_lib"
 
   cmake -B build -G Ninja \\
     -DCMAKE_BUILD_TYPE=Release \\

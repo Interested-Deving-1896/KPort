@@ -106,7 +106,8 @@ KUSE=(
 # ── Build ─────────────────────────────────────────────────────────────────────
 
 build() {
-  [[ -f /usr/lib/kport/use-helpers.sh ]] && source /usr/lib/kport/use-helpers.sh
+  _kport_lib="${KPORT_LIB_DIR:-/usr/lib/kport}/use-helpers.sh"
+  [[ -f "$_kport_lib" ]] && source "$_kport_lib"
 
   # Wayland is required if X11 is disabled
   local wayland_val x11_val
