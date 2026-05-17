@@ -89,8 +89,11 @@ KNPU_MIN="npu-none"    # npu-none | npu-igpu | npu-dedicated | npu-ai | npu-data
 
 ## USE flag conditionals in build()
 
-The KPort runtime sources `/usr/lib/kport/use-helpers.sh` before calling
-`build()`. This provides `use_enabled`, `use_disabled`, and `use_flag` helpers.
+The KPort runtime sources `use-helpers.sh` before calling `build()`.
+This provides `use_enabled`, `use_disabled`, and `use_flag` helpers.
+
+The helpers are installed to `/usr/lib/kport/` by default (`sudo scripts/kport/setup-runtime.sh`).
+For user installs, set `KPORT_LIB_DIR=~/.local/lib/kport` in your environment.
 
 ```bash
 build() {
