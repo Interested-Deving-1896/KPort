@@ -1,0 +1,34 @@
+# config/keywords.yml
+#
+# Package stability keywords — controls which packages are visible by default.
+# Analogous to Portage's ACCEPT_KEYWORDS and package.accept_keywords.
+#
+# Stability tiers map to KDE Neon channels:
+#   stable    — Neon User Edition (tested, recommended)
+#   testing   — Neon Testing Edition (RC-quality, mostly stable)
+#   unstable  — Neon Unstable / git builds (may break)
+#
+# CPU arch keywords:
+#   x86-64-v1  x86-64-v2  x86-64-v3  x86-64-v4
+#   aarch64    aarch64-v8.2
+#
+# GPU keywords:
+#   gpu-sw  gpu-gl2  gpu-gl4  gpu-vk12  gpu-vk13
+#
+# Default accepted keywords (equivalent to ACCEPT_KEYWORDS in make.conf):
+accept_keywords:
+  stability: [stable, testing]
+  cpu: [x86-64-v1, x86-64-v2, x86-64-v3, x86-64-v4, aarch64, aarch64-v8.2]
+  gpu: [gpu-sw, gpu-gl2, gpu-gl4, gpu-vk12, gpu-vk13]
+
+# Per-package keyword overrides
+# Users add their own in ~/.config/kport/package.accept_keywords
+package_keywords:
+
+  # Accept unstable for specific packages (example):
+  # - pkg: plasma/kwin
+  #   stability: [stable, testing, unstable]
+
+  # Accept a package only on modern hardware:
+  # - pkg: plasma/kwin-effects-vulkan
+  #   gpu: [gpu-vk12, gpu-vk13]

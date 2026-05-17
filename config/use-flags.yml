@@ -1,0 +1,157 @@
+# config/use-flags.yml
+#
+# Global USE flag definitions for KPort.
+# Analogous to Portage's USE flag descriptions in profiles/use.desc
+#
+# Each flag has:
+#   description:  what enabling this flag does
+#   default:      true (on) | false (off)
+#   group:        logical grouping for display purposes
+#   hardware:     if set, kport-detect will auto-set this from hardware.conf
+#
+# User overrides go in ~/.config/kport/use.conf
+# Per-package overrides go in ~/.config/kport/package.use
+
+use_flags:
+
+  # ── Display / Compositor ───────────────────────────────────────────────────
+
+  wayland:
+    description: "Enable Wayland display protocol support"
+    default: true
+    group: display
+    hardware: false
+
+  x11:
+    description: "Enable X11/Xorg display protocol support (legacy fallback)"
+    default: true
+    group: display
+    hardware: false
+
+  vulkan:
+    description: "Enable Vulkan rendering backend"
+    default: false
+    group: display
+    hardware: true    # auto-enabled when GPU_TIER >= gpu-vk12
+
+  opengl:
+    description: "Enable OpenGL rendering backend"
+    default: true
+    group: display
+    hardware: true    # auto-disabled when GPU_TIER == gpu-sw
+
+  # ── Audio ──────────────────────────────────────────────────────────────────
+
+  pipewire:
+    description: "Enable PipeWire audio/video routing"
+    default: true
+    group: audio
+    hardware: false
+
+  pulseaudio:
+    description: "Enable PulseAudio support (legacy, prefer pipewire)"
+    default: false
+    group: audio
+    hardware: false
+
+  # ── Hardware acceleration ──────────────────────────────────────────────────
+
+  vaapi:
+    description: "Enable VA-API hardware video decode/encode (Intel/AMD)"
+    default: false
+    group: hwaccel
+    hardware: true    # auto-enabled when GPU_VENDOR in (gpu-intel, gpu-amd)
+
+  vdpau:
+    description: "Enable VDPAU hardware video decode (NVIDIA legacy)"
+    default: false
+    group: hwaccel
+    hardware: true    # auto-enabled when GPU_VENDOR == gpu-nvidia
+
+  cuda:
+    description: "Enable NVIDIA CUDA compute support"
+    default: false
+    group: hwaccel
+    hardware: true    # auto-enabled when GPU_VENDOR == gpu-nvidia-proprietary
+
+  rocm:
+    description: "Enable AMD ROCm GPU compute support"
+    default: false
+    group: hwaccel
+    hardware: true    # auto-enabled when GPU_FLAGS contains rocm
+
+  opencl:
+    description: "Enable OpenCL compute support"
+    default: false
+    group: hwaccel
+    hardware: true    # auto-enabled when NPU_TIER >= npu-igpu
+
+  # ── AI / NPU ───────────────────────────────────────────────────────────────
+
+  npu:
+    description: "Enable NPU/AI accelerator support for on-device inference"
+    default: false
+    group: ai
+    hardware: true    # auto-enabled when NPU_TIER >= npu-dedicated
+
+  llm-local:
+    description: "Enable local LLM inference (requires npu or cuda/rocm)"
+    default: false
+    group: ai
+    hardware: true    # auto-enabled when NPU_TIER >= npu-ai
+
+  # ── Networking ────────────────────────────────────────────────────────────
+
+  bluetooth:
+    description: "Enable Bluetooth support"
+    default: true
+    group: network
+    hardware: false
+
+  networkmanager:
+    description: "Enable NetworkManager integration"
+    default: true
+    group: network
+    hardware: false
+
+  # ── Accessibility ─────────────────────────────────────────────────────────
+
+  accessibility:
+    description: "Enable accessibility features (AT-SPI2, screen reader support)"
+    default: true
+    group: accessibility
+    hardware: false
+
+  # ── Development ───────────────────────────────────────────────────────────
+
+  debug:
+    description: "Build with debug symbols and assertions"
+    default: false
+    group: dev
+    hardware: false
+
+  docs:
+    description: "Build API documentation"
+    default: false
+    group: dev
+    hardware: false
+
+  test:
+    description: "Build and run the test suite"
+    default: false
+    group: dev
+    hardware: false
+
+  # ── Remote desktop ────────────────────────────────────────────────────────
+
+  screencast:
+    description: "Enable PipeWire-based screen casting and remote desktop"
+    default: false
+    group: remote
+    hardware: false
+
+  libei:
+    description: "Enable libei remote desktop input emulation"
+    default: false
+    group: remote
+    hardware: false

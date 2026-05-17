@@ -1,0 +1,91 @@
+# config/sources.yml
+#
+# Upstream sources that KPort tracks for package generation.
+# Used by scripts/kport/generate-pacscripts.sh and scripts/kport/sync-sources.sh
+#
+# Each source entry defines where to fetch packaging metadata from.
+# The generator reads debian/control + debian/changelog + debian/watch
+# from each repo to produce pacscript skeletons in generated/.
+#
+# Fields:
+#   name:        human-readable label
+#   type:        gitlab | github | url
+#   base_url:    API base for the host
+#   group:       namespace/group path
+#   category:    KPort category to generate into
+#   branch:      packaging branch to read from (default: Neon/unstable)
+#   enabled:     false to skip without removing the entry
+
+sources:
+
+  # KDE Frameworks 6 — Neon packaging
+  - name: KDE Frameworks 6 (Neon)
+    type: gitlab
+    base_url: https://invent.kde.org
+    group: neon/kf6
+    category: frameworks
+    branch: Neon/unstable
+    enabled: true
+
+  # KDE Plasma 6 — Neon packaging
+  - name: KDE Plasma 6 (Neon)
+    type: gitlab
+    base_url: https://invent.kde.org
+    group: neon/kde
+    category: plasma
+    branch: Neon/unstable
+    enabled: true
+
+  # Qt6 — Neon packaging
+  - name: Qt6 (Neon)
+    type: gitlab
+    base_url: https://invent.kde.org
+    group: neon/qt6
+    category: qt6
+    branch: Neon/unstable
+    enabled: true
+
+  # KDE Gear — Neon packaging
+  - name: KDE Gear (Neon)
+    type: gitlab
+    base_url: https://invent.kde.org
+    group: neon/neon-packaging
+    category: gear
+    branch: Neon/unstable
+    enabled: true
+
+  # KDE Craft blueprints — for dependency graph extraction
+  - name: KDE Craft Blueprints
+    type: github
+    base_url: https://api.github.com
+    group: KDE/craft-blueprints-kde
+    category: _meta
+    branch: master
+    enabled: true
+
+  # KDE Craft community blueprints
+  - name: KDE Craft Community Blueprints
+    type: github
+    base_url: https://api.github.com
+    group: KDE/craft-blueprints-community
+    category: _meta
+    branch: master
+    enabled: true
+
+  # CPU compatibility — x86-64-level
+  - name: x86-64-level
+    type: github
+    base_url: https://api.github.com
+    group: HenrikBengtsson/x86-64-level
+    category: tools
+    branch: main
+    enabled: true
+
+  # CPU/hardware info — cpuinfo
+  - name: cpuinfo
+    type: github
+    base_url: https://api.github.com
+    group: pytorch/cpuinfo
+    category: tools
+    branch: main
+    enabled: true

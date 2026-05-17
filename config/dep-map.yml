@@ -1,0 +1,140 @@
+# config/dep-map.yml
+#
+# Maps Debian/Ubuntu package names (as found in debian/control Build-Depends
+# and Depends fields) to KPort package names.
+#
+# Used by scripts/kport/generate-pacscripts.sh when translating Neon's
+# debian/control into KPort pacscript depends/makedepends arrays.
+#
+# Format:
+#   <debian-name>: <kport-name>
+#
+# Special values:
+#   ~apt:<debian-name>  — satisfied by the system apt package, not KPort
+#   ~virtual:<name>     — satisfied by a KPort virtual package
+#   ~ignore             — skip this dependency (handled implicitly)
+#
+# When a Debian name is not listed here, the generator emits a warning
+# and uses the Debian name as-is (which may or may not be correct).
+
+dep_map:
+
+  # ── Qt6 ───────────────────────────────────────────────────────────────────
+  qt6-base-dev:              "qt6-base-dev"
+  qt6-declarative-dev:       "qt6-declarative-dev"
+  qt6-wayland-dev:           "qt6-wayland-dev"
+  qt6-tools-dev:             "qt6-tools-dev"
+  qt6-multimedia-dev:        "qt6-multimedia-dev"
+  qt6-svg-dev:               "qt6-svg-dev"
+  qt6-5compat-dev:           "qt6-5compat-dev"
+  qt6-positioning-dev:       "qt6-positioning-dev"
+  qt6-sensors-dev:           "qt6-sensors-dev"
+  qt6-speech-dev:            "qt6-speech-dev"
+  libqt6core6:               "~apt:libqt6core6"
+  libqt6dbus6:               "~apt:libqt6dbus6"
+  libqt6gui6:                "~apt:libqt6gui6"
+  libqt6opengl6:             "~apt:libqt6opengl6"
+  libqt6widgets6:            "~apt:libqt6widgets6"
+  libqt6network6:            "~apt:libqt6network6"
+
+  # ── KDE Frameworks 6 ──────────────────────────────────────────────────────
+  extra-cmake-modules:       "kf6-extra-cmake-modules"
+  libkf6archive-dev:         "kf6-karchive-dev"
+  libkf6auth-dev:            "kf6-kauth-dev"
+  libkf6bookmarks-dev:       "kf6-kbookmarks-dev"
+  libkf6codecs-dev:          "kf6-kcodecs-dev"
+  libkf6completion-dev:      "kf6-kcompletion-dev"
+  libkf6config-dev:          "kf6-kconfig-dev"
+  libkf6configwidgets-dev:   "kf6-kconfigwidgets-dev"
+  libkf6coreaddons-dev:      "kf6-kcoreaddons-dev"
+  libkf6crash-dev:           "kf6-kcrash-dev"
+  libkf6dbusaddons-dev:      "kf6-kdbusaddons-dev"
+  libkf6declarative-dev:     "kf6-kdeclarative-dev"
+  libkf6filemetadata-dev:    "kf6-kfilemetadata-dev"
+  libkf6globalaccel-dev:     "kf6-kglobalaccel-dev"
+  libkf6guiaddons-dev:       "kf6-kguiaddons-dev"
+  libkf6i18n-dev:            "kf6-ki18n-dev"
+  libkf6iconthemes-dev:      "kf6-kiconthemes-dev"
+  libkf6idletime-dev:        "kf6-kidletime-dev"
+  libkf6itemmodels-dev:      "kf6-kitemmodels-dev"
+  libkf6itemviews-dev:       "kf6-kitemviews-dev"
+  libkf6jobwidgets-dev:      "kf6-kjobwidgets-dev"
+  libkf6kio-dev:             "kf6-kio-dev"
+  libkf6newstuff-dev:        "kf6-knewstuff-dev"
+  libkf6notifications-dev:   "kf6-knotifications-dev"
+  libkf6notifyconfig-dev:    "kf6-knotifyconfig-dev"
+  libkf6package-dev:         "kf6-kpackage-dev"
+  libkf6parts-dev:           "kf6-kparts-dev"
+  libkf6people-dev:          "kf6-kpeople-dev"
+  libkf6runner-dev:          "kf6-krunner-dev"
+  libkf6service-dev:         "kf6-kservice-dev"
+  libkf6solid-dev:           "kf6-solid-dev"
+  libkf6sonnet-dev:          "kf6-sonnet-dev"
+  libkf6statusnotifieritem-dev: "kf6-kstatusnotifieritem-dev"
+  libkf6svg-dev:             "kf6-ksvg-dev"
+  libkf6syntaxhighlighting-dev: "kf6-syntax-highlighting-dev"
+  libkf6texteditor-dev:      "kf6-ktexteditor-dev"
+  libkf6textwidgets-dev:     "kf6-ktextwidgets-dev"
+  libkf6threadweaver-dev:    "kf6-threadweaver-dev"
+  libkf6unitconversion-dev:  "kf6-kunitconversion-dev"
+  libkf6wallet-dev:          "kf6-kwallet-dev"
+  libkf6widgetsaddons-dev:   "kf6-kwidgetsaddons-dev"
+  libkf6windowsystem-dev:    "kf6-kwindowsystem-dev"
+  libkf6xmlgui-dev:          "kf6-kxmlgui-dev"
+
+  # ── Plasma ────────────────────────────────────────────────────────────────
+  libkdecorations2-dev:      "kf6-kdecoration-dev"
+  libkscreenlocker-dev:      "plasma-kscreenlocker-dev"
+  libksysguard-dev:          "plasma-libksysguard-dev"
+  libplasma-dev:             "plasma-libplasma-dev"
+  libplasmaquick-dev:        "plasma-libplasma-dev"
+
+  # ── System libraries (satisfied by apt) ───────────────────────────────────
+  cmake:                     "~apt:cmake"
+  ninja-build:               "~apt:ninja-build"
+  pkg-config:                "~apt:pkg-config"
+  libdrm-dev:                "~apt:libdrm-dev"
+  libepoxy-dev:              "~apt:libepoxy-dev"
+  libgbm-dev:                "~apt:libgbm-dev"
+  libinput-dev:              "~apt:libinput-dev"
+  liblcms2-dev:              "~apt:liblcms2-dev"
+  libudev-dev:               "~apt:libudev-dev"
+  libxkbcommon-dev:          "~apt:libxkbcommon-dev"
+  libbz2-dev:                "~apt:libbz2-dev"
+  liblzma-dev:               "~apt:liblzma-dev"
+  zlib1g-dev:                "~apt:zlib1g-dev"
+  libzstd-dev:               "~apt:libzstd-dev"
+  libssl-dev:                "~apt:libssl-dev"
+  libdbus-1-dev:             "~apt:libdbus-1-dev"
+  libsystemd-dev:            "~apt:libsystemd-dev"
+  libpipewire-0.3-dev:       "~apt:libpipewire-0.3-dev"
+  libwayland-dev:            "~apt:libwayland-dev"
+  wayland-protocols:         "~apt:wayland-protocols"
+  libx11-dev:                "~apt:libx11-dev"
+  libxcb1-dev:               "~apt:libxcb1-dev"
+  libxcb-composite0-dev:     "~apt:libxcb-composite0-dev"
+  libxcb-cursor-dev:         "~apt:libxcb-cursor-dev"
+  libxcb-damage0-dev:        "~apt:libxcb-damage0-dev"
+  libxcb-ewmh-dev:           "~apt:libxcb-ewmh-dev"
+  libxcb-glx0-dev:           "~apt:libxcb-glx0-dev"
+  libxcb-icccm4-dev:         "~apt:libxcb-icccm4-dev"
+  libxcb-image0-dev:         "~apt:libxcb-image0-dev"
+  libxcb-keysyms1-dev:       "~apt:libxcb-keysyms1-dev"
+  libxcb-present-dev:        "~apt:libxcb-present-dev"
+  libxcb-randr0-dev:         "~apt:libxcb-randr0-dev"
+  libxcb-render-util0-dev:   "~apt:libxcb-render-util0-dev"
+  libxcb-render0-dev:        "~apt:libxcb-render0-dev"
+  libxcb-shape0-dev:         "~apt:libxcb-shape0-dev"
+  libxcb-shm0-dev:           "~apt:libxcb-shm0-dev"
+  libxcb-sync-dev:           "~apt:libxcb-sync-dev"
+  libxcb-util-dev:           "~apt:libxcb-util-dev"
+  libxcb-xfixes0-dev:        "~apt:libxcb-xfixes0-dev"
+  libxcb-xinerama0-dev:      "~apt:libxcb-xinerama0-dev"
+  libxcb-xkb-dev:            "~apt:libxcb-xkb-dev"
+  libxi-dev:                 "~apt:libxi-dev"
+  libxrender-dev:            "~apt:libxrender-dev"
+
+  # ── Ignored (handled implicitly by build system) ──────────────────────────
+  debhelper-compat:          "~ignore"
+  dh-sequence-kf6:           "~ignore"
+  dh-sequence-pkgkde-symbolshelper: "~ignore"
