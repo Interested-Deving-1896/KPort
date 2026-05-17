@@ -1,0 +1,35 @@
+# config/masks.yml
+#
+# Package masks — prevents installation of broken, dangerous, or
+# incompatible packages. Analogous to Portage's package.mask.
+#
+# Masked packages cannot be installed unless explicitly unmasked in
+# ~/.config/kport/package.unmask
+#
+# Format:
+#   - pkg: <category/pkgname>        # mask all versions
+#   - pkg: <category/pkgname>
+#     version: "<= 6.1.0"            # mask specific version range
+#   - pkg: <category/pkgname>
+#     reason: "description of why"
+#   - pkg: <category/pkgname>
+#     arch: [x86-64-v1]              # mask only on specific CPU tiers
+#   - pkg: <category/pkgname>
+#     gpu: [gpu-sw, gpu-gl2]         # mask on GPU tiers below requirement
+#
+# Operators for version: <, <=, =, >=, >
+
+masks:
+
+  # Packages requiring Vulkan 1.2 masked on gpu-sw and gpu-gl2
+  # (kport-detect sets GPU_TIER; these are auto-masked at resolve time)
+
+  # Example: mask an unstable package
+  # - pkg: plasma/kwin
+  #   version: ">= 6.4.0"
+  #   reason: "6.4.x series has known regression in Wayland compositor"
+
+  # Example: mask on old GPU tiers
+  # - pkg: plasma/kwin
+  #   gpu: [gpu-sw, gpu-gl2]
+  #   reason: "KWin 6.x requires OpenGL 4.x minimum"

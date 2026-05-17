@@ -1,0 +1,37 @@
+# config/repositories.yml
+#
+# KPort overlay/repository registry.
+# Analogous to Portage's repos.conf / eselect repository.
+#
+# Overlays are searched in priority order (highest first) before the
+# main KPort tree (priority 0). A package found in a higher-priority
+# overlay shadows the main tree version.
+#
+# Fields:
+#   name:        unique identifier
+#   description: human-readable description
+#   url:         git URL to clone/pull the overlay from
+#   priority:    integer, higher = checked first (main tree = 0)
+#   enabled:     false to disable without removing
+#   auto_sync:   true to sync on every `kport sync`
+
+repositories:
+
+  # Main KPort tree — always present, not listed here
+  # (implicit, priority 0)
+
+  # Example community overlay:
+  # - name: kde-git-builds
+  #   description: "Bleeding-edge KDE git snapshot builds"
+  #   url: https://github.com/Interested-Deving-1896/kport-kde-git
+  #   priority: 10
+  #   enabled: false
+  #   auto_sync: true
+
+  # Example hardware-specific overlay:
+  # - name: steamdeck
+  #   description: "Steam Deck optimised KDE packages"
+  #   url: https://github.com/Interested-Deving-1896/kport-steamdeck
+  #   priority: 20
+  #   enabled: false
+  #   auto_sync: true
