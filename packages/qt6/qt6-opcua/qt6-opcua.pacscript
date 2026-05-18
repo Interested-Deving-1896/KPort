@@ -8,7 +8,7 @@
 
 pkgname="qt6-opcua"
 pkgver="6.10.2"
-pkgdesc="Qt OPC UA Library The Qt OPC UA module implements a Qt API to interact with OPC"
+pkgdesc="Qt OPC UA library — client API for OPC UA industrial automation protocol"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://www.qt.io/developers/"
 license=("GPL-2.0-or-later")

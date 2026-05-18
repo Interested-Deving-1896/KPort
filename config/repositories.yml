@@ -24,18 +24,17 @@ repositories:
   # Shadows kf6-karchive with an annotated copy. Safe to disable.
   - name: example
     description: "Bundled example overlay for testing overlay resolution"
-    url: ""
+    url: "https://github.com/Interested-Deving-1896/KPort.git"
     priority: 10
     enabled: true
     auto_sync: false
 
   # Community 32-bit overlay — lightweight packages for i686 systems.
-  # Qt 6 / KDE Frameworks 6 are 64-bit only; this overlay targets GTK/SDL/
-  # toolkit-free utilities that still build on 32-bit x86.
-  # Enable by setting enabled: true, or point url at a hosted fork.
+  # Qt 6 / KDE Frameworks 6 are 64-bit only; this overlay targets LXQt 1.4
+  # and other Qt5/toolkit-free packages that still build on 32-bit x86.
   - name: community-32bit
-    description: "Lightweight i686 (32-bit x86) packages"
-    url: ""
+    description: "Lightweight i686 (32-bit x86) packages — LXQt 1.4, xterm"
+    url: "https://github.com/Interested-Deving-1896/KPort.git"
     priority: 15
     enabled: false
     auto_sync: false
@@ -45,7 +44,7 @@ repositories:
   # Validated against Arch Linux 32 extra repository (Plasma 5.27.7).
   - name: community-32bit-plasma5
     description: "KDE Plasma 5.27 LTS for i686 (32-bit x86)"
-    url: ""
+    url: "https://github.com/Interested-Deving-1896/KPort.git"
     priority: 20
     enabled: false
     auto_sync: false

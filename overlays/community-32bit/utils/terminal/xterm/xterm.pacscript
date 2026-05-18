@@ -15,7 +15,7 @@ source=(
   "https://invisible-mirror.net/archives/xterm/xterm-394.tgz"
 )
 sha256sums=(
-  "e5b3a6b2e4b9a3e5b3a6b2e4b9a3e5b3a6b2e4b9a3e5b3a6b2e4b9a3e5b3a6b2"
+  "a2a0cb206eb0423dedc34794f5c2d38c83390d2dd1106b66aba0960c3a976c7a"
 )
 
 depends=(
