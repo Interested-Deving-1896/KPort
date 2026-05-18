@@ -21,7 +21,7 @@ sha256sums=(
 
 depends=(
   "kf6-kcmutils"
-  "kf6-kirigami2"
+  "kf6-kirigami"
   "qt6-5compat"
   "qt6-base"
 )

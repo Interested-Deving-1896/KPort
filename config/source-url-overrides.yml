@@ -34,7 +34,27 @@ source_url_overrides:
   # Their Neon changelog version is "0.0" (placeholder), so $pkgver cannot be
   # used.  URLs are pinned to the Plasma release that Neon unstable tracks.
   # Update these when Neon bumps the Plasma version.
-  kf6-kactivities:         "https://download.kde.org/stable/plasma/6.4.3/plasma-activities-6.4.3.tar.xz"
-  kf6-kactivities-stats:   "https://download.kde.org/stable/plasma/6.4.3/plasma-activities-stats-6.4.3.tar.xz"
-  kf6-kwayland:            "https://download.kde.org/stable/plasma/6.4.3/kwayland-6.4.3.tar.xz"
-  kf6-plasma-framework:    "https://download.kde.org/stable/plasma/6.4.3/libplasma-6.4.3.tar.xz"
+  kf6-kactivities:         "https://download.kde.org/stable/plasma/6.6.5/plasma-activities-6.6.5.tar.xz"
+  kf6-kactivities-stats:   "https://download.kde.org/stable/plasma/6.6.5/plasma-activities-stats-6.6.5.tar.xz"
+  kf6-kwayland:            "https://download.kde.org/stable/plasma/6.6.5/kwayland-6.6.5.tar.xz"
+  kf6-plasma-framework:    "https://download.kde.org/stable/plasma/6.6.5/libplasma-6.6.5.tar.xz"
+
+  # ── Plasma packages with broken/unstable Neon changelog version ───────────
+  # plasma-workspace and plasma-desktop are at 6.6.80 (CI bump for a broken
+  # state) in Neon/unstable.  Pin to the last stable Plasma release.
+  plasma-workspace:        "https://download.kde.org/stable/plasma/6.6.5/plasma-workspace-6.6.5.tar.xz"
+  plasma-desktop:          "https://download.kde.org/stable/plasma/6.6.5/plasma-desktop-6.6.5.tar.xz"
+
+  # ── Plasma packages whose Debian binary name differs from upstream tarball ─
+  # The generator derives the tarball name from the Debian source package name,
+  # but these packages are split from a differently-named upstream tarball.
+  breeze-gtk-theme:                  "https://download.kde.org/stable/plasma/6.6.5/breeze-gtk-6.6.5.tar.xz"
+  kde-config-gtk-style:              "https://download.kde.org/stable/plasma/6.6.5/kde-gtk-config-6.6.5.tar.xz"
+  kde-config-plymouth:               "https://download.kde.org/stable/plasma/6.6.5/breeze-plymouth-6.6.5.tar.xz"
+  kwin-wayland:                      "https://download.kde.org/stable/plasma/6.6.5/kwin-6.6.5.tar.xz"
+  libkf6screen8:                     "https://download.kde.org/stable/plasma/6.6.5/libkscreen-6.6.5.tar.xz"
+  libpam-kwallet5:                   "https://download.kde.org/stable/plasma/6.6.5/kwallet-pam-6.6.5.tar.xz"
+  libpowerdevilcore2:                "https://download.kde.org/stable/plasma/6.6.5/powerdevil-6.6.5.tar.xz"
+  plymouth-theme-breeze:             "https://download.kde.org/stable/plasma/6.6.5/breeze-plymouth-6.6.5.tar.xz"
+  qml6-module-org-kde-qqc2breezestyle: "https://download.kde.org/stable/plasma/6.6.5/qqc2-breeze-style-6.6.5.tar.xz"
+  plasma-wayland-protocols:          "https://download.kde.org/stable/plasma-wayland-protocols/plasma-wayland-protocols-1.21.0.tar.xz"
