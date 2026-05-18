@@ -11,6 +11,8 @@
 #   --no-ask       Upgrade without confirmation
 #   --dry-run      Show what would be upgraded without doing it
 #   --direct       Build without pacstall sandbox (passed through to install)
+#   --depclean     After upgrade check, report installed packages no longer
+#                  needed (not in world set and not in any world dep tree)
 #   --use-changed  Only rebuild packages whose USE flags changed (skip version bumps)
 #   --version-only Only rebuild packages with a newer version (skip USE changes)
 #   --help
@@ -24,6 +26,7 @@ source "${KPORT_LIB}/resolve.sh"
 ASK=true
 DRY_RUN=false
 DIRECT=false
+DEPCLEAN=false
 USE_CHANGED_ONLY=false
 VERSION_ONLY=false
 
@@ -33,6 +36,7 @@ while [[ $# -gt 0 ]]; do
     --no-ask)       ASK=false;             shift ;;
     --dry-run)      DRY_RUN=true;          shift ;;
     --direct)       DIRECT=true;           shift ;;
+    --depclean)     DEPCLEAN=true;         shift ;;
     --use-changed)  USE_CHANGED_ONLY=true; shift ;;
     --version-only) VERSION_ONLY=true;     shift ;;
     --help|-h)
@@ -42,6 +46,53 @@ while [[ $# -gt 0 ]]; do
     *)  kport_die "Unexpected argument: $1" ;;
   esac
 done
+
+# ── Depclean helper ───────────────────────────────────────────────────────────
+# Prints installed packages that are not in the world set and not in the
+# resolved dep tree of any world package. These are orphaned deps.
+
+_kport_run_depclean() {
+  [[ -f "$KPORT_DB_WORLD" ]] || return 0
+
+  mapfile -t world_pkgs < <(awk -F/ '{print $NF}' "$KPORT_DB_WORLD")
+  [[ ${#world_pkgs[@]} -eq 0 ]] && return 0
+
+  # Build the full set of packages needed by the world set
+  local -A needed=()
+  export KPORT_RESOLVE_ALL=true
+  while IFS= read -r pkg; do
+    [[ -n "$pkg" ]] && needed["$pkg"]=1
+  done < <(kport_resolve "${world_pkgs[@]}" 2>/dev/null)
+  unset KPORT_RESOLVE_ALL
+
+  # Also mark world packages themselves as needed
+  for pkg in "${world_pkgs[@]}"; do
+    needed["$pkg"]=1
+  done
+
+  # Find installed packages not in the needed set
+  local -a orphans=()
+  while IFS= read -r -d '' installed_dir; do
+    local ipkg
+    ipkg=$(basename "$installed_dir")
+    [[ -z "${needed[$ipkg]:-}" ]] && orphans+=("$ipkg")
+  done < <(find "$KPORT_DB_INSTALLED" -mindepth 1 -maxdepth 1 -type d -print0 2>/dev/null)
+
+  if [[ ${#orphans[@]} -eq 0 ]]; then
+    kport_info "No orphaned packages found."
+    return 0
+  fi
+
+  kport_header "Orphaned packages (${#orphans[@]}) — not needed by any world package"
+  for pkg in "${orphans[@]}"; do
+    local ver category
+    ver=$(kport_db_read "$pkg" version)
+    category=$(kport_db_read "$pkg" category)
+    printf "  ${C_BOLD}%-30s${C_RESET} ${C_DIM}%-12s  %s${C_RESET}\n" "$pkg" "$ver" "$category"
+  done
+  echo ""
+  kport_info "Remove with: kport remove ${orphans[*]}"
+}
 
 # ── Read world set ────────────────────────────────────────────────────────────
 
@@ -109,6 +160,10 @@ echo ""
 
 if [[ ${#to_upgrade[@]} -eq 0 ]]; then
   kport_info "All world packages are up to date."
+  # Still run depclean if requested
+  if [[ "$DEPCLEAN" == "true" ]]; then
+    _kport_run_depclean
+  fi
   exit 0
 fi
 
@@ -121,6 +176,7 @@ mapfile -t upgrade_order < <(kport_resolve "${to_upgrade[@]}")
 
 if [[ "$DRY_RUN" == "true" ]]; then
   kport_info "Dry run — nothing will be upgraded."
+  [[ "$DEPCLEAN" == "true" ]] && _kport_run_depclean
   exit 0
 fi
 
@@ -133,4 +189,10 @@ fi
 install_args=(--no-ask --rebuild)
 [[ "$DIRECT" == "true" ]] && install_args+=(--direct)
 
-exec bash "${KPORT_LIB}/cmd/install.sh" "${install_args[@]}" "${upgrade_order[@]}"
+if [[ "$DEPCLEAN" == "true" ]]; then
+  # Run install first, then depclean after it completes
+  bash "${KPORT_LIB}/cmd/install.sh" "${install_args[@]}" "${upgrade_order[@]}"
+  _kport_run_depclean
+else
+  exec bash "${KPORT_LIB}/cmd/install.sh" "${install_args[@]}" "${upgrade_order[@]}"
+fi
