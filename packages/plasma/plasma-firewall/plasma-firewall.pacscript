@@ -24,7 +24,6 @@ depends=(
   "kf6-kcmutils"
   "kf6-kirigami"
   "kf6-kitemmodels"
-  "python3"
   "qml6-module-qtquick-controls"
   "qml6-module-qtquick-layouts"
   "qml6-module-qtquick"

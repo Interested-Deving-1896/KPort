@@ -22,8 +22,6 @@ depends=(
   "kf6-kconfigwidgets"
   "kf6-ki18n"
   "kf6-kwidgetsaddons"
-  "~apt:libc6"
-  "~apt:libstdc++6"
   "qt6-base"
 )
 

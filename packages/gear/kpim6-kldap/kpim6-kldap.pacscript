@@ -23,11 +23,9 @@ depends=(
   "kf6-ki18n"
   "kf6-kio"
   "kf6-kwidgetsaddons"
-  "~apt:libc6"
   "~apt:libldap2"
   "~apt:libqt6keychain1"
   "~apt:libsasl2-2"
-  "~apt:libstdc++6"
   "qt6-base"
 )
 

@@ -31,10 +31,8 @@ depends=(
   "~apt:kpim6-kmbox"
   "~apt:kpim6-kmime"
   "kpim6-libkleo"
-  "~apt:libc6"
   "~apt:libgpgmepp7"
   "~apt:libqgpgmeqt6-15"
-  "~apt:libstdc++6"
   "qt6-base"
   "qt6-declarative"
 )

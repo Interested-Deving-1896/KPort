@@ -23,6 +23,26 @@ sha256sums=(
 depends=(
   "kpim6-kdepim-runtime"
   "qt6-webengine"
+  "kf6-kcmutils"
+  "kf6-kcolorscheme"
+  "kf6-kconfig"
+  "kf6-kconfigwidgets"
+  "kf6-kcoreaddons"
+  "kf6-kcrash"
+  "kf6-ki18n"
+  "kf6-kiconthemes"
+  "kf6-kio"
+  "kf6-kjobwidgets"
+  "kf6-kparts"
+  "kf6-kservice"
+  "kf6-ktextaddons"
+  "kf6-kwidgetsaddons"
+  "kf6-kxmlgui"
+  "kpim6-grantleetheme"
+  "kpim6-kontactinterface"
+  "kpim6-libkdepim"
+  "kpim6-pimcommon"
+  "qt6-base"
 )
 
 makedepends=(

@@ -21,9 +21,16 @@ sha256sums=(
 )
 
 depends=(
-  "qml6-module-org-kde-i18n-localedata"
-  "qml6-module-org-kde-kirigami-addons-datetime"
-  "qml6-module-org-kde-kpublictransport"
+  "~apt:qml6-module-org-kde-i18n-localedata"
+  "kf6-kirigami-addons"
+  "~apt:qml6-module-org-kde-kpublictransport"
+  "kf6-kconfig"
+  "kf6-kcoreaddons"
+  "kf6-kcrash"
+  "kf6-ki18n"
+  "~apt:libkpublictransport1"
+  "qt6-base"
+  "qt6-declarative"
 )
 
 makedepends=(

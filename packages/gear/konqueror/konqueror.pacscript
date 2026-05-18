@@ -21,7 +21,37 @@ sha256sums=(
 )
 
 depends=(
-  "install-info"
+  "kf6-karchive"
+  "kf6-kbookmarks"
+  "kf6-kcmutils"
+  "kf6-kcodecs"
+  "kf6-kcolorscheme"
+  "kf6-kcompletion"
+  "kf6-kconfig"
+  "kf6-kconfigwidgets"
+  "kf6-kcoreaddons"
+  "kf6-kcrash"
+  "kf6-kdbusaddons"
+  "kf6-kdesu"
+  "kf6-kguiaddons"
+  "kf6-ki18n"
+  "kf6-kiconthemes"
+  "kf6-kio"
+  "kf6-kitemviews"
+  "kf6-kjobwidgets"
+  "kf6-kparts"
+  "kf6-kservice"
+  "kf6-ktextwidgets"
+  "kf6-kwallet"
+  "kf6-kwidgetsaddons"
+  "kf6-kwindowsystem"
+  "kf6-kxmlgui"
+  "kf6-solid"
+  "kf6-sonnet"
+  "kf6-kactivities"
+  "qt6-base"
+  "qt6-webengine"
+  "~apt:zlib1g"
 )
 
 makedepends=(

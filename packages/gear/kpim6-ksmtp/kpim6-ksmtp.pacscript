@@ -21,9 +21,7 @@ depends=(
   "kf6-kcoreaddons"
   "kf6-ki18n"
   "kf6-kio"
-  "~apt:libc6"
   "~apt:libsasl2-2"
-  "~apt:libstdc++6"
   "qt6-base"
 )
 

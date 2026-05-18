@@ -37,10 +37,7 @@ depends=(
   "~apt:kpim6-calendarsupport"
   "kpim6-kcalendarutils"
   "kpim6-libkdepim"
-  "~apt:libc6"
-  "~apt:libgcc-s1"
   "~apt:libkgantt6-3"
-  "~apt:libstdc++6"
   "qt6-base"
 )
 

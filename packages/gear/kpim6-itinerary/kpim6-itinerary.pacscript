@@ -21,7 +21,22 @@ sha256sums=(
 )
 
 depends=(
-  "osmctools"
+  "~apt:osmctools"
+  "kf6-karchive"
+  "kf6-kcalendarcore"
+  "kf6-kcodecs"
+  "kf6-kcontacts"
+  "kf6-ki18n"
+  "kpim6-kmime"
+  "kpim6-pkpass"
+  "~apt:libphonenumber8t64-protobuf32"
+  "~apt:libpoppler140"
+  "~apt:libssl3t64"
+  "~apt:libxml2"
+  "~apt:libzxing3"
+  "qt6-base"
+  "qt6-declarative"
+  "~apt:zlib1g"
 )
 
 makedepends=(

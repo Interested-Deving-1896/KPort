@@ -21,7 +21,21 @@ sha256sums=(
 )
 
 depends=(
-  "kdeedu-data"
+  "kf6-kcompletion"
+  "kf6-kconfig"
+  "kf6-kconfigwidgets"
+  "kf6-kcoreaddons"
+  "kf6-kcrash"
+  "kf6-kdbusaddons"
+  "kf6-ki18n"
+  "kf6-kio"
+  "kf6-kjobwidgets"
+  "kf6-kparts"
+  "kf6-ktextwidgets"
+  "kf6-kwidgetsaddons"
+  "kf6-kxmlgui"
+  "qt6-base"
+  "qt6-svg"
 )
 
 makedepends=(

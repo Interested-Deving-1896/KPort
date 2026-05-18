@@ -23,8 +23,6 @@ depends=(
   "kf6-kparts"
   "kf6-kwindowsystem"
   "kf6-kxmlgui"
-  "~apt:libc6"
-  "~apt:libstdc++6"
   "qt6-base"
 )
 

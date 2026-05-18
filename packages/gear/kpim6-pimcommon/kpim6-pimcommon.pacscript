@@ -21,7 +21,29 @@ sha256sums=(
 )
 
 depends=(
-  "plasma-activities"
+  "kf6-kactivities"
+  "kf6-kcmutils"
+  "kf6-kcodecs"
+  "kf6-kcolorscheme"
+  "kf6-kcompletion"
+  "kf6-kconfig"
+  "kf6-kcontacts"
+  "kf6-kcoreaddons"
+  "kf6-ki18n"
+  "kf6-kio"
+  "kf6-kitemmodels"
+  "kf6-knewstuff"
+  "kf6-ktextaddons"
+  "kf6-kwidgetsaddons"
+  "kf6-kxmlgui"
+  "kf6-purpose"
+  "kpim6-akonadi"
+  "kpim6-akonadi-contacts"
+  "kpim6-akonadi-search"
+  "kpim6-kimap"
+  "kpim6-kldap"
+  "kpim6-libkdepim"
+  "qt6-base"
 )
 
 makedepends=(

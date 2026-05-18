@@ -58,7 +58,6 @@ depends=(
   "plasma5support"
   "kf6-kactivities"
   "plasma-wayland-protocols"
-  "python3"
   "qml6-module-org-kde-ksysguard"
   "qml6-module-org-kde-pipewire"
   "qml6-module-org-kde-userfeedback"

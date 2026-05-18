@@ -19,9 +19,6 @@ sha256sums=(
 
 depends=(
   "kf6-kcodecs"
-  "~apt:libc6"
-  "~apt:libgcc-s1"
-  "~apt:libstdc++6"
   "qt6-base"
 )
 

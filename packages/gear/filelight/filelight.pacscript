@@ -24,7 +24,14 @@ depends=(
   "kf6-kcoreaddons"
   "kf6-kirigami"
   "kf6-kquickcharts"
-  "qml6-module-qt-labs-platform"
+  "~apt:qml6-module-qt-labs-platform"
+  "kf6-kconfig"
+  "kf6-kcrash"
+  "kf6-ki18n"
+  "kf6-kio"
+  "kf6-kwidgetsaddons"
+  "qt6-base"
+  "qt6-declarative"
 )
 
 makedepends=(

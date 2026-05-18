@@ -21,7 +21,35 @@ sha256sums=(
 )
 
 depends=(
-  # No named runtime deps found in debian/control (only ${shlibs:Depends}).
+  "kf6-kcalendarcore"
+  "kf6-kcodecs"
+  "kf6-kcompletion"
+  "kf6-kconfig"
+  "kf6-kcontacts"
+  "kf6-kcoreaddons"
+  "kf6-kguiaddons"
+  "kf6-ki18n"
+  "kf6-kio"
+  "kf6-kitemmodels"
+  "kf6-ktextwidgets"
+  "kf6-kwidgetsaddons"
+  "kf6-kxmlgui"
+  "kpim6-akonadi"
+  "kpim6-akonadi-calendar"
+  "kpim6-akonadi-contacts"
+  "kpim6-akonadi-mime"
+  "kpim6-calendarsupport"
+  "kpim6-eventviews"
+  "kpim6-kcalendarutils"
+  "kpim6-kidentitymanagement"
+  "kpim6-kldap"
+  "kpim6-kmime"
+  "kpim6-kpimtextedit"
+  "kpim6-libkdepim"
+  "kpim6-pimcommon"
+  "~apt:libkgantt6-3"
+  "qt6-base"
+).
   # Populate after a test build by inspecting ldd output or dpkg -I.
 )
 

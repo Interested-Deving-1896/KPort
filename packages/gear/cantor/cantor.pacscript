@@ -21,7 +21,37 @@ sha256sums=(
 )
 
 depends=(
-  # No named runtime deps found in debian/control (only ${shlibs:Depends}).
+  "kf6-karchive"
+  "kf6-kcolorscheme"
+  "kf6-kcompletion"
+  "kf6-kconfig"
+  "kf6-kconfigwidgets"
+  "kf6-kcoreaddons"
+  "kf6-kcrash"
+  "kf6-ki18n"
+  "kf6-kiconthemes"
+  "kf6-kio"
+  "kf6-knewstuff"
+  "kf6-kparts"
+  "kf6-ktexteditor"
+  "kf6-ktextwidgets"
+  "kf6-kwidgetsaddons"
+  "kf6-kxmlgui"
+  "kf6-syntax-highlighting"
+  "~apt:libanalitza9"
+  "~apt:libanalitzagui9"
+  "~apt:libluajit-5.1-2"
+  "~apt:libpoppler-qt6-3t64"
+  "~apt:libpython3.12t64"
+  "~apt:libqalculate22t64"
+  "~apt:libspectre1"
+  "~apt:libxml2"
+  "~apt:libxslt1.1"
+  "qt6-base"
+  "qt6-svg"
+  "qt6-tools"
+  "qt6-webengine"
+).
   # Populate after a test build by inspecting ldd output or dpkg -I.
 )
 

@@ -20,10 +20,29 @@ sha256sums=(
 )
 
 depends=(
-  "libokular6core4"
-  "kf6-kparts"
+  "~apt:okular-backends"
+  "kf6-karchive"
+  "kf6-kbookmarks"
+  "kf6-kcolorscheme"
+  "kf6-kcompletion"
+  "kf6-kconfig"
+  "kf6-kconfigwidgets"
+  "kf6-kcoreaddons"
+  "kf6-kcrash"
+  "kf6-ki18n"
+  "kf6-kiconthemes"
   "kf6-kio"
+  "kf6-kparts"
+  "kf6-ktextwidgets"
+  "kf6-kwallet"
+  "kf6-kwidgetsaddons"
+  "kf6-kwindowsystem"
   "kf6-kxmlgui"
+  "kf6-purpose"
+  "libokular6core4"
+  "qt6-base"
+  "qt6-phonon"
+  "qt6-speech"
 )
 
 makedepends=(

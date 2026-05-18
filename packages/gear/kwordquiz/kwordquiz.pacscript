@@ -21,7 +21,16 @@ sha256sums=(
 )
 
 depends=(
-  "kdeedu-kvtml-data"
+  "~apt:kdeedu-kvtml-data"
+  "kf6-kconfig"
+  "kf6-kcoreaddons"
+  "kf6-kcrash"
+  "kf6-kdbusaddons"
+  "kf6-ki18n"
+  "kf6-knewstuff"
+  "~apt:libkeduvocdocument6"
+  "qt6-base"
+  "qt6-declarative"
 )
 
 makedepends=(

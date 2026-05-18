@@ -21,7 +21,22 @@ sha256sums=(
 )
 
 depends=(
-  "kalgebra-common"
+  "kalgebra"
+  "kf6-kcolorscheme"
+  "kf6-kconfig"
+  "kf6-kconfigwidgets"
+  "kf6-kcoreaddons"
+  "kf6-ki18n"
+  "kf6-kio"
+  "kf6-kwidgetsaddons"
+  "kf6-kxmlgui"
+  "~apt:libanalitza9"
+  "~apt:libanalitzagui9"
+  "~apt:libanalitzaplot9"
+  "~apt:libanalitzawidgets9"
+  "~apt:libreadline8t64"
+  "qt6-base"
+  "qt6-webengine"
 )
 
 makedepends=(

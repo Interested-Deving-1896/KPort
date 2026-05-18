@@ -21,7 +21,23 @@ sha256sums=(
 )
 
 depends=(
-  "ktouch-data"
+  "kf6-kcmutils"
+  "kf6-kcolorscheme"
+  "kf6-kcompletion"
+  "kf6-kconfig"
+  "kf6-kconfigwidgets"
+  "kf6-kcoreaddons"
+  "kf6-ki18n"
+  "kf6-kitemviews"
+  "kf6-ktextwidgets"
+  "kf6-kwidgetsaddons"
+  "kf6-kxmlgui"
+  "~apt:libx11-6"
+  "~apt:libxcb-xkb1"
+  "~apt:libxcb1"
+  "~apt:libxml2"
+  "qt6-base"
+  "qt6-declarative"
 )
 
 makedepends=(

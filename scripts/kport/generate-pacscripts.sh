@@ -968,11 +968,25 @@ process_project() {
   translate_build_depends makedepends "$build_depends"
   printf '%s\n' "${makedepends[@]}" > "$tmp_makedepends"
 
-  # Translate runtime depends
+  # Translate runtime depends.
+  # The source debian/control often has only ${shlibs:Depends} substitution
+  # variables resolved at build time. Fall back to the apt binary package's
+  # Depends field when the source control yields no real deps.
   local tmp_depends
   tmp_depends=$(mktemp)
   local rundeps=()
   translate_build_depends rundeps "$runtime_depends"
+
+  if [[ ${#rundeps[@]} -eq 0 ]]; then
+    local apt_runtime
+    apt_runtime=$(apt-cache show "$pkg_name" 2>/dev/null \
+      | grep '^Depends:' | head -1 | cut -d: -f2-)
+    if [[ -n "$apt_runtime" ]]; then
+      verbose "  runtime deps from apt binary package (source had only substitution vars)"
+      translate_build_depends rundeps "$apt_runtime"
+    fi
+  fi
+
   printf '%s\n' "${rundeps[@]}" > "$tmp_depends"
 
   # Infer USE flags
