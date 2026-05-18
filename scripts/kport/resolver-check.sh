@@ -288,6 +288,30 @@ cp "$kw8" "${KW_TMP}/keywords.yml"
 _kw_run "no keyword vars → always pass" \
   "$ps8" "$kw8" "" "" "pass"
 
+# ── Test 9: NPU tier block (system below minimum) ─────────────────────────────
+ps9="${KW_TMP}/ps9.pacscript"
+hw9="${KW_TMP}/hw9.conf"
+kw9="${KW_TMP}/kw9.yml"
+_kw_pacscript "$ps9" 'KNPU_MIN="npu-dedicated"'
+_kw_yml "$kw9" "stable, testing, unstable"
+cp "$kw9" "${KW_TMP}/keywords.yml"
+_kw_hw "$hw9" "x86-64-v2" "gpu-sw"
+echo 'NPU_TIER="npu-none"' >> "$hw9"
+_kw_run "NPU tier block (system npu-none, pkg requires npu-dedicated)" \
+  "$ps9" "$kw9" "$hw9" "" "block"
+
+# ── Test 10: NPU tier pass (system meets minimum) ─────────────────────────────
+ps10="${KW_TMP}/ps10.pacscript"
+hw10="${KW_TMP}/hw10.conf"
+kw10="${KW_TMP}/kw10.yml"
+_kw_pacscript "$ps10" 'KNPU_MIN="npu-igpu"'
+_kw_yml "$kw10" "stable, testing, unstable"
+cp "$kw10" "${KW_TMP}/keywords.yml"
+_kw_hw "$hw10" "x86-64-v2" "gpu-sw"
+echo 'NPU_TIER="npu-dedicated"' >> "$hw10"
+_kw_run "NPU tier pass (system npu-dedicated, pkg requires npu-igpu)" \
+  "$ps10" "$kw10" "$hw10" "" "pass"
+
 # ── Cleanup ───────────────────────────────────────────────────────────────────
 
 rm -rf "${KPORT_DB}"

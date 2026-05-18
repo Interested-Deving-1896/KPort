@@ -274,6 +274,25 @@ kport_check_keyword() {
     fi
   fi
 
+  # ── NPU tier check ────────────────────────────────────────────────────────
+
+  local npu_min
+  npu_min=$(kport_pacscript_var "$pacscript" KNPU_MIN)
+
+  if [[ -n "$npu_min" && -f "${KPORT_HW_CONF:-}" ]]; then
+    local npu_tier
+    npu_tier=$(grep "^NPU_TIER=" "$KPORT_HW_CONF" | cut -d'"' -f2)
+    if [[ -n "$npu_tier" ]]; then
+      local -a npu_order=(npu-none npu-igpu npu-dedicated npu-ai npu-datacenter)
+      local ntier_idx=-1 nmin_idx=-1 k
+      for k in "${!npu_order[@]}"; do
+        [[ "${npu_order[$k]}" == "$npu_tier" ]] && ntier_idx=$k
+        [[ "${npu_order[$k]}" == "$npu_min"  ]] && nmin_idx=$k
+      done
+      [[ $ntier_idx -ge 0 && $nmin_idx -ge 0 && $ntier_idx -lt $nmin_idx ]] && return 1
+    fi
+  fi
+
   return 0
 }
 
