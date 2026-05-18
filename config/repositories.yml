@@ -20,6 +20,15 @@ repositories:
   # Main KPort tree — always present, not listed here
   # (implicit, priority 0)
 
+  # Bundled example overlay — demonstrates overlay shadowing.
+  # Shadows kf6-karchive with an annotated copy. Safe to disable.
+  - name: example
+    description: "Bundled example overlay for testing overlay resolution"
+    url: ""
+    priority: 10
+    enabled: true
+    auto_sync: false
+
   # Example community overlay:
   # - name: kde-git-builds
   #   description: "Bleeding-edge KDE git snapshot builds"

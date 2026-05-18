@@ -38,7 +38,7 @@ KSLOT="6"
 KCATEGORY="frameworks/tier4"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"
-KGPU_MIN="gpu-gl2"
+KGPU_MIN="gpu-sw"
 
 KUSE=(
   "-test"

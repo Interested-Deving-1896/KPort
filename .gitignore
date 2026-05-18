@@ -3,6 +3,7 @@
 .DS_Store
 .npmrc
 
-# KPort generated artifacts
+# KPort generated artifacts — generated/ is not tracked except README.md
 db/sources-cache.json
-generated/dep-map-candidates.yml
+generated/*
+!generated/README.md

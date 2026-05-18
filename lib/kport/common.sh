@@ -32,7 +32,7 @@ KPORT_DB_WORLD="${KPORT_DB}/world"
 KPORT_DB_INSTALLED="${KPORT_DB}/installed"
 
 export KPORT_PACKAGES_DIR KPORT_GENERATED_DIR KPORT_OVERLAYS_DIR
-export KPORT_CONFIG_DIR KPORT_HW_CONF KPORT_USE_CONF KPORT_PKG_USE KPORT_PKG_UNMASK
+export KPORT_CONFIG_DIR KPORT_HW_CONF KPORT_USE_CONF KPORT_PKG_USE KPORT_PKG_UNMASK KPORT_PKG_KEYWORDS
 export KPORT_DB_WORLD KPORT_DB_INSTALLED
 
 # ── Package resolution ────────────────────────────────────────────────────────
@@ -44,12 +44,34 @@ export KPORT_DB_WORLD KPORT_DB_INSTALLED
 kport_find_pacscript() {
   local pkgname="$1"
 
-  # Search overlays first (higher priority)
-  if [[ -d "$KPORT_OVERLAYS_DIR" ]]; then
-    local overlay_hit
-    overlay_hit=$(find "$KPORT_OVERLAYS_DIR" -name "${pkgname}.pacscript" \
-      -not -path "*/example/*" 2>/dev/null | head -1)
-    [[ -n "$overlay_hit" ]] && echo "$overlay_hit" && return 0
+  # Search enabled overlays in priority order (highest first)
+  # Overlays are registered in config/repositories.yml; only enabled ones are searched.
+  if [[ -d "$KPORT_OVERLAYS_DIR" && -f "${KPORT_CONFIG_DIR}/repositories.yml" ]]; then
+    # Extract enabled overlay names (simple grep-based parse, no yq dependency)
+    local overlay_name overlay_hit
+    while IFS= read -r overlay_name; do
+      [[ -z "$overlay_name" ]] && continue
+      overlay_hit=$(find "${KPORT_OVERLAYS_DIR}/${overlay_name}" \
+        -name "${pkgname}.pacscript" 2>/dev/null | head -1)
+      [[ -n "$overlay_hit" ]] && echo "$overlay_hit" && return 0
+    done < <(python3 -c "
+import re, sys
+try:
+    txt = open('${KPORT_CONFIG_DIR}/repositories.yml').read()
+    # Find all enabled overlay blocks and extract their names
+    blocks = re.findall(r'-\s+name:\s+(\S+).*?enabled:\s*(true|false)', txt, re.DOTALL)
+    # Sort by priority (higher first) — extract priority per block
+    named = []
+    for name, enabled in blocks:
+        if enabled == 'true':
+            m = re.search(r'-\s+name:\s+' + re.escape(name) + r'.*?priority:\s*(\d+)', txt, re.DOTALL)
+            priority = int(m.group(1)) if m else 0
+            named.append((priority, name))
+    for _, name in sorted(named, reverse=True):
+        print(name)
+except Exception:
+    pass
+" 2>/dev/null)
   fi
 
   # Search main packages tree
@@ -188,6 +210,81 @@ kport_is_masked() {
 
   # Simple check: is the package listed in masks.yml?
   grep -q "pkg: ${category}/${pkgname}" "$masks_file" 2>/dev/null
+}
+
+# kport_check_keyword pkgname category pacscript
+# Returns 0 if the package is accepted under current keywords, 1 if blocked.
+# Checks:
+#   1. KNEON_CHANNEL vs accept_keywords.stability in config/keywords.yml
+#   2. KCPU_MIN vs CPU_TIER in hardware.conf
+#   3. KGPU_MIN vs GPU_TIER in hardware.conf
+#   Per-package overrides in ~/.config/kport/package.accept_keywords take
+#   precedence over the global keywords.yml defaults.
+kport_check_keyword() {
+  local pkgname="$1" category="$2" pacscript="$3"
+
+  local channel cpu_min gpu_min
+  channel=$(kport_pacscript_var "$pacscript" KNEON_CHANNEL)
+  cpu_min=$(kport_pacscript_var "$pacscript" KCPU_MIN)
+  gpu_min=$(kport_pacscript_var "$pacscript" KGPU_MIN)
+
+  # ── Stability check ───────────────────────────────────────────────────────
+
+  if [[ -n "$channel" ]]; then
+    # Delegate YAML parsing to a helper script to avoid export -f quoting issues
+    local accepted_stability
+    accepted_stability=$(python3 "${KPORT_LIB}/keyword-check.py" \
+      "${KPORT_CONFIG_DIR}/keywords.yml" "${category}/${pkgname}" "$channel" 2>/dev/null \
+      || echo "stable testing")
+
+    # User package.accept_keywords overrides (simple key: stability: [..] format)
+    if [[ -f "${KPORT_PKG_KEYWORDS:-}" ]]; then
+      local user_stability
+      user_stability=$(grep -E "^${category}/${pkgname}:" "$KPORT_PKG_KEYWORDS" 2>/dev/null \
+        | sed 's/.*stability:[[:space:]]*//' | tr -d '[]"' | tr ',' ' ') || true
+      [[ -n "$user_stability" ]] && accepted_stability="$user_stability"
+    fi
+
+    local kw ok=false
+    for kw in $accepted_stability; do
+      [[ "$kw" == "$channel" ]] && ok=true && break
+    done
+    [[ "$ok" == "false" ]] && return 1
+  fi
+
+  # ── CPU tier check ────────────────────────────────────────────────────────
+
+  if [[ -n "$cpu_min" && -f "${KPORT_HW_CONF:-}" ]]; then
+    local cpu_tier
+    cpu_tier=$(grep "^CPU_TIER=" "$KPORT_HW_CONF" | cut -d'"' -f2)
+    if [[ -n "$cpu_tier" ]]; then
+      local -a cpu_order=(x86-64-v1 x86-64-v2 x86-64-v3 x86-64-v4 aarch64 aarch64-v8.2)
+      local tier_idx=-1 min_idx=-1 i
+      for i in "${!cpu_order[@]}"; do
+        [[ "${cpu_order[$i]}" == "$cpu_tier" ]] && tier_idx=$i
+        [[ "${cpu_order[$i]}" == "$cpu_min"  ]] && min_idx=$i
+      done
+      [[ $tier_idx -ge 0 && $min_idx -ge 0 && $tier_idx -lt $min_idx ]] && return 1
+    fi
+  fi
+
+  # ── GPU tier check ────────────────────────────────────────────────────────
+
+  if [[ -n "$gpu_min" && -f "${KPORT_HW_CONF:-}" ]]; then
+    local gpu_tier
+    gpu_tier=$(grep "^GPU_TIER=" "$KPORT_HW_CONF" | cut -d'"' -f2)
+    if [[ -n "$gpu_tier" ]]; then
+      local -a gpu_order=(gpu-sw gpu-gl2 gpu-gl4 gpu-vk12 gpu-vk13)
+      local gtier_idx=-1 gmin_idx=-1 j
+      for j in "${!gpu_order[@]}"; do
+        [[ "${gpu_order[$j]}" == "$gpu_tier" ]] && gtier_idx=$j
+        [[ "${gpu_order[$j]}" == "$gpu_min"  ]] && gmin_idx=$j
+      done
+      [[ $gtier_idx -ge 0 && $gmin_idx -ge 0 && $gtier_idx -lt $gmin_idx ]] && return 1
+    fi
+  fi
+
+  return 0
 }
 
 # ── Formatting helpers ────────────────────────────────────────────────────────

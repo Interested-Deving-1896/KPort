@@ -102,6 +102,32 @@ for pkg in "${CHECK_PACKAGES[@]}"; do
   fi
 done
 
+# ── Overlay resolution test ───────────────────────────────────────────────────
+# Verify that kport_find_pacscript returns the overlay version of kf6-karchive
+# when the example overlay is enabled in repositories.yml.
+
+info ""
+info "  overlay resolution: kf6-karchive (example overlay should shadow main tree)"
+
+overlay_ps=$(kport_find_pacscript "kf6-karchive" 2>/dev/null)
+if [[ "$overlay_ps" == *"overlays/example"* ]]; then
+  info "    → overlay hit: ${overlay_ps##${KPORT_ROOT}/}"
+else
+  echo "  ERROR: kf6-karchive resolved to main tree instead of example overlay" >&2
+  echo "    got: ${overlay_ps}" >&2
+  (( errors++ )) || true
+fi
+
+# Verify the overlay pacscript has the expected marker in pkgdesc
+overlay_desc=$(kport_pacscript_var "$overlay_ps" pkgdesc 2>/dev/null)
+if [[ "$overlay_desc" == *"example overlay"* ]]; then
+  info "    → pkgdesc confirms overlay version"
+else
+  echo "  ERROR: overlay pkgdesc does not contain 'example overlay' marker" >&2
+  echo "    got: ${overlay_desc}" >&2
+  (( errors++ )) || true
+fi
+
 # ── Cleanup ───────────────────────────────────────────────────────────────────
 
 rm -rf "${KPORT_DB}"
