@@ -146,7 +146,7 @@ done < <(parse_repositories)
 
 if [[ "$SYNC_SOURCES" == "true" ]]; then
   kport_header "Refreshing sources cache"
-  local sync_args=()
+  sync_args=()
   [[ "$DRY_RUN" == "true" ]] && sync_args+=(--dry-run)
   KPORT_ROOT="$KPORT_ROOT" bash "${KPORT_ROOT}/scripts/kport/sync-sources.sh" \
     "${sync_args[@]}" || kport_warn "sync-sources.sh reported errors"

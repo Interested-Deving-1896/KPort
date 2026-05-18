@@ -106,7 +106,7 @@ if [[ ${#depends[@]} -gt 0 ]]; then
   echo ""
   kport_header "Runtime dependencies (${#depends[@]})"
   for dep in "${depends[@]}"; do
-    local marker="  "
+    marker="  "
     kport_is_installed "$dep" \
       && marker="${C_GREEN}  ✔ ${C_RESET}" \
       || marker="${C_DIM}  ○ ${C_RESET}"
@@ -127,8 +127,8 @@ if [[ ${#kuse[@]} -gt 0 ]]; then
   echo ""
   kport_header "USE flags declared by package"
   for flag in "${kuse[@]}"; do
-    local sign="${flag:0:1}"
-    local name="${flag:1}"
+    sign="${flag:0:1}"
+    name="${flag:1}"
     if [[ "$sign" == "+" ]]; then
       echo -e "  ${C_GREEN}+${name}${C_RESET}  ${C_DIM}(default on)${C_RESET}"
     else

@@ -83,10 +83,15 @@ varname = sys.argv[2]
 with open(path) as f:
     content = f.read()
 
-# Match varname=( ... ) possibly spanning multiple lines
+# Strip line comments before parsing so that ')' inside comments does not
+# confuse the array boundary detection.
+content_no_comments = re.sub(r'#[^\n]*', '', content)
+
+# Match varname=( ... ) using the comment-stripped content.
+# Use a non-greedy match up to the first bare ')' on its own line.
 m = re.search(
     r'^' + re.escape(varname) + r'\s*=\s*\(([^)]*)\)',
-    content, re.MULTILINE | re.DOTALL
+    content_no_comments, re.MULTILINE | re.DOTALL
 )
 if not m:
     sys.exit(0)
@@ -96,7 +101,7 @@ block = m.group(1)
 for tok in re.findall(r'"([^"]*)"' + r"|'([^']*)'" + r'|(\S+)', block):
     val = tok[0] or tok[1] or tok[2]
     val = val.strip()
-    if val and not val.startswith('#'):
+    if val:
         print(val)
 PYEOF
 }
