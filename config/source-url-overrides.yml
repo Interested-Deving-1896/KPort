@@ -86,3 +86,19 @@ source_url_overrides:
   libqmobipocket6-2:             "https://download.kde.org/stable/release-service/26.04.1/src/kdegraphics-mobipocket-26.04.1.tar.xz"
   libokular6core4:               "https://download.kde.org/stable/release-service/26.04.1/src/okular-26.04.1.tar.xz"
   kde-spectacle:                 "https://download.kde.org/stable/plasma/6.6.5/spectacle-6.6.5.tar.xz"
+
+  # Qt6 — non-standard packages (not qt<module>-everywhere-src on download.qt.io)
+  libqca-qt6-2:                  "https://download.kde.org/stable/qca/2.3.9/qca-2.3.9.tar.xz"
+  libqaccessibilityclient-qt6-0: "https://download.kde.org/stable/libqaccessibilityclient/libqaccessibilityclient-0.6.0.tar.xz"
+  qt6-phonon:                    "https://download.kde.org/stable/phonon/4.11.1/phonon-4.11.1.tar.xz"
+  qt6-phonon-backend-vlc:        "https://download.kde.org/stable/phonon/phonon-backend-vlc/0.11.3/phonon-backend-vlc-0.11.3.tar.xz"
+  libpyside6-py3-6.10:           "https://download.qt.io/official_releases/QtForPython/pyside6/PySide6-6.10.2-src/pyside-setup-everywhere-src-6.10.2.tar.xz"
+  qbs:                           "https://download.qt.io/official_releases/qbs/3.0.1/qbs-src-3.0.1.tar.gz"
+  qtcreator:                     "https://download.qt.io/official_releases/qtcreator/19.0/19.0.0/qt-creator-opensource-src-19.0.0.tar.xz"
+
+  # Qt6 IoT/commercial modules — not on download.qt.io, hosted on GitHub
+  qt6-coap:                      "https://github.com/qt/qtcoap/archive/refs/tags/v6.10.1.tar.gz"
+  qt6-gamepad:                   "https://github.com/qt/qtgamepad/archive/refs/tags/v6.8.0.tar.gz"
+  qt6-interfaceframework:        "https://github.com/qt/qtinterfaceframework/archive/refs/tags/v6.9.3.tar.gz"
+  qt6-mqtt:                      "https://github.com/qt/qtmqtt/archive/refs/tags/v6.10.1.tar.gz"
+  qt6-opcua:                     "https://github.com/qt/qtopcua/archive/refs/tags/v6.10.1.tar.gz"
