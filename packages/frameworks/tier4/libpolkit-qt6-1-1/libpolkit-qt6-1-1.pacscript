@@ -21,7 +21,6 @@ sha256sums=(
 
 depends=(
   "default-logind"
-  "[linux-any]"
 )
 
 makedepends=(

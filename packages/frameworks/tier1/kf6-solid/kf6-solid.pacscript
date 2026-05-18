@@ -34,7 +34,6 @@ makedepends=(
   "libimobiledevice-dev"
   "libmount-dev"
   "libudev-dev"
-  "[linux-any]"
   "qt6-base-dev"
   "qt6-declarative-dev"
   "qt6-tools-dev"

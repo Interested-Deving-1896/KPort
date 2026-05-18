@@ -17,12 +17,11 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/kwin-6.6.5.tar.xz"
 )
 sha256sums=(
-  "6c187ce7a5506090b438ef900103836fa0537674dde8b31e5b497ef321643cb4"   # replace with actual sha256 after download
+  "6c187ce7a5506090b438ef900103836fa0537674dde8b31e5b497ef321643cb4"
 )
 
 depends=(
   "kwayland"
-  "kwin-common"
   "libcap2-bin"
   "libwayland-server0"
   "xwayland"
@@ -79,7 +78,7 @@ makedepends=(
   "libgbm-dev"
   "libice-dev"
   "libinput-dev"
-  "libkdecorations3-dev"
+  "kdecoration"
   "libkpipewire-dev"
   "liblcms2-dev"
   "libpipewire-0.3-dev"

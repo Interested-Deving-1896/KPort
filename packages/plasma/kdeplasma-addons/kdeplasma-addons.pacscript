@@ -17,16 +17,23 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/kdeplasma-addons-6.6.5.tar.xz"
 )
 sha256sums=(
-  "48fdae7cfaa26042a59027fbe8df83789b172458bc2af0a23a015a04b8071af9"   # replace with actual sha256 after download
+  "48fdae7cfaa26042a59027fbe8df83789b172458bc2af0a23a015a04b8071af9"
 )
 
 depends=(
-  "plasma-calendar-addons"
-  "plasma-dataengines-addons"
-  "plasma-runners-addons"
-  "plasma-wallpapers-addons"
-  "plasma-widgets-addons"
-  "kwin-addons"
+  "kf6-kcoreaddons"
+  "kf6-kdeclarative"
+  "kf6-kholidays"
+  "kf6-ki18n"
+  "kf6-kio"
+  "kf6-kpackage"
+  "kf6-krunner"
+  "kf6-kservice"
+  "kf6-ksvg"
+  "kf6-kunitconversion"
+  "kf6-purpose"
+  "kf6-plasma-framework"
+  "plasma-workspace"
 )
 
 makedepends=(

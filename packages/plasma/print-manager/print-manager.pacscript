@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/print-manager-6.6.5.tar.xz"
 )
 sha256sums=(
-  "65e1e6f559411995c68516f45c5e7b7fc242bfa2b68711e6204b319981a3ae6d"   # replace with actual sha256 after download
+  "65e1e6f559411995c68516f45c5e7b7fc242bfa2b68711e6204b319981a3ae6d"
 )
 
 depends=(
@@ -28,7 +28,6 @@ depends=(
   "system-config-printer-common"
   "system-config-printer-udev"
   "smbclient"
-  "${misc:Depends}"
 )
 
 makedepends=(

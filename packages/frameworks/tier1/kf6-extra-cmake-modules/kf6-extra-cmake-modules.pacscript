@@ -20,7 +20,6 @@ sha256sums=(
 )
 
 depends=(
-  "python3:any"
 )
 
 makedepends=(

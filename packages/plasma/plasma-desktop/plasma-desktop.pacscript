@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/plasma-desktop-6.6.5.tar.xz"
 )
 sha256sums=(
-  "1d758dffcc42e1d3fbbfea0500009d3dc795cf1313b93b574da83624177085f3"   # replace with actual sha256 after download
+  "1d758dffcc42e1d3fbbfea0500009d3dc795cf1313b93b574da83624177085f3"
 )
 
 depends=(
@@ -45,7 +45,6 @@ depends=(
   "qml6-module-qt-labs-platform"
   "qml6-module-qt-labs-settings"
   "qml6-module-qtquick-dialogs"
-  "${misc:Depends}"
 )
 
 makedepends=(
