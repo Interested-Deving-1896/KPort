@@ -8,7 +8,7 @@
 
 pkgname="plasma-systemmonitor"
 pkgver="6.6.5"
-pkgdesc="System monitor for the Plasma desktop Plasma System Monitor provides an"
+pkgdesc="System monitor for the Plasma desktop Plasma System"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://apps.kde.org/en/plasma-systemmonitor"
 license=("GPL-2.0-or-later" "LGPL-2.0-or-later")

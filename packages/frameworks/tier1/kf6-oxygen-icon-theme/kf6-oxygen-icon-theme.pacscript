@@ -8,7 +8,7 @@
 
 pkgname="kf6-oxygen-icon-theme"
 pkgver="6.1.0"
-pkgdesc="Oxygen icon theme Oxygen was the standard icon theme for KDE 4, but follows the"
+pkgdesc="Oxygen icon theme"
 url="http://www.kde.org/"
 license=("LGPL-2.0-or-later")
 

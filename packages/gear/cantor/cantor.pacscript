@@ -8,7 +8,7 @@
 
 pkgname="cantor"
 pkgver="26.04.1"
-pkgdesc="interface for mathematical applications Cantor is an application to allow you"
+pkgdesc="interface for mathematical applications"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="http://edu.kde.org/"
 license=("GPL-2.0-or-later")
@@ -63,7 +63,7 @@ makedepends=(
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
-KSLOT="0"
+KSLOT="6"
 KCATEGORY="gear"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"

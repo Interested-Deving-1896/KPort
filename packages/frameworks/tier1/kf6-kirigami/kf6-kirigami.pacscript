@@ -8,7 +8,7 @@
 
 pkgname="kf6-kirigami"
 pkgver="6.26.0"
-pkgdesc="QtQuick plugins to build user interfaces based on the KDE human interface guidelines"
+pkgdesc="QtQuick plugins to build user interfaces based on the"
 url="https://cgit.kde.org/kirigami.git/"
 license=("LGPL-2.0-or-later")
 

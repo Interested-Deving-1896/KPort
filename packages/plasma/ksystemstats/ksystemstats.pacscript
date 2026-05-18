@@ -8,7 +8,7 @@
 
 pkgname="ksystemstats"
 pkgver="6.6.5"
-pkgdesc="plugin based system monitoring daemon plugin based system monitoring daemon"
+pkgdesc="plugin based system monitoring daemon"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="http://www.kde.org/"
 license=("GPL-2.0-or-later" "LGPL-2.0-or-later")

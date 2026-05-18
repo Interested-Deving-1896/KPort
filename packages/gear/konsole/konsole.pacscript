@@ -8,7 +8,7 @@
 
 pkgname="konsole"
 pkgver="26.04.1"
-pkgdesc="X terminal emulator Konsole is a terminal emulator built on the KDE Platform"
+pkgdesc="X terminal emulator"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://konsole.kde.org/"
 license=("GPL-2.0-or-later")
@@ -60,7 +60,7 @@ makedepends=(
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
-KSLOT="0"
+KSLOT="6"
 KCATEGORY="gear"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"

@@ -8,7 +8,7 @@
 
 pkgname="plasma-desktop"
 pkgver="6.6.5"
-pkgdesc="Tools and widgets for the desktop Plasma Desktop offers a beautiful looking"
+pkgdesc="Tools and widgets for the desktop Plasma"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://projects.kde.org/projects/kde/workspace/plasma-desktop"
 license=("GPL-2.0-or-later" "LGPL-2.0-or-later")

@@ -8,7 +8,7 @@
 
 pkgname="qbs"
 pkgver="3.0.1"
-pkgdesc="cross-platform build tool Qbs is a general purpose cross-platform build tool"
+pkgdesc="cross-platform build tool"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://wiki.qt.io/Qbs"
 license=("GPL-2.0-or-later")

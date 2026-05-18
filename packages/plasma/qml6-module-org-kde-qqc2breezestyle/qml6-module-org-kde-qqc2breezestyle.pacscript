@@ -8,7 +8,7 @@
 
 pkgname="qml6-module-org-kde-qqc2breezestyle"
 pkgver="6.6.5"
-pkgdesc="Breeze inspired QQC2 Style This is a pure Qt Quick/Kirigami Qt Quick Controls"
+pkgdesc="Breeze inspired QQC2 Style"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://invent.kde.org/plasma/qqc2-breeze-style"
 license=("GPL-2.0-or-later" "LGPL-2.0-or-later")

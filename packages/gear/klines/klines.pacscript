@@ -8,7 +8,7 @@
 
 pkgname="klines"
 pkgver="26.04.1"
-pkgdesc="color lines game KLines is a single-player game where the player removes"
+pkgdesc="color lines game"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="http://games.kde.org/"
 license=("GPL-2.0-or-later")
@@ -44,7 +44,7 @@ makedepends=(
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
-KSLOT="0"
+KSLOT="6"
 KCATEGORY="gear"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"

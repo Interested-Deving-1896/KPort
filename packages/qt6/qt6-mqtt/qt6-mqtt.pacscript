@@ -8,7 +8,7 @@
 
 pkgname="qt6-mqtt"
 pkgver="6.10.1"
-pkgdesc="Qt MQTT Library MQTT is a machine-to-machine (M2M) protocol utilizing the"
+pkgdesc="Qt MQTT Library"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://www.qt.io/developers/"
 license=("GPL-2.0-or-later")

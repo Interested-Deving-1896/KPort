@@ -8,7 +8,7 @@
 
 pkgname="qt6-quick3dphysics"
 pkgver="6.10.2"
-pkgdesc="Qt 6 Quick 3D Physics library Qt is a cross-platform C++ application framework"
+pkgdesc="Qt 6 Quick 3D Physics library"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://www.qt.io/developers/"
 license=("GPL-2.0-or-later")

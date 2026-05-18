@@ -8,7 +8,7 @@
 
 pkgname="khelpcenter"
 pkgver="26.04.1"
-pkgdesc="KDE documentation viewer KHelpCenter uses meta data files which describe the"
+pkgdesc="KDE documentation viewer"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://projects.kde.org/projects/kde/workspace/khelpcenter"
 license=("GPL-2.0-or-later")
@@ -51,7 +51,7 @@ makedepends=(
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
-KSLOT="0"
+KSLOT="6"
 KCATEGORY="gear"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"

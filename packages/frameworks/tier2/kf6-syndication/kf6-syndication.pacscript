@@ -8,7 +8,7 @@
 
 pkgname="kf6-syndication"
 pkgver="6.26.0"
-pkgdesc="parser library for RSS and Atom feeds Syndication is a parser library for RSS"
+pkgdesc="parser library for RSS and Atom feeds"
 url="https://projects.kde.org/projects/kde/pim/syndication"
 license=("LGPL-2.0-or-later")
 

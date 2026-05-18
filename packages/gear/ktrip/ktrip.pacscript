@@ -8,7 +8,7 @@
 
 pkgname="ktrip"
 pkgver="26.04.1"
-pkgdesc="public transport assistant It helps you navigate in public transport"
+pkgdesc="public transport assistant"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://invent.kde.org/utilities/ktrip"
 license=("GPL-2.0-or-later")
@@ -48,7 +48,7 @@ makedepends=(
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
-KSLOT="0"
+KSLOT="6"
 KCATEGORY="gear"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"

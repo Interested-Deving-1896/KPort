@@ -8,7 +8,7 @@
 
 pkgname="konqueror"
 pkgver="26.04.1"
-pkgdesc="File manager, web browser and document viewer Konqueror is a KDE web browser"
+pkgdesc="File manager, web browser and document viewer"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="http://www.kde.org/"
 license=("GPL-2.0-or-later")
@@ -53,7 +53,7 @@ makedepends=(
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
-KSLOT="0"
+KSLOT="6"
 KCATEGORY="gear"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"

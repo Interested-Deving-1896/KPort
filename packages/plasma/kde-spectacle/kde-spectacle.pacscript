@@ -8,7 +8,7 @@
 
 pkgname="kde-spectacle"
 pkgver="6.6.5"
-pkgdesc="Screenshot capture utility, replaces KSnapshot Spectacle captures images of the"
+pkgdesc="Screenshot capture utility, replaces KSnapshot"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://projects.kde.org/projects/kde/kdegraphics/spectacle"
 license=("GPL-2.0-or-later" "LGPL-2.0-or-later")

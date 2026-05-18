@@ -8,7 +8,7 @@
 
 pkgname="yakuake"
 pkgver="26.04.1"
-pkgdesc="Quake-style terminal emulator based on KDE Konsole technology YaKuake is"
+pkgdesc="Quake-style terminal emulator based on KDE Konsole technology"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://www.kde.org/applications/system/yakuake/"
 license=("GPL-2.0-or-later")
@@ -54,7 +54,7 @@ makedepends=(
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
-KSLOT="0"
+KSLOT="6"
 KCATEGORY="gear"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"

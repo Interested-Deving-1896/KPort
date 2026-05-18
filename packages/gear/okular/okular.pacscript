@@ -35,7 +35,7 @@ makedepends=(
 )
 
 KCATEGORY="gear"
-KSLOT="0"
+KSLOT="6"
 
 build() {
   cmake -B build -G Ninja \

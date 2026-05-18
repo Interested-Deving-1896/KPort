@@ -8,7 +8,7 @@
 
 pkgname="kf6-ktexttemplate"
 pkgver="6.26.0"
-pkgdesc="Library to allow application developers to separate the structure of documents from the data they contain."
+pkgdesc="Library to allow application developers to separate the structure of documents"
 url="https://projects.kde.org/projects/frameworks/ktexttemplate"
 license=("LGPL-2.0-or-later")
 

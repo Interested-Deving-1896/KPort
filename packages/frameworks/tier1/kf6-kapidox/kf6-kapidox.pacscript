@@ -8,7 +8,7 @@
 
 pkgname="kf6-kapidox"
 pkgver="6.26.0"
-pkgdesc="Scripts and data for building API documentation (dox) in a standard format and style"
+pkgdesc="Scripts and data for building"
 url="https://projects.kde.org/projects/frameworks/kapidox"
 license=("LGPL-2.0-or-later")
 

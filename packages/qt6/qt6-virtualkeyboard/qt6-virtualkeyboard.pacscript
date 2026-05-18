@@ -8,7 +8,7 @@
 
 pkgname="qt6-virtualkeyboard"
 pkgver="6.10.2"
-pkgdesc="Qt 6 Virtual Keyboard library Qt is a cross-platform C++ application framework"
+pkgdesc="Qt 6 Virtual Keyboard library"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://www.qt.io/developers/"
 license=("GPL-2.0-or-later")

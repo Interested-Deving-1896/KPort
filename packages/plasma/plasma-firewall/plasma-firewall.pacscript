@@ -8,7 +8,7 @@
 
 pkgname="plasma-firewall"
 pkgver="6.6.5"
-pkgdesc="Plasma configuration module for firewalls Plasma Firewall provides a way to"
+pkgdesc="Plasma configuration module for firewalls Plasma"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://invent.kde.org/plasma/plasma-firewall"
 license=("GPL-2.0-or-later" "LGPL-2.0-or-later")

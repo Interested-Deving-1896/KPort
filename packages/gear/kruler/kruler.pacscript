@@ -8,7 +8,7 @@
 
 pkgname="kruler"
 pkgver="26.04.1"
-pkgdesc="screen ruler KRuler is a tool for measuring the size, in pixels, of items on"
+pkgdesc="screen ruler"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="http://www.kde.org/applications/graphics/kruler/"
 license=("GPL-2.0-or-later")
@@ -44,7 +44,7 @@ makedepends=(
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
-KSLOT="0"
+KSLOT="6"
 KCATEGORY="gear"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"

@@ -8,7 +8,7 @@
 
 pkgname="qt6-grpc"
 pkgver="6.10.2"
-pkgdesc="translations for Qt 6 Qt is a cross-platform C++ application framework"
+pkgdesc="translations for Qt 6"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://www.qt.io/developers/"
 license=("GPL-2.0-or-later")

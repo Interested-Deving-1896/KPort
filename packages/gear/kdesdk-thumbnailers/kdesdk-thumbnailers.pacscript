@@ -8,7 +8,7 @@
 
 pkgname="kdesdk-thumbnailers"
 pkgver="26.04.1"
-pkgdesc="kdesdk file format thumbnailers for KDE It contains a plugin to allow KDE"
+pkgdesc="kdesdk file format thumbnailers for KDE"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="http://www.kde.org/"
 license=("GPL-2.0-or-later")
@@ -37,7 +37,7 @@ makedepends=(
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
-KSLOT="0"
+KSLOT="6"
 KCATEGORY="gear"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"

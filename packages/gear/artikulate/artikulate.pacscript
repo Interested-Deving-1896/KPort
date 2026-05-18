@@ -8,7 +8,7 @@
 
 pkgname="artikulate"
 pkgver="26.04.1"
-pkgdesc="Language learning application Artikulate is a language learning application"
+pkgdesc="Language learning application"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://edu.kde.org/"
 license=("GPL-2.0-or-later")
@@ -51,7 +51,7 @@ makedepends=(
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
-KSLOT="0"
+KSLOT="6"
 KCATEGORY="gear"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"

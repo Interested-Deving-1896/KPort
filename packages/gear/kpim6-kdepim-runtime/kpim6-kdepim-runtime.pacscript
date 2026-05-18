@@ -8,7 +8,7 @@
 
 pkgname="kpim6-kdepim-runtime"
 pkgver="26.04.1"
-pkgdesc="runtime components for Akonadi KDE This package contains Akonadi agents written"
+pkgdesc="runtime components for Akonadi KDE"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="http://pim.kde.org/"
 license=("GPL-2.0-or-later")
@@ -87,7 +87,7 @@ makedepends=(
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
-KSLOT="0"
+KSLOT="6"
 KCATEGORY="gear"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"
