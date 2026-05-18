@@ -131,4 +131,12 @@ export -f kport_find_pacscript kport_pacscript_var kport_pacscript_array \
           kport_world_add kport_world_remove kport_hw_read kport_is_masked \
           kport_check_keyword kport_header kport_kv kport_confirm
 
+# Pre-populate overlay cache so dispatched subshells don't re-run python3
+if [[ -d "$KPORT_OVERLAYS_DIR" && -f "${KPORT_CONFIG_DIR}/repositories.yml" ]]; then
+  mapfile -t _KPORT_OVERLAY_NAMES < <(
+    python3 "${KPORT_LIB}/list-overlays.py" "${KPORT_CONFIG_DIR}/repositories.yml" 2>/dev/null
+  )
+  export _KPORT_OVERLAY_NAMES
+fi
+
 exec bash "$CMD_SCRIPT" "${KPORT_CMD_ARGS[@]}"
