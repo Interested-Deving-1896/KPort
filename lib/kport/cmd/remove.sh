@@ -9,6 +9,7 @@
 #   --ask       Confirm before removing (default)
 #   --no-ask    Remove without confirmation
 #   --dry-run   Show what would be removed without doing it
+#   --force     Skip reverse-dep safety check
 #   --help
 
 set -uo pipefail
@@ -17,6 +18,7 @@ set -uo pipefail
 
 ASK=true
 DRY_RUN=false
+FORCE=false
 PACKAGES=()
 
 while [[ $# -gt 0 ]]; do
@@ -24,6 +26,7 @@ while [[ $# -gt 0 ]]; do
     --ask)     ASK=true;     shift ;;
     --no-ask)  ASK=false;    shift ;;
     --dry-run) DRY_RUN=true; shift ;;
+    --force)   FORCE=true;   shift ;;
     --help|-h)
       sed -n '2,/^$/p' "${BASH_SOURCE[0]}" | grep '^#' | sed 's/^# \?//'
       exit 0 ;;
@@ -46,6 +49,45 @@ for pkg in "${PACKAGES[@]}"; do
 done
 
 [[ ${#to_remove[@]} -eq 0 ]] && { kport_info "Nothing to remove."; exit 0; }
+
+# ── Reverse-dep check ─────────────────────────────────────────────────────────
+# Warn if any installed package depends on a package being removed.
+# Skipped with --force.
+
+rdep_warnings=0
+[[ "$FORCE" == "true" ]] && rdep_warnings=-1  # sentinel: skip check
+for pkg in "${to_remove[@]}"; do
+  [[ "$rdep_warnings" -eq -1 ]] && break   # --force: skip
+  rdeps=()
+  # Scan all installed packages for deps on $pkg
+  while IFS= read -r -d '' installed_dir; do
+    installed_pkg=$(basename "$installed_dir")
+    # Skip packages also being removed
+    local_skip=false
+    for r in "${to_remove[@]}"; do
+      [[ "$r" == "$installed_pkg" ]] && local_skip=true && break
+    done
+    [[ "$local_skip" == "true" ]] && continue
+
+    # Find the pacscript for this installed package and check its depends
+    pacscript=$(kport_find_pacscript "$installed_pkg" 2>/dev/null) || continue
+    if kport_pacscript_array "$pacscript" depends 2>/dev/null | grep -qxF "$pkg"; then
+      rdeps+=("$installed_pkg")
+    fi
+  done < <(find "$KPORT_DB_INSTALLED" -mindepth 1 -maxdepth 1 -type d -print0 2>/dev/null)
+
+  if [[ ${#rdeps[@]} -gt 0 ]]; then
+    kport_warn "${pkg} is required by: ${rdeps[*]}"
+    (( rdep_warnings++ )) || true
+  fi
+done
+
+if [[ "$rdep_warnings" -gt 0 ]]; then
+  kport_warn "Removing these packages may break installed packages."
+  if [[ "$ASK" == "true" ]]; then
+    kport_confirm "Remove anyway?" || { kport_info "Aborted."; exit 0; }
+  fi
+fi
 
 # ── Show plan ─────────────────────────────────────────────────────────────────
 
