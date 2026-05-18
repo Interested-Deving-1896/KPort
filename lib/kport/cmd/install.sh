@@ -88,7 +88,7 @@ for pkgname in "${INSTALL_ORDER[@]}"; do
   fi
 
   # Set up build environment
-  local build_env=(
+  build_env=(
     KPORT_ROOT="$KPORT_ROOT"
     KPORT_LIB_DIR="$KPORT_LIB"
     KPORT_CONF_DIR="$KPORT_CONF"

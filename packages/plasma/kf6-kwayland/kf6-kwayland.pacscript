@@ -1,26 +1,27 @@
 #!/usr/bin/env bash
-# KPort pacscript — frameworks/tier3/kf6-kquickcharts
+# KPort pacscript — plasma/kf6-kwayland
 # Promoted from generated/ — review and test before merging to main
 #
-# A QtQuick module providing high-performance charts.
+# Qt-style API to interact with the wayland-client API
 
 # ── Standard Pacstall variables ───────────────────────────────────────────────
 
-pkgname="kf6-kquickcharts"
-pkgver="6.26.0"
-pkgdesc="A QtQuick module providing high-performance charts."
-url="https://invent.kde.org/kde/kquickcharts"
+pkgname="kf6-kwayland"
+pkgver="0.0"
+pkgdesc="Qt-style API to interact with the wayland-client API"
+url="https://projects.kde.org/projects/kde/frameworks/kwayland"
 license=("LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/frameworks/6.26/kquickcharts-6.26.0.tar.xz"
+  "https://download.kde.org/stable/plasma/6.4.3/kwayland-6.4.3.tar.xz"
 )
 sha256sums=(
-  "ae3e0784a2a2d1396cb751cc61f43a567e066d6434971246b1a18365481a1b52"
+  "ff507d3c435407b3831ead1ea63f6dea6c778ba6a1f5b45895d5fec6f5c1f982"
 )
 
 depends=(
-  "kf6-kirigami2"
+  # No named runtime deps found in debian/control (only ${shlibs:Depends}).
+  # Populate after a test build by inspecting ldd output or dpkg -I.
 )
 
 makedepends=(
@@ -28,26 +29,26 @@ makedepends=(
   "doxygen"
   "graphviz"
   "kf6-extra-cmake-modules"
-  "kf6-kconfig-dev"
-  "kf6-kdeclarative-dev"
-  "kf6-kirigami2-dev"
+  "libegl1-mesa-dev"
+  "libwayland-dev"
+  "pkg-config"
+  "plasma-wayland-protocols"
   "qt6-base-dev"
-  "qt6-declarative-dev"
-  "qt6-shadertools-dev"
   "qt6-tools-dev"
-  "xauth"
-  "xvfb"
+  "qt6-wayland-dev"
+  "wayland-protocols"
 )
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
 KSLOT="6"
-KCATEGORY="frameworks/tier3"
+KCATEGORY="plasma"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"
-KGPU_MIN="gpu-sw"
+KGPU_MIN="gpu-gl2"
 
 KUSE=(
+  "+wayland"
   "-docs"
   "-test"
 )

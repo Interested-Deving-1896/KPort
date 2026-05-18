@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
-# KPort pacscript — frameworks/tier2/kf6-kwayland
+# KPort pacscript — frameworks/tier2/kf6-kcontacts
 # Promoted from generated/ — review and test before merging to main
 #
-# Qt-style API to interact with the wayland-client API
+# API for address book data
 
 # ── Standard Pacstall variables ───────────────────────────────────────────────
 
-pkgname="kf6-kwayland"
-pkgver="0.0"
-pkgdesc="Qt-style API to interact with the wayland-client API"
-url="https://projects.kde.org/projects/kde/frameworks/kwayland"
+pkgname="kf6-kcontacts"
+pkgver="6.26.0"
+pkgdesc="API for address book data"
+url="https://projects.kde.org/projects/kde/pim/kcontacts"
 license=("LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/plasma/6.4.3/kwayland-6.4.3.tar.xz"
+  "https://download.kde.org/stable/frameworks/6.26/kcontacts-6.26.0.tar.xz"
 )
 sha256sums=(
-  "ff507d3c435407b3831ead1ea63f6dea6c778ba6a1f5b45895d5fec6f5c1f982"
+  "dce9af34050fcf09c8b4ece6df5a0abedbaf02fe85039fc371c5e11e91443cf0"
 )
 
 depends=(
@@ -27,16 +27,14 @@ depends=(
 makedepends=(
   "cmake"
   "doxygen"
-  "graphviz"
   "kf6-extra-cmake-modules"
-  "libegl1-mesa-dev"
-  "libwayland-dev"
-  "pkg-config"
-  "plasma-wayland-protocols"
+  "kf6-kcodecs-dev"
+  "kf6-kconfig-dev"
+  "kf6-kcoreaddons-dev"
+  "kf6-ki18n-dev"
   "qt6-base-dev"
+  "qt6-declarative-dev"
   "qt6-tools-dev"
-  "qt6-wayland-dev"
-  "wayland-protocols"
 )
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
@@ -45,10 +43,9 @@ KSLOT="6"
 KCATEGORY="frameworks/tier2"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"
-KGPU_MIN="gpu-gl2"
+KGPU_MIN="gpu-sw"
 
 KUSE=(
-  "+wayland"
   "-docs"
   "-test"
 )

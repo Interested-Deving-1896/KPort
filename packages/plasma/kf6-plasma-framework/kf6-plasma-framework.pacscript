@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# KPort pacscript — frameworks/tier4/kf6-plasma-framework
+# KPort pacscript — plasma/kf6-plasma-framework
 # Promoted from generated/ — review and test before merging to main
 #
 # Plugin based UI runtime used to write primary user interfaces
@@ -70,7 +70,7 @@ makedepends=(
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
 KSLOT="6"
-KCATEGORY="frameworks/tier4"
+KCATEGORY="plasma"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"
 KGPU_MIN="gpu-gl2"

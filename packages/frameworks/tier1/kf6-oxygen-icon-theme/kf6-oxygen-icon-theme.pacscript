@@ -1,40 +1,34 @@
 #!/usr/bin/env bash
-# KPort pacscript — frameworks/tier1/kf6-karchive
+# KPort pacscript — frameworks/tier1/kf6-oxygen-icon-theme
 # Promoted from generated/ — review and test before merging to main
 #
-# File compression
+# Oxygen icon theme Oxygen was the standard icon theme for KDE 4, but follows the
 
 # ── Standard Pacstall variables ───────────────────────────────────────────────
 
-pkgname="kf6-karchive"
-pkgver="6.26.0"
-pkgdesc="File compression"
-url="https://projects.kde.org/projects/frameworks/karchive"
+pkgname="kf6-oxygen-icon-theme"
+pkgver="6.1.0"
+pkgdesc="Oxygen icon theme Oxygen was the standard icon theme for KDE 4, but follows the"
+url="http://www.kde.org/"
 license=("LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/frameworks/6.26/karchive-6.26.0.tar.xz"
+  "https://download.kde.org/stable/oxygen-icons/oxygen-icons-6.1.0.tar.xz"
 )
 sha256sums=(
-  "a7fdf6d0b8db88d60aa52bcc87d8e00d95391a1ad39a4b2a8e9f3027b8ff4035"
+  "16ca971079c5067c4507cabf1b619dc87dd6b326fd5c2dd9f5d43810f2174d68"
 )
 
 depends=(
-  # No named runtime deps found in debian/control (only ${shlibs:Depends}).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
+  "hicolor-icon-theme"
 )
 
 makedepends=(
   "cmake"
-  "doxygen"
-  "graphviz"
   "kf6-extra-cmake-modules"
-  "libbz2-dev"
-  "liblzma-dev"
-  "libzstd-dev"
+  "fdupes"
+  "imagemagick"
   "qt6-base-dev"
-  "qt6-tools-dev"
-  "zlib1g-dev"
 )
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
@@ -46,7 +40,6 @@ KCPU_MIN="x86-64-v1"
 KGPU_MIN="gpu-sw"
 
 KUSE=(
-  "-docs"
   "-test"
 )
 
