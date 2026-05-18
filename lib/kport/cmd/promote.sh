@@ -84,7 +84,7 @@ for sum in "${shasums[@]}"; do
 done
 
 # Check depends is not empty with only a comment
-local depends_block
+depends_block=""
 depends_block=$(grep -A5 "^depends=(" "$gen_pacscript" 2>/dev/null || true)
 if echo "$depends_block" | grep -q "TODO\|populate after"; then
   kport_warn "  depends() contains TODO comment — verify runtime deps before promoting"
