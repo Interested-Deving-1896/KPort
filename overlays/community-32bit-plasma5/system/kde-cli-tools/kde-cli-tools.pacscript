@@ -15,7 +15,7 @@ source=(
   "https://download.kde.org/stable/plasma/${pkgver}/kde-cli-tools-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "34eee66a6440e6e55317aee469e0e266c6515dcbf6783ae437f3efe03f0884c6"
 )
 
 depends=(

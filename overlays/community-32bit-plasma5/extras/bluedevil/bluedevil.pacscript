@@ -14,7 +14,7 @@ source=(
   "https://download.kde.org/stable/plasma/${pkgver}/bluedevil-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "76a124b39f573682aa1e64ec09bac9d41e5662ab1d7e1de21688a0eebf18ec22"
 )
 
 depends=(

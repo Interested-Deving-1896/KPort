@@ -14,7 +14,7 @@ source=(
   "https://download.kde.org/stable/plasma/${pkgver}/kscreen-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "67d544109374df719d517f7d37d2d661dd80aa712c2ce565eefd99e897ee33c0"
 )
 
 depends=(

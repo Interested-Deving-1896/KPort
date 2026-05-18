@@ -16,7 +16,7 @@ source=(
   "https://github.com/lxqt/lxqt-build-tools/releases/download/${pkgver}/lxqt-build-tools-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "fd3c199d0d7c61f23040a45ead57cc9a4f888af5995371f6b0ce1fa902eb59ce"
 )
 
 makedepends=(

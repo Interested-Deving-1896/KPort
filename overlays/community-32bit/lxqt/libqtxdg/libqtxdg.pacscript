@@ -15,7 +15,7 @@ source=(
   "https://github.com/lxqt/libqtxdg/releases/download/${pkgver}/libqtxdg-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "726856ff447220575c84461800b151328e784c6c326a5065ef3f9a7f9506d4dc"
 )
 
 depends=(

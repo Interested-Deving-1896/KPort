@@ -5,5 +5,7 @@
 
 # KPort generated artifacts — generated/ is not tracked except README.md
 db/sources-cache.json
+db/index.json
+.ci-db-*
 generated/*
 !generated/README.md

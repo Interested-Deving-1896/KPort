@@ -14,7 +14,7 @@ source=(
   "https://github.com/lxqt/qterminal/releases/download/${pkgver}/qterminal-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "8313326ac3ef728924271cd60a8f79e17e5e755a6bfa4e4419a4b7a53528659f"
 )
 
 depends=(

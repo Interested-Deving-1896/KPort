@@ -9,14 +9,23 @@
 #   NPU_MODEL   — NPU/accelerator model name
 #   NPU_TOPS    — estimated TOPS (0 if unknown)
 #
-# Detection sources (in order):
-#   1. /dev/accel/*          — Linux accelerator device nodes (kernel 6.2+)
-#   2. intel_npu_top         — Intel NPU (Meteor Lake, Lunar Lake, Arrow Lake)
-#   3. /sys/bus/platform     — ARM NPU kernel drivers
-#   4. rocm-smi / amdxdna   — AMD XDNA (Ryzen AI, Strix Point)
-#   5. nvidia-smi            — NVIDIA Tensor Cores
-#   6. clinfo                — OpenCL compute (iGPU fallback)
-#   7. /proc/cpuinfo         — CPU-integrated NPU hints
+# Detection sources by arch:
+#   i686 / x86-64:
+#     1. /dev/accel/*        — Linux accelerator device nodes (kernel 6.2+)
+#     2. intel_vpu/intel_npu — Intel NPU (Meteor Lake, Lunar Lake, Arrow Lake)
+#     3. amdxdna             — AMD XDNA (Ryzen AI, Strix Point)
+#     4. nvidia-smi          — NVIDIA Tensor Cores
+#     5. clinfo              — OpenCL compute (iGPU fallback)
+#   aarch64 / arm64:
+#     1. /dev/accel/*        — Linux accelerator device nodes
+#     2. Qualcomm HTP        — /dev/qaic*, qcom-npu driver
+#     3. ARM Ethos / Apple ANE / MediaTek APU / Samsung NPU
+#     4. clinfo              — OpenCL compute (iGPU fallback)
+#   riscv64:
+#     1. /dev/accel/*        — Linux accelerator device nodes
+#     2. clinfo              — OpenCL compute (iGPU fallback)
+#   i686 note: Intel NPU and AMD XDNA are x86-64-only silicon in practice.
+#     On i686 hardware (pre-2010 era) NPU_TIER will almost always be npu-none.
 #
 # Usage:
 #   source <(bash scripts/kport/kport-detect-npu.sh)
@@ -297,14 +306,51 @@ detect_opencl_igpu() {
 }
 
 # ── Run detection ─────────────────────────────────────────────────────────────
+#
+# Detectors are gated by arch family to avoid running ARM-specific probes on
+# x86 hardware and vice versa.  The OpenCL iGPU fallback runs on all arches.
 
-detect_intel_npu    || \
-detect_amd_xdna     || \
-detect_nvidia_tensor || \
-detect_qualcomm_htp || \
-detect_arm_npu      || \
-detect_opencl_igpu  || \
-true   # npu-none is the safe default
+ARCH=$(uname -m)
+
+case "$ARCH" in
+  i686|i586|i486|i386)
+    # 32-bit x86: Intel NPU and AMD XDNA are x86-64-only silicon — no i686
+    # CPU ships with an integrated NPU.  NVIDIA Tensor Cores are possible on
+    # discrete GPUs connected via PCIe.  OpenCL via iGPU is the realistic
+    # ceiling on most i686 hardware.
+    detect_nvidia_tensor || \
+    detect_opencl_igpu   || \
+    true
+    ;;
+  x86_64)
+    detect_intel_npu     || \
+    detect_amd_xdna      || \
+    detect_nvidia_tensor || \
+    detect_opencl_igpu   || \
+    true
+    ;;
+  aarch64|arm64)
+    detect_qualcomm_htp  || \
+    detect_arm_npu       || \
+    detect_opencl_igpu   || \
+    true
+    ;;
+  riscv64)
+    # No production RISC-V NPU drivers exist yet; OpenCL is the only path.
+    detect_opencl_igpu   || \
+    true
+    ;;
+  *)
+    # Unknown arch — try everything, fail gracefully to npu-none.
+    detect_intel_npu     || \
+    detect_amd_xdna      || \
+    detect_nvidia_tensor || \
+    detect_qualcomm_htp  || \
+    detect_arm_npu       || \
+    detect_opencl_igpu   || \
+    true
+    ;;
+esac
 
 NPU_FLAGS="${npu_flags[*]:-}"
 

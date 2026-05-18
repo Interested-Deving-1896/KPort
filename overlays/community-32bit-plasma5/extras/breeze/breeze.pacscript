@@ -14,7 +14,7 @@ source=(
   "https://download.kde.org/stable/plasma/${pkgver}/breeze-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "b20443f360164a070416b642215e71ac4df89f544f27805907e7fc074e18fb6f"
 )
 
 depends=(

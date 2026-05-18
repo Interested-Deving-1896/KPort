@@ -14,7 +14,7 @@ source=(
   "https://download.kde.org/stable/plasma/${pkgver}/kinfocenter-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "f430022a33f4367af146ed36f14831f1fc25c07993b068423962530b5fd0815e"
 )
 
 depends=(

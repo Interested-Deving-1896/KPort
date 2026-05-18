@@ -15,7 +15,7 @@ source=(
   "https://download.kde.org/stable/plasma/${pkgver}/kwin-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "e9b14eab8538b8386e23757446382a2f1be505e5ccabe336020f9a13b14160b6"
 )
 
 depends=(

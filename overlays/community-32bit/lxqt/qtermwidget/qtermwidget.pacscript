@@ -15,7 +15,7 @@ source=(
   "https://github.com/lxqt/qtermwidget/releases/download/${pkgver}/qtermwidget-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "e7253065f74fa056843c95f9543e690bcaf7a03647ef5e02379eec4eb162026b"
 )
 
 depends=(

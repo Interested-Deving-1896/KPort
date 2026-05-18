@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/frameworks/5.115/plasma-framework-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "2c6f30bb11a6476b706f34d2f5af1c9e4c98177dc885f9c95d4a24752c9611f7"
 )
 
 depends=(

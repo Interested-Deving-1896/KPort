@@ -15,7 +15,7 @@ source=(
   "https://download.kde.org/stable/plasma/${pkgver}/drkonqi-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "a96131dbbe88471965a6d0efa1c1f6c01b96582c0631919e990c1cbd38d5977a"
 )
 
 depends=(

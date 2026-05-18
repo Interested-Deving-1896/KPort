@@ -58,6 +58,9 @@ KSLOT="6"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"
 KGPU_MIN="gpu-sw"
+KUSE=(
+  "-test"
+)
 
 build() {
   cmake -B build -G Ninja \
