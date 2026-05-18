@@ -14,6 +14,7 @@
 #   promote <pkg>       Move a generated/ skeleton to packages/ for review
 #   sync                Pull updates for all enabled overlay repositories
 #   check   [pkg...]    Verify installed file manifests against the filesystem
+#   set     <pkg> [+f|-f ...]  Toggle USE flags; --global for global flags
 #   world               List installed packages
 #
 # Global options:
