@@ -20,8 +20,12 @@ sha256sums=(
 )
 
 depends=(
-  # No named runtime deps found in debian/control (only ${shlibs:Depends}).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
+  "libdmtx0b"
+  "libqrencode4"
+  "libzxing3"
+  "qt6-base"
+  "qt6-declarative"
+  "qt6-multimedia"
 )
 
 makedepends=(

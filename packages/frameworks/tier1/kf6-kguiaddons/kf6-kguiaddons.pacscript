@@ -9,7 +9,7 @@
 pkgname="kf6-kguiaddons"
 pkgver="6.26.0"
 pkgdesc="Addons to QtGui"
-url="http://projects.kde.org/kguiaddons"
+url="https://projects.kde.org/kguiaddons"
 license=("LGPL-2.0-or-later")
 
 source=(

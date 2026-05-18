@@ -10,7 +10,7 @@ pkgname="kdesdk-thumbnailers"
 pkgver="26.04.1"
 pkgdesc="kdesdk file format thumbnailers for KDE"
 # Fall back to invent.kde.org canonical URL when no homepage is set
-url="http://www.kde.org/"
+url="https://www.kde.org/"
 license=("GPL-2.0-or-later")
 
 source=(
@@ -25,8 +25,6 @@ depends=(
   "kf6-kio"
   "~apt:libgettextpo0"
   "qt6-base"
-).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
 )
 
 makedepends=(

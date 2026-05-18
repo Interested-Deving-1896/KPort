@@ -10,7 +10,7 @@ pkgname="kdeedu-data"
 pkgver="26.04.1"
 pkgdesc="KDE education applications"
 # Fall back to invent.kde.org canonical URL when no homepage is set
-url="http://edu.kde.org/"
+url="https://edu.kde.org/"
 license=("GPL-2.0-or-later")
 
 source=(
@@ -20,10 +20,7 @@ sha256sums=(
   "7330c192cc95bf25b58cc442bc1eab8a7e981cb4c2903cb02487e99c9de7a41a"
 )
 
-depends=(
-  # No named runtime deps found in debian/control (only ${shlibs:Depends}).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
-)
+depends=()
 
 makedepends=(
   "cmake"

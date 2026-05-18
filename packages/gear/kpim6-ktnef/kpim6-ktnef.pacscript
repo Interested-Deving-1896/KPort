@@ -26,8 +26,6 @@ depends=(
   "kf6-ki18n"
   "kpim6-kcalendarutils"
   "qt6-base"
-).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
 )
 
 makedepends=(

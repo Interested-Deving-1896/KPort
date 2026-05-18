@@ -9,7 +9,7 @@
 pkgname="kf6-kdav"
 pkgver="6.26.0"
 pkgdesc="DAV protocol implementation with KJobs - arch independent files A DAV protocol"
-url="http://pim.kde.org/"
+url="https://pim.kde.org/"
 license=("LGPL-2.0-or-later")
 
 source=(
@@ -20,8 +20,10 @@ sha256sums=(
 )
 
 depends=(
-  # No named runtime deps found in debian/control (only ${shlibs:Depends}).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
+  "kf6-kcoreaddons"
+  "kf6-ki18n"
+  "kf6-kio"
+  "qt6-base"
 )
 
 makedepends=(

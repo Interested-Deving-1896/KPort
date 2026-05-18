@@ -9,7 +9,7 @@
 pkgname="kf6-oxygen-icon-theme"
 pkgver="6.1.0"
 pkgdesc="Oxygen icon theme"
-url="http://www.kde.org/"
+url="https://www.kde.org/"
 license=("LGPL-2.0-or-later")
 
 source=(

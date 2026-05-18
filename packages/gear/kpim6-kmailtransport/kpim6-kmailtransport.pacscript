@@ -32,8 +32,6 @@ depends=(
   "kpim6-akonadi-contacts"
   "~apt:libqt6keychain1"
   "qt6-base"
-).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
 )
 
 makedepends=(

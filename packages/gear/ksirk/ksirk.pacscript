@@ -10,7 +10,7 @@ pkgname="ksirk"
 pkgver="26.04.1"
 pkgdesc="Risk strategy game"
 # Fall back to invent.kde.org canonical URL when no homepage is set
-url="http://games.kde.org/"
+url="https://games.kde.org/"
 license=("GPL-2.0-or-later")
 
 source=(
@@ -37,8 +37,6 @@ depends=(
   "qt6-base"
   "qt6-multimedia"
   "qt6-svg"
-).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
 )
 
 makedepends=(

@@ -21,8 +21,13 @@ sha256sums=(
 )
 
 depends=(
-  # No named runtime deps found in debian/control (only ${shlibs:Depends}).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
+  "libjasper4"
+  "libmng2"
+  "libtiff5"
+  "libwebp7"
+  "libwebpdemux2"
+  "libwebpmux3"
+  "qt6-base"
 )
 
 makedepends=(

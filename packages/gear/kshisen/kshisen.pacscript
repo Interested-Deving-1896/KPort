@@ -10,7 +10,7 @@ pkgname="kshisen"
 pkgver="26.04.1"
 pkgdesc="Shisen-Sho solitaire game"
 # Fall back to invent.kde.org canonical URL when no homepage is set
-url="http://games.kde.org/"
+url="https://games.kde.org/"
 license=("GPL-2.0-or-later")
 
 source=(

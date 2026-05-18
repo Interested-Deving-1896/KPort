@@ -9,7 +9,7 @@
 pkgname="kf6-sonnet"
 pkgver="6.26.0"
 pkgdesc="Support for spellchecking"
-url="http://projects.kde.org/sonnet"
+url="https://projects.kde.org/sonnet"
 license=("LGPL-2.0-or-later")
 
 source=(

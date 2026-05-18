@@ -21,8 +21,10 @@ sha256sums=(
 )
 
 depends=(
-  # No named runtime deps found in debian/control (only ${shlibs:Depends}).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
+  "libpython3.12t64"
+  "libshiboken6-py3-6.10"
+  "qt6-base"
+  "qt6-declarative"
 )
 
 makedepends=(

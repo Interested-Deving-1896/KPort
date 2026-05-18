@@ -10,7 +10,7 @@ pkgname="libokular6core4"
 pkgver="26.04.1"
 pkgdesc="libraries for the Okular document viewer"
 # Fall back to invent.kde.org canonical URL when no homepage is set
-url="http://www.kde.org/"
+url="https://www.kde.org/"
 license=("GPL-2.0-or-later")
 
 source=(
@@ -36,8 +36,6 @@ depends=(
   "qt6-phonon"
   "qt6-svg"
   "~apt:zlib1g"
-).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
 )
 
 makedepends=(

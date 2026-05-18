@@ -21,8 +21,9 @@ sha256sums=(
 )
 
 depends=(
-  # No named runtime deps found in debian/control (only ${shlibs:Depends}).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
+  "libwayland-client0"
+  "qt6-base"
+  "qt6-wayland"
 )
 
 makedepends=(

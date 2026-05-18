@@ -10,7 +10,7 @@ pkgname="blinken"
 pkgver="26.04.1"
 pkgdesc="KDE version of the Simon electronic memory game"
 # Fall back to invent.kde.org canonical URL when no homepage is set
-url="http://edu.kde.org/applications/all/blinken"
+url="https://edu.kde.org/applications/all/blinken"
 license=("GPL-2.0-or-later")
 
 source=(

@@ -10,7 +10,7 @@ pkgname="ark"
 pkgver="26.04.1"
 pkgdesc="archive utility"
 # Fall back to invent.kde.org canonical URL when no homepage is set
-url="http://www.kde.org/"
+url="https://www.kde.org/"
 license=("GPL-2.0-or-later")
 
 source=(
@@ -42,8 +42,6 @@ depends=(
   "~apt:libzip4t64"
   "qt6-base"
   "~apt:zlib1g"
-).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
 )
 
 makedepends=(

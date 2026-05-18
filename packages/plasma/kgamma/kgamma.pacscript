@@ -10,7 +10,7 @@ pkgname="kgamma"
 pkgver="6.6.5"
 pkgdesc="monitor calibration panel for KDE"
 # Fall back to invent.kde.org canonical URL when no homepage is set
-url="http://www.kde.org/"
+url="https://www.kde.org/"
 license=("GPL-2.0-or-later" "LGPL-2.0-or-later")
 
 source=(
@@ -21,8 +21,13 @@ sha256sums=(
 )
 
 depends=(
-  # No named runtime deps found in debian/control (only ${shlibs:Depends}).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
+  "kf6-kcmutils"
+  "kf6-kconfig"
+  "kf6-kcoreaddons"
+  "kf6-ki18n"
+  "libx11-6"
+  "libxxf86vm1"
+  "qt6-base"
 )
 
 makedepends=(

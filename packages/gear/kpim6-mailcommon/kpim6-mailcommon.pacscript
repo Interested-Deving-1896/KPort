@@ -10,7 +10,7 @@ pkgname="kpim6-mailcommon"
 pkgver="26.04.1"
 pkgdesc="KDE PIM email utility library, shared data The mail common library provides"
 # Fall back to invent.kde.org canonical URL when no homepage is set
-url="http://pim.kde.org/"
+url="https://pim.kde.org/"
 license=("GPL-2.0-or-later")
 
 source=(
@@ -52,8 +52,6 @@ depends=(
   "~apt:libqgpgmeqt6-15"
   "qt6-base"
   "qt6-multimedia"
-).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
 )
 
 makedepends=(

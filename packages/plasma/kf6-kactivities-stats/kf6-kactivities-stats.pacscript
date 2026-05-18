@@ -7,21 +7,22 @@
 # ── Standard Pacstall variables ───────────────────────────────────────────────
 
 pkgname="kf6-kactivities-stats"
-pkgver="6.4.3"
+pkgver="6.6.5"
 pkgdesc="Activities Stats Libary"
 url="https://projects.kde.org/projects/frameworks/kactivities-stats"
 license=("LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/plasma/6.4.3/plasma-activities-stats-6.4.3.tar.xz"
+  "https://download.kde.org/stable/plasma/6.6.5/plasma-activities-stats-6.6.5.tar.xz"
 )
 sha256sums=(
-  "991002e3da9b5969b9583cd169050a23aacbe02f2d7d4ab1a19f5bd7c72b3b6b"
+  "93af76f5c4171d089cd9a4f502bba63a65f2a371aa1a83c0c6cfb0021a5efba6"
 )
 
 depends=(
-  # No named runtime deps found in debian/control (only ${shlibs:Depends}).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
+  "kf6-kconfig"
+  "plasma-activities"
+  "qt6-base"
 )
 
 makedepends=(

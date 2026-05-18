@@ -6,7 +6,7 @@
 pkgname="kaddressbook"
 pkgver="26.04.1"
 pkgdesc="address book and contact data manager"
-url="http://pim.kde.org/"
+url="https://pim.kde.org/"
 license=("GPL-2.0-or-later")
 
 source=(

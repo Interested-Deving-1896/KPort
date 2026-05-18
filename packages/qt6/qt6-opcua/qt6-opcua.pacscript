@@ -7,17 +7,17 @@
 # ── Standard Pacstall variables ───────────────────────────────────────────────
 
 pkgname="qt6-opcua"
-pkgver="6.10.1"
+pkgver="6.10.2"
 pkgdesc="Qt OPC UA Library The Qt OPC UA module implements a Qt API to interact with OPC"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://www.qt.io/developers/"
 license=("GPL-2.0-or-later")
 
 source=(
-  "https://github.com/qt/qtopcua/archive/refs/tags/v6.10.1.tar.gz"
+  "https://github.com/qt/qtopcua/archive/refs/tags/v6.10.2.tar.gz"
 )
 sha256sums=(
-  "15b70b358d7ffefe8693539505c8ef5b03641d3744d1d3ef728f6646119d0d58"
+  "375b1b13c28753a14f7c6360fd6dc5790f63ec34a37355694618530268ec2c2a"
 )
 
 depends=(

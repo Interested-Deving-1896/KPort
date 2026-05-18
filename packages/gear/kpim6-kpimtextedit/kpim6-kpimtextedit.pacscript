@@ -32,8 +32,6 @@ depends=(
   "kf6-sonnet"
   "kf6-syntax-highlighting"
   "qt6-base"
-).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
 )
 
 makedepends=(
