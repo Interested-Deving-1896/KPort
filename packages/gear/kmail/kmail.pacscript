@@ -69,7 +69,7 @@ depends=(
   "kpim6-libgravatar"
   "kpim6-libkdepim"
   "kpim6-libkleo"
-  "~apt:kpim6-libksieve"
+  "kpim6-libksieve"
   "kpim6-mailcommon"
   "kpim6-messagelib"
   "kpim6-pimcommon"
