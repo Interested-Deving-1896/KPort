@@ -13,6 +13,7 @@
 #   upgrade             Rebuild world set for changed USE flags or versions
 #   promote <pkg>       Move a generated/ skeleton to packages/ for review
 #   sync                Pull updates for all enabled overlay repositories
+#   check   [pkg...]    Verify installed file manifests against the filesystem
 #   world               List installed packages
 #
 # Global options:
