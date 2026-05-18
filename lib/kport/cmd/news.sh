@@ -10,6 +10,14 @@
 # Requires the KPort tree to be a git repository. If it is not (e.g.
 # installed from a tarball), a warning is printed and the command exits 0.
 #
+# Note: packages that were added in bulk commits (e.g. "feat: promote KF6
+# frameworks tier2-4") will show the bulk commit message rather than
+# package-specific news. This is a git history structure limitation — the
+# per-package path still had changes in that commit, so it appears correctly,
+# but the message describes the batch rather than the individual package.
+# Per-package news improves naturally as individual packages receive their
+# own commits over time.
+#
 # Usage: kport news [options] [pkg...]
 #
 # Arguments:
