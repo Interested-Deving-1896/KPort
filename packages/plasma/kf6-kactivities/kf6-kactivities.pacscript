@@ -7,7 +7,7 @@
 # ── Standard Pacstall variables ───────────────────────────────────────────────
 
 pkgname="kf6-kactivities"
-pkgver="0.0"
+pkgver="6.4.3"
 pkgdesc="Activities Libary"
 url="https://projects.kde.org/projects/frameworks/kactivities"
 license=("LGPL-2.0-or-later")

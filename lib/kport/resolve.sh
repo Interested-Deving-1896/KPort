@@ -67,11 +67,14 @@ _kport_resolve_one() {
 
   # Keyword check — package must match accepted stability/cpu/gpu keywords
   if ! kport_check_keyword "$pkgname" "$category" "$pacscript"; then
-    local channel cpu_min gpu_min
+    local channel cpu_min gpu_min npu_min
     channel=$(kport_pacscript_var "$pacscript" KNEON_CHANNEL)
     cpu_min=$(kport_pacscript_var "$pacscript" KCPU_MIN)
     gpu_min=$(kport_pacscript_var "$pacscript" KGPU_MIN)
-    kport_warn "  ${pkgname}: keyword mismatch — channel=${channel} cpu_min=${cpu_min} gpu_min=${gpu_min}"
+    npu_min=$(kport_pacscript_var "$pacscript" KNPU_MIN)
+    local kw_detail="channel=${channel} cpu_min=${cpu_min} gpu_min=${gpu_min}"
+    [[ -n "$npu_min" ]] && kw_detail+=" npu_min=${npu_min}"
+    kport_warn "  ${pkgname}: keyword mismatch — ${kw_detail}"
     kport_warn "    accept with: echo '${category}/${pkgname}: stability: [${channel}]' >> ~/.config/kport/package.accept_keywords"
     unset '_KPORT_RESOLVE_VISITED[$pkgname]'
     return 0

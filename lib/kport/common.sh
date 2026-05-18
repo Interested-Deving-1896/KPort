@@ -172,6 +172,56 @@ kport_world_remove() {
   mv "$tmp" "$KPORT_DB_WORLD"
 }
 
+# ── Reverse-dependency index ─────────────────────────────────────────────────
+#
+# Each installed package has db/installed/<pkg>/rdeps — a newline-separated
+# list of packages that declare <pkg> in their depends() array.
+#
+# kport_rdep_record pkgname pacscript
+#   Called at install time. For each dep in depends(), appends pkgname to
+#   that dep's rdeps file (creating it if needed).
+#
+# kport_rdep_remove pkgname pacscript
+#   Called at remove time. Removes pkgname from each dep's rdeps file.
+#
+# kport_rdep_get pkgname
+#   Prints the list of packages that depend on pkgname (one per line).
+
+kport_rdep_record() {
+  local pkgname="$1" pacscript="$2"
+  local dep
+  while IFS= read -r dep; do
+    [[ -z "$dep" ]] && continue
+    local dep_dir="${KPORT_DB_INSTALLED}/${dep}"
+    [[ -d "$dep_dir" ]] || continue   # dep not installed by kport — skip
+    local rdeps_file="${dep_dir}/rdeps"
+    # Append only if not already listed
+    grep -qxF "$pkgname" "$rdeps_file" 2>/dev/null || echo "$pkgname" >> "$rdeps_file"
+  done < <(kport_pacscript_array "$pacscript" depends 2>/dev/null)
+}
+
+kport_rdep_remove() {
+  local pkgname="$1" pacscript="$2"
+  local dep
+  while IFS= read -r dep; do
+    [[ -z "$dep" ]] && continue
+    local rdeps_file="${KPORT_DB_INSTALLED}/${dep}/rdeps"
+    [[ -f "$rdeps_file" ]] || continue
+    local tmp
+    tmp=$(mktemp)
+    grep -vxF "$pkgname" "$rdeps_file" > "$tmp" || true
+    mv "$tmp" "$rdeps_file"
+  done < <(kport_pacscript_array "$pacscript" depends 2>/dev/null)
+}
+
+kport_rdep_get() {
+  local pkgname="$1"
+  local rdeps_file="${KPORT_DB_INSTALLED}/${pkgname}/rdeps"
+  [[ -f "$rdeps_file" ]] && grep -v '^$' "$rdeps_file" || true
+}
+
+export -f kport_rdep_record kport_rdep_remove kport_rdep_get
+
 # ── Hardware config helpers ───────────────────────────────────────────────────
 
 # Read a value from hardware.conf.
@@ -271,6 +321,25 @@ kport_check_keyword() {
         [[ "${gpu_order[$j]}" == "$gpu_min"  ]] && gmin_idx=$j
       done
       [[ $gtier_idx -ge 0 && $gmin_idx -ge 0 && $gtier_idx -lt $gmin_idx ]] && return 1
+    fi
+  fi
+
+  # ── NPU tier check ────────────────────────────────────────────────────────
+
+  local npu_min
+  npu_min=$(kport_pacscript_var "$pacscript" KNPU_MIN)
+
+  if [[ -n "$npu_min" && -f "${KPORT_HW_CONF:-}" ]]; then
+    local npu_tier
+    npu_tier=$(grep "^NPU_TIER=" "$KPORT_HW_CONF" | cut -d'"' -f2)
+    if [[ -n "$npu_tier" ]]; then
+      local -a npu_order=(npu-none npu-igpu npu-dedicated npu-ai npu-datacenter)
+      local ntier_idx=-1 nmin_idx=-1 k
+      for k in "${!npu_order[@]}"; do
+        [[ "${npu_order[$k]}" == "$npu_tier" ]] && ntier_idx=$k
+        [[ "${npu_order[$k]}" == "$npu_min"  ]] && nmin_idx=$k
+      done
+      [[ $ntier_idx -ge 0 && $nmin_idx -ge 0 && $ntier_idx -lt $nmin_idx ]] && return 1
     fi
   fi
 

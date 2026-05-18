@@ -7,7 +7,7 @@
 # ── Standard Pacstall variables ───────────────────────────────────────────────
 
 pkgname="kf6-plasma-framework"
-pkgver="0.0"
+pkgver="6.4.3"
 pkgdesc="Plugin based UI runtime used to write primary user interfaces"
 url="https://invent.kde.org/frameworks/plasma-framework"
 license=("LGPL-2.0-or-later")

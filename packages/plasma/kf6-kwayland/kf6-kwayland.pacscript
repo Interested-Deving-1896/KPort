@@ -7,7 +7,7 @@
 # ── Standard Pacstall variables ───────────────────────────────────────────────
 
 pkgname="kf6-kwayland"
-pkgver="0.0"
+pkgver="6.4.3"
 pkgdesc="Qt-style API to interact with the wayland-client API"
 url="https://projects.kde.org/projects/kde/frameworks/kwayland"
 license=("LGPL-2.0-or-later")

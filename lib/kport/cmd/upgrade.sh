@@ -118,6 +118,20 @@ for entry in "${world_entries[@]}"; do
     continue
   }
 
+  category=$(kport_pacscript_var "$pacscript" KCATEGORY)
+
+  # Mask check — skip masked packages silently (they were installed before masking)
+  if kport_is_masked "$pkgname" "$category"; then
+    kport_warn "  ${pkgname}: now masked — skipping upgrade (unmask to rebuild)"
+    continue
+  fi
+
+  # Keyword check — skip if hardware no longer meets requirements
+  if ! kport_check_keyword "$pkgname" "$category" "$pacscript"; then
+    kport_warn "  ${pkgname}: keyword mismatch — skipping upgrade (hardware requirements changed?)"
+    continue
+  fi
+
   avail_ver=$(kport_pacscript_var "$pacscript" pkgver)
   inst_ver=$(kport_db_read "$pkgname" version)
   inst_use=$(kport_db_read "$pkgname" use_flags)

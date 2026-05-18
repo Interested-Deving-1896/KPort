@@ -102,6 +102,9 @@ _kport_record_install() {
   [[ -f "$KPORT_HW_CONF" ]] && \
     cp "$KPORT_HW_CONF" "${KPORT_DB_INSTALLED}/${pkgname}/hardware_conf"
 
+  # Update reverse-dep index: register this package as a dependent of its deps
+  kport_rdep_record "$pkgname" "$pacscript"
+
   # Add to world set (explicitly requested packages only)
   for requested in "${PACKAGES[@]}"; do
     [[ "$requested" == "$pkgname" ]] && kport_world_add "$pkgname" "$category" && break

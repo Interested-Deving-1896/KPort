@@ -21,6 +21,8 @@
 #   lib/kport/use-helpers.sh        →  <prefix>/lib/kport/use-helpers.sh
 #   lib/kport/common.sh             →  <prefix>/lib/kport/common.sh
 #   lib/kport/resolve.sh            →  <prefix>/lib/kport/resolve.sh
+#   lib/kport/list-overlays.py      →  <prefix>/lib/kport/list-overlays.py
+#   lib/kport/keyword-check.py      →  <prefix>/lib/kport/keyword-check.py
 #   lib/kport/cmd/*.sh              →  <prefix>/lib/kport/cmd/*.sh
 #   bin/kport                       →  <prefix>/bin/kport
 
@@ -85,16 +87,19 @@ echo ""
 
 # ── Verify source tree ────────────────────────────────────────────────────────
 
-for required in lib/kport/use-helpers.sh lib/kport/common.sh lib/kport/resolve.sh bin/kport; do
+for required in lib/kport/use-helpers.sh lib/kport/common.sh lib/kport/resolve.sh \
+                lib/kport/list-overlays.py lib/kport/keyword-check.py bin/kport; do
   [[ -f "${KPORT_ROOT}/${required}" ]] \
     || error "Source file not found: ${KPORT_ROOT}/${required}"
 done
 
 # ── Install library files ─────────────────────────────────────────────────────
 
-install_file "${KPORT_ROOT}/lib/kport/use-helpers.sh" "${LIB_DEST}" "use-helpers.sh"
-install_file "${KPORT_ROOT}/lib/kport/common.sh"      "${LIB_DEST}" "common.sh"
-install_file "${KPORT_ROOT}/lib/kport/resolve.sh"     "${LIB_DEST}" "resolve.sh"
+install_file "${KPORT_ROOT}/lib/kport/use-helpers.sh"   "${LIB_DEST}" "use-helpers.sh"
+install_file "${KPORT_ROOT}/lib/kport/common.sh"        "${LIB_DEST}" "common.sh"
+install_file "${KPORT_ROOT}/lib/kport/resolve.sh"       "${LIB_DEST}" "resolve.sh"
+install_file "${KPORT_ROOT}/lib/kport/list-overlays.py" "${LIB_DEST}" "list-overlays.py"
+install_file "${KPORT_ROOT}/lib/kport/keyword-check.py" "${LIB_DEST}" "keyword-check.py"
 
 # Install command scripts
 CMD_DEST="${LIB_DEST}/cmd"

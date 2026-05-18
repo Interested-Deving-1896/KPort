@@ -95,7 +95,10 @@ elif ! kport_check_keyword "$pkgname" "$category" "$pacscript" 2>/dev/null; then
   _kw_channel=$(kport_pacscript_var "$pacscript" KNEON_CHANNEL)
   _kw_cpu=$(kport_pacscript_var "$pacscript" KCPU_MIN)
   _kw_gpu=$(kport_pacscript_var "$pacscript" KGPU_MIN)
-  echo -e "  ${C_YELLOW}[KEYWORD BLOCKED]${C_RESET}  channel=${_kw_channel} cpu_min=${_kw_cpu} gpu_min=${_kw_gpu}"
+  _kw_npu=$(kport_pacscript_var "$pacscript" KNPU_MIN)
+  _kw_detail="channel=${_kw_channel} cpu_min=${_kw_cpu} gpu_min=${_kw_gpu}"
+  [[ -n "$_kw_npu" ]] && _kw_detail+=" npu_min=${_kw_npu}"
+  echo -e "  ${C_YELLOW}[KEYWORD BLOCKED]${C_RESET}  ${_kw_detail}"
   echo -e "  ${C_DIM}  accept: echo '${category}/${pkgname}: stability: [${_kw_channel}]' >> ~/.config/kport/package.accept_keywords${C_RESET}"
 else
   echo -e "  ${C_GREEN}[AVAILABLE]${C_RESET}"

@@ -52,6 +52,8 @@ done
 
 # ── Reverse-dep check ─────────────────────────────────────────────────────────
 # Warn if any installed package depends on a package being removed.
+# Uses the rdeps index built at install time (O(1) per package).
+# Falls back to a full scan if the index is absent (pre-index installs).
 # Skipped with --force.
 
 rdep_warnings=0
@@ -59,22 +61,34 @@ rdep_warnings=0
 for pkg in "${to_remove[@]}"; do
   [[ "$rdep_warnings" -eq -1 ]] && break   # --force: skip
   rdeps=()
-  # Scan all installed packages for deps on $pkg
-  while IFS= read -r -d '' installed_dir; do
-    installed_pkg=$(basename "$installed_dir")
+
+  # Fast path: rdeps index
+  while IFS= read -r rdep; do
+    [[ -z "$rdep" ]] && continue
     # Skip packages also being removed
     local_skip=false
     for r in "${to_remove[@]}"; do
-      [[ "$r" == "$installed_pkg" ]] && local_skip=true && break
+      [[ "$r" == "$rdep" ]] && local_skip=true && break
     done
     [[ "$local_skip" == "true" ]] && continue
+    kport_is_installed "$rdep" && rdeps+=("$rdep")
+  done < <(kport_rdep_get "$pkg")
 
-    # Find the pacscript for this installed package and check its depends
-    pacscript=$(kport_find_pacscript "$installed_pkg" 2>/dev/null) || continue
-    if kport_pacscript_array "$pacscript" depends 2>/dev/null | grep -qxF "$pkg"; then
-      rdeps+=("$installed_pkg")
-    fi
-  done < <(find "$KPORT_DB_INSTALLED" -mindepth 1 -maxdepth 1 -type d -print0 2>/dev/null)
+  # Slow fallback: full scan for packages installed before rdep index existed
+  if [[ ${#rdeps[@]} -eq 0 && ! -f "${KPORT_DB_INSTALLED}/${pkg}/rdeps" ]]; then
+    while IFS= read -r -d '' installed_dir; do
+      installed_pkg=$(basename "$installed_dir")
+      local_skip=false
+      for r in "${to_remove[@]}"; do
+        [[ "$r" == "$installed_pkg" ]] && local_skip=true && break
+      done
+      [[ "$local_skip" == "true" ]] && continue
+      pacscript=$(kport_find_pacscript "$installed_pkg" 2>/dev/null) || continue
+      if kport_pacscript_array "$pacscript" depends 2>/dev/null | grep -qxF "$pkg"; then
+        rdeps+=("$installed_pkg")
+      fi
+    done < <(find "$KPORT_DB_INSTALLED" -mindepth 1 -maxdepth 1 -type d -print0 2>/dev/null)
+  fi
 
   if [[ ${#rdeps[@]} -gt 0 ]]; then
     kport_warn "${pkg} is required by: ${rdeps[*]}"
@@ -146,6 +160,10 @@ for pkg in "${to_remove[@]}"; do
     kport_warn "No file list found for ${pkg} — skipping file removal"
     kport_warn "If installed via pacstall, run: pacstall -R ${pkg}"
   fi
+
+  # Remove this package from its deps' rdeps index
+  pacscript_for_rdep=$(kport_find_pacscript "$pkg" 2>/dev/null) || true
+  [[ -n "$pacscript_for_rdep" ]] && kport_rdep_remove "$pkg" "$pacscript_for_rdep"
 
   # Remove from database
   kport_db_remove "$pkg"
