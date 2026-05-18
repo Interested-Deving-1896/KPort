@@ -22,7 +22,19 @@ sha256sums=(
 
 depends=(
   "kf6-kirigami-addons"
-  "qt6-declarative-dev"
+  "qt6-declarative"
+  "kf6-kconfig"
+  "kf6-kconfigwidgets"
+  "kf6-kcoreaddons"
+  "kf6-kcrash"
+  "kf6-kdbusaddons"
+  "kf6-ki18n"
+  "kf6-kiconthemes"
+  "kpim6-akonadi"
+  "kpim6-kidentitymanagement"
+  "kpim6-kmailtransport"
+  "kpim6-kmime"
+  "qt6-base"
 )
 
 makedepends=(

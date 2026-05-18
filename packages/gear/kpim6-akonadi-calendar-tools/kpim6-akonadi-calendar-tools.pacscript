@@ -22,6 +22,13 @@ sha256sums=(
 
 depends=(
   "kpim6-kdepim-runtime"
+  "kf6-kcalendarcore"
+  "kf6-kcoreaddons"
+  "kf6-ki18n"
+  "kpim6-akonadi"
+  "kpim6-akonadi-calendar"
+  "kpim6-calendarsupport"
+  "qt6-base"
 )
 
 makedepends=(

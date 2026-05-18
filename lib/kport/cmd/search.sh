@@ -2,19 +2,18 @@
 # kport search
 #
 # Search for packages by name or description.
-# Searches packages/ tree and enabled overlays.
+# Uses a pre-built index ($KPORT_DB/index.json) when available for speed;
+# falls back to live grep across packages/ when the index is absent.
 #
-# Usage: kport search [options] <query>
+# Usage: kport search [options] [query]
 #
 # Options:
-#   --category <cat>   Limit to a category (e.g. frameworks, plasma)
+#   --category <cat>   Limit to a category (e.g. frameworks, plasma, gear, qt6)
 #   --installed        Show only installed packages
 #   --exact            Exact name match only
 #   --help
 
 set -uo pipefail
-
-# ── Parse args ────────────────────────────────────────────────────────────────
 
 FILTER_CATEGORY=""
 INSTALLED_ONLY=false
@@ -36,61 +35,104 @@ done
 
 [[ -z "$QUERY" && "$INSTALLED_ONLY" != "true" ]] && kport_die "Usage: kport search <query>"
 
-# ── Search ────────────────────────────────────────────────────────────────────
+INDEX_FILE="${KPORT_DB}/index.json"
+
+_search_from_index() {
+  python3 - "$INDEX_FILE" "$QUERY" "$FILTER_CATEGORY" "$EXACT" << 'PYEOF'
+import sys, json
+
+index_file = sys.argv[1]
+query      = sys.argv[2].lower()
+filter_cat = sys.argv[3].lower()
+exact      = sys.argv[4] == "true"
+
+try:
+    entries = json.load(open(index_file))
+except Exception as e:
+    print(f"index error: {e}", file=sys.stderr)
+    sys.exit(1)
+
+for e in sorted(entries, key=lambda x: x.get("n", "")):
+    name = e.get("n", "")
+    ver  = e.get("v", "")
+    desc = e.get("d", "")
+    cat  = e.get("c", "")
+    path = e.get("p", "")
+    if filter_cat and filter_cat not in cat.lower():
+        continue
+    if query:
+        if exact:
+            if name != query:
+                continue
+        else:
+            if query not in name.lower() and query not in desc.lower():
+                continue
+    print(f"{name}\t{ver}\t{desc}\t{cat}\t{path}")
+PYEOF
+}
+
+_search_from_pacscripts() {
+  local search_dirs=()
+  if [[ -d "$KPORT_OVERLAYS_DIR" ]]; then
+    while IFS= read -r d; do
+      [[ "$d" == *"/example" ]] && continue
+      search_dirs+=("$d")
+    done < <(find "$KPORT_OVERLAYS_DIR" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)
+  fi
+  search_dirs+=("$KPORT_PACKAGES_DIR")
+  for search_root in "${search_dirs[@]}"; do
+    [[ -d "$search_root" ]] || continue
+    while IFS= read -r pacscript; do
+      local pkgname pkgver pkgdesc category
+      pkgname=$(kport_pacscript_var "$pacscript" pkgname)
+      pkgver=$(kport_pacscript_var  "$pacscript" pkgver)
+      pkgdesc=$(kport_pacscript_var "$pacscript" pkgdesc)
+      category=$(kport_pacscript_var "$pacscript" KCATEGORY)
+      [[ -n "$FILTER_CATEGORY" && "$category" != *"$FILTER_CATEGORY"* ]] && continue
+      if [[ "$EXACT" == "true" ]]; then
+        [[ "$pkgname" != "$QUERY" ]] && continue
+      else
+        local lower_query="${QUERY,,}"
+        [[ "${pkgname,,}" != *"$lower_query"* && "${pkgdesc,,}" != *"$lower_query"* ]] && continue
+      fi
+      printf '%s\t%s\t%s\t%s\t%s\n' "$pkgname" "$pkgver" "$pkgdesc" "$category" "$pacscript"
+    done < <(find "$search_root" -name "*.pacscript" 2>/dev/null | sort)
+  done
+}
 
 found=0
 
-# Collect search paths: overlays first, then main tree
-search_dirs=()
-if [[ -d "$KPORT_OVERLAYS_DIR" ]]; then
-  while IFS= read -r d; do
-    [[ "$d" == *"/example" ]] && continue
-    search_dirs+=("$d")
-  done < <(find "$KPORT_OVERLAYS_DIR" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)
+_display_result() {
+  local pkgname="$1" pkgver="$2" pkgdesc="$3" category="$4"
+  if [[ "$INSTALLED_ONLY" == "true" ]]; then
+    kport_is_installed "$pkgname" || return 0
+  fi
+  local installed_marker=""
+  kport_is_installed "$pkgname" && installed_marker=" ${C_GREEN}[installed]${C_RESET}"
+  echo -e "${C_BOLD}${pkgname}${C_RESET} ${C_DIM}${pkgver}${C_RESET}${installed_marker}"
+  echo -e "  ${C_DIM}${category}${C_RESET}"
+  [[ -n "$pkgdesc" ]] && echo "  ${pkgdesc}"
+  echo ""
+  (( found++ )) || true
+}
+
+if [[ -f "$INDEX_FILE" ]]; then
+  while IFS=$'\t' read -r pkgname pkgver pkgdesc category _path; do
+    _display_result "$pkgname" "$pkgver" "$pkgdesc" "$category"
+  done < <(_search_from_index)
+else
+  kport_warn "No search index — run 'kport index' to build one (falling back to live search)"
+  while IFS=$'\t' read -r pkgname pkgver pkgdesc category _path; do
+    _display_result "$pkgname" "$pkgver" "$pkgdesc" "$category"
+  done < <(_search_from_pacscripts)
 fi
-search_dirs+=("$KPORT_PACKAGES_DIR")
-
-for search_root in "${search_dirs[@]}"; do
-  [[ -d "$search_root" ]] || continue
-
-  while IFS= read -r pacscript; do
-    pkgname=$(kport_pacscript_var "$pacscript" pkgname)
-    pkgver=$(kport_pacscript_var  "$pacscript" pkgver)
-    pkgdesc=$(kport_pacscript_var "$pacscript" pkgdesc)
-    category=$(kport_pacscript_var "$pacscript" KCATEGORY)
-
-    # Category filter
-    [[ -n "$FILTER_CATEGORY" && "$category" != *"$FILTER_CATEGORY"* ]] && continue
-
-    # Installed filter
-    if [[ "$INSTALLED_ONLY" == "true" ]]; then
-      kport_is_installed "$pkgname" || continue
-    fi
-
-    # Query match
-    if [[ "$EXACT" == "true" ]]; then
-      [[ "$pkgname" != "$QUERY" ]] && continue
-    else
-      # Case-insensitive match against name or description
-      lower_query="${QUERY,,}"
-      [[ "${pkgname,,}" != *"$lower_query"* && "${pkgdesc,,}" != *"$lower_query"* ]] && continue
-    fi
-
-    # Format result
-    installed_marker=""
-    kport_is_installed "$pkgname" && installed_marker=" ${C_GREEN}[installed]${C_RESET}"
-
-    echo -e "${C_BOLD}${pkgname}${C_RESET} ${C_DIM}${pkgver}${C_RESET}${installed_marker}"
-    echo -e "  ${C_DIM}${category}${C_RESET}"
-    [[ -n "$pkgdesc" ]] && echo "  ${pkgdesc}"
-    echo ""
-    (( found++ )) || true
-
-  done < <(find "$search_root" -name "*.pacscript" 2>/dev/null | sort)
-done
 
 if [[ "$found" -eq 0 ]]; then
-  kport_warn "No packages found matching '${QUERY}'"
+  if [[ "$INSTALLED_ONLY" == "true" && -z "$QUERY" ]]; then
+    kport_warn "No packages installed."
+  else
+    kport_warn "No packages found matching '${QUERY}'"
+  fi
   exit 1
 fi
 

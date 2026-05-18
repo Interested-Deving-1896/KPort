@@ -20,8 +20,6 @@ sha256sums=(
 )
 
 depends=(
-  "doxygen"
-  "graphviz"
   "python3-all"
   "python3-virtualenv"
 )

@@ -28,11 +28,9 @@ depends=(
   "kf6-krunner"
   "kf6-ktextaddons"
   "kf6-kwidgetsaddons"
+  "kpim6-akonadi"
   "kpim6-akonadi-mime"
-  "~apt:kpim6-kmime"
-  "~apt:libc6"
-  "~apt:libgcc-s1"
-  "~apt:libstdc++6"
+  "kpim6-kmime"
   "~apt:libxapian30"
   "qt6-base"
 )

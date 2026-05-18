@@ -39,7 +39,6 @@ depends=(
   "plasma-workspace"
   "plasma5support"
   "polkit-kde-agent-1"
-  "python3"
   "qml6-module-org-kde-pipewire"
   "qml6-module-qt-labs-folderlistmodel"
   "qml6-module-qt-labs-platform"

@@ -21,8 +21,25 @@ sha256sums=(
 )
 
 depends=(
-  "freecell-solver-bin"
-  "kdegames-card-data-kf6"
+  "~apt:freecell-solver-bin"
+  "~apt:kdegames-card-data-kf6"
+  "kf6-kcompletion"
+  "kf6-kconfig"
+  "kf6-kconfigwidgets"
+  "kf6-kcoreaddons"
+  "kf6-kcrash"
+  "kf6-kdbusaddons"
+  "kf6-kguiaddons"
+  "kf6-ki18n"
+  "kf6-kio"
+  "kf6-knewstuff"
+  "kf6-kwidgetsaddons"
+  "kf6-kxmlgui"
+  "~apt:libblack-hole-solver1"
+  "~apt:libfreecell-solver0"
+  "~apt:libkf6kdegames6-6"
+  "qt6-base"
+  "qt6-svg"
 )
 
 makedepends=(

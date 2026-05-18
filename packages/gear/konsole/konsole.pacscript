@@ -21,7 +21,23 @@ sha256sums=(
 )
 
 depends=(
-  "konsole-kpart"
+  "konsole"
+  "kf6-kcolorscheme"
+  "kf6-kconfig"
+  "kf6-kconfigwidgets"
+  "kf6-kcoreaddons"
+  "kf6-kcrash"
+  "kf6-kdbusaddons"
+  "kf6-kglobalaccel"
+  "kf6-kguiaddons"
+  "kf6-ki18n"
+  "kf6-kiconthemes"
+  "kf6-kio"
+  "kf6-knotifyconfig"
+  "kf6-kwidgetsaddons"
+  "kf6-kwindowsystem"
+  "kf6-kxmlgui"
+  "qt6-base"
 )
 
 makedepends=(

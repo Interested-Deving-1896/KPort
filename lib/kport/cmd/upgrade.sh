@@ -10,6 +10,7 @@
 #   --ask          Show upgrade plan and confirm (default)
 #   --no-ask       Upgrade without confirmation
 #   --dry-run      Show what would be upgraded without doing it
+#   --direct       Build without pacstall sandbox (passed through to install)
 #   --use-changed  Only rebuild packages whose USE flags changed (skip version bumps)
 #   --version-only Only rebuild packages with a newer version (skip USE changes)
 #   --help
@@ -22,6 +23,7 @@ source "${KPORT_LIB}/resolve.sh"
 
 ASK=true
 DRY_RUN=false
+DIRECT=false
 USE_CHANGED_ONLY=false
 VERSION_ONLY=false
 
@@ -30,6 +32,7 @@ while [[ $# -gt 0 ]]; do
     --ask)          ASK=true;              shift ;;
     --no-ask)       ASK=false;             shift ;;
     --dry-run)      DRY_RUN=true;          shift ;;
+    --direct)       DIRECT=true;           shift ;;
     --use-changed)  USE_CHANGED_ONLY=true; shift ;;
     --version-only) VERSION_ONLY=true;     shift ;;
     --help|-h)
@@ -127,4 +130,7 @@ fi
 
 # ── Delegate to install --rebuild ─────────────────────────────────────────────
 
-exec bash "${KPORT_LIB}/cmd/install.sh" --no-ask --rebuild "${upgrade_order[@]}"
+install_args=(--no-ask --rebuild)
+[[ "$DIRECT" == "true" ]] && install_args+=(--direct)
+
+exec bash "${KPORT_LIB}/cmd/install.sh" "${install_args[@]}" "${upgrade_order[@]}"

@@ -21,11 +21,33 @@ sha256sums=(
 )
 
 depends=(
-  "kate6-data"
-  "kf6-ktexteditor"
-  "libplasma6"
+  "kate"
   "kf6-kdeclarative"
-  "qt6-declarative-dev"
+  "kf6-ktexteditor"
+  "kf6-plasma-framework"
+  "qt6-declarative"
+  "kf6-karchive"
+  "kf6-kbookmarks"
+  "kf6-kcolorscheme"
+  "kf6-kcompletion"
+  "kf6-kconfig"
+  "kf6-kconfigwidgets"
+  "kf6-kcoreaddons"
+  "kf6-kcrash"
+  "kf6-kdbusaddons"
+  "kf6-kguiaddons"
+  "kf6-ki18n"
+  "kf6-kiconthemes"
+  "kf6-kio"
+  "kf6-knewstuff"
+  "kf6-kparts"
+  "kf6-kservice"
+  "kf6-kuserfeedback"
+  "kf6-kwidgetsaddons"
+  "kf6-kwindowsystem"
+  "kf6-kxmlgui"
+  "kf6-syntax-highlighting"
+  "qt6-base"
 )
 
 makedepends=(

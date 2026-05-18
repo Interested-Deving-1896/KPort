@@ -21,7 +21,13 @@ sha256sums=(
 )
 
 depends=(
-  # No named runtime deps found in debian/control (only ${shlibs:Depends}).
+  "kf6-ki18n"
+  "kf6-ktextwidgets"
+  "kf6-kwallet"
+  "kf6-kwidgetsaddons"
+  "~apt:libksanecore"
+  "qt6-base"
+).
   # Populate after a test build by inspecting ldd output or dpkg -I.
 )
 

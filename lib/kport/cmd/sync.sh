@@ -166,4 +166,10 @@ if [[ "$SYNC_SOURCES" == "true" ]]; then
 fi
 
 kport_info "Sync complete — updated: ${ok}  skipped: ${skipped}  failed: ${failed}"
+
+# Rebuild search index after sync (unless dry-run)
+if [[ "$DRY_RUN" != "true" ]]; then
+  source "${KPORT_LIB}/cmd/index.sh" --force 2>/dev/null || true
+fi
+
 [[ "$failed" -gt 0 ]] && exit 1 || exit 0

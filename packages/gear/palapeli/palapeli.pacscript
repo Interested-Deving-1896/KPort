@@ -21,7 +21,23 @@ sha256sums=(
 )
 
 depends=(
-  "palapeli-data"
+  "kf6-karchive"
+  "kf6-kcompletion"
+  "kf6-kconfig"
+  "kf6-kconfigwidgets"
+  "kf6-kcoreaddons"
+  "kf6-kcrash"
+  "kf6-kdbusaddons"
+  "kf6-ki18n"
+  "kf6-kiconthemes"
+  "kf6-kio"
+  "kf6-kitemviews"
+  "kf6-knotifications"
+  "kf6-kwidgetsaddons"
+  "kf6-kxmlgui"
+  "~apt:libkf6kdegames6-6"
+  "qt6-base"
+  "qt6-svg"
 )
 
 makedepends=(

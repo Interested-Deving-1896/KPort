@@ -32,8 +32,6 @@ depends=(
   "kf6-kwidgetsaddons"
   "kf6-kxmlgui"
   "kpim6-kpimtextedit"
-  "~apt:libc6"
-  "~apt:libstdc++6"
   "qt6-base"
   "qt6-declarative"
 )

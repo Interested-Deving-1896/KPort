@@ -34,9 +34,6 @@ depends=(
   "kpim6-kcalendarutils"
   "~apt:kpim6-kidentitymanagement"
   "~apt:kpim6-kmime"
-  "~apt:libc6"
-  "~apt:libgcc-s1"
-  "~apt:libstdc++6"
   "qt6-base"
 )
 

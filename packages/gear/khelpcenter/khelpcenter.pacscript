@@ -21,7 +21,25 @@ sha256sums=(
 )
 
 depends=(
-  "kdoctools6"
+  "kf6-kdoctools"
+  "kf6-karchive"
+  "kf6-kbookmarks"
+  "kf6-kcompletion"
+  "kf6-kconfig"
+  "kf6-kconfigwidgets"
+  "kf6-kcoreaddons"
+  "kf6-kdbusaddons"
+  "kf6-ki18n"
+  "kf6-kio"
+  "kf6-kservice"
+  "kf6-ktexttemplate"
+  "kf6-kwidgetsaddons"
+  "kf6-kwindowsystem"
+  "kf6-kxmlgui"
+  "~apt:libxapian30"
+  "~apt:libxml2"
+  "qt6-base"
+  "qt6-webengine"
 )
 
 makedepends=(

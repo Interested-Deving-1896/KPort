@@ -34,9 +34,7 @@ depends=(
   "~apt:kpim6-kmime"
   "kpim6-libkdepim"
   "kpim6-pimcommon"
-  "~apt:libc6"
   "~apt:libsasl2-2"
-  "~apt:libstdc++6"
   "qt6-webengine"
 )
 

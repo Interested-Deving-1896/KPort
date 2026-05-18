@@ -30,7 +30,6 @@ depends=(
   "kf6-knewstuff"
   "kf6-kquickcharts"
   "kf6-qqc2-desktop-style"
-  "python3"
   "qml6-module-org-kde-ksysguard"
   "qml6-module-qt-labs-platform"
   "qml6-module-qt-labs-qmlmodels"

@@ -494,7 +494,7 @@ dep_map:
   kpim6-kdepim-runtime:          "kpim6-kdepim-runtime"
   kpim6-kldap:                   "kpim6-kldap"
   kpim6-libkgapi:                "kpim6-akonadi-contacts"
-  kpim6-libksieve:               "~apt:kpim6-libksieve"
+  kpim6-libksieve:               "kpim6-libksieve"
 
   qt6-base-doc:                  "~ignore"
   qt6-3d-doc:                    "~ignore"
@@ -745,3 +745,5 @@ dep_map:
   xwayland:                      "~apt:xwayland"
   "${misc:Depends}":             "~ignore"
   "python3:any":                 "~apt:python3"
+  kf6-baloowidgets:              "~apt:kf6-baloowidgets"
+  kf6-baloowidgets-dev:          "~apt:kf6-baloowidgets-dev"

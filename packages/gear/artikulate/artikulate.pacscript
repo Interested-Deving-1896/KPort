@@ -22,10 +22,19 @@ sha256sums=(
 
 depends=(
   "kf6-kio"
-  "qml6-module-org-kde-kirigami"
-  "qml6-module-org-kde-kquickcontrolsaddons"
-  "qml6-module-qtqml-models"
-  "qml6-module-qtquick-shapes"
+  "kf6-kirigami"
+  "~apt:qml6-module-org-kde-kquickcontrolsaddons"
+  "~apt:qml6-module-qtqml-models"
+  "~apt:qml6-module-qtquick-shapes"
+  "kf6-karchive"
+  "kf6-kconfig"
+  "kf6-kcoreaddons"
+  "kf6-kcrash"
+  "kf6-ki18n"
+  "kf6-kitemmodels"
+  "~apt:libxml2"
+  "qt6-base"
+  "qt6-declarative"
 )
 
 makedepends=(

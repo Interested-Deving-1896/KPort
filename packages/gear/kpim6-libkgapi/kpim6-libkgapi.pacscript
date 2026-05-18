@@ -23,8 +23,6 @@ depends=(
   "kf6-kcalendarcore"
   "kf6-kcontacts"
   "kf6-kwallet"
-  "~apt:libc6"
-  "~apt:libstdc++6"
   "qt6-base"
 )
 

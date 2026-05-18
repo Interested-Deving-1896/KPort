@@ -20,7 +20,6 @@ sha256sums=(
 )
 
 depends=(
-  "python3"
   "python3-pyside6.qtcore"
 )
 
@@ -44,9 +43,7 @@ makedepends=(
   "qt6-base-dev"
   "qt6-tools-dev"
   "xauth"
-  "<!nocheck>"
   "xvfb"
-  "<!nocheck>"
 )
 
 # ── KPort extensions ──────────────────────────────────────────────────────────

@@ -21,7 +21,18 @@ sha256sums=(
 )
 
 depends=(
-  "ttf-sjfonts"
+  "~apt:ttf-sjfonts"
+  "kf6-kconfig"
+  "kf6-kcoreaddons"
+  "kf6-kcrash"
+  "kf6-kdbusaddons"
+  "kf6-kguiaddons"
+  "kf6-ki18n"
+  "kf6-kxmlgui"
+  "qt6-base"
+  "qt6-declarative"
+  "qt6-multimedia"
+  "qt6-svg"
 )
 
 makedepends=(

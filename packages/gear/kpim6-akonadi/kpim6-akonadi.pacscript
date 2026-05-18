@@ -18,7 +18,6 @@ sha256sums=(
 )
 
 depends=(
-  "kf6-extra-cmake-modules"
   "kf6-kirigami"
   "kf6-kirigami-addons"
   "kf6-kcolorscheme"
@@ -31,10 +30,7 @@ depends=(
   "kf6-kitemmodels"
   "kf6-kwidgetsaddons"
   "kf6-kxmlgui"
-  "~apt:libc6"
-  "~apt:libgcc-s1"
   "~apt:liblzma5"
-  "~apt:libstdc++6"
   "~apt:libxml2"
   "qt6-base"
   "qt6-declarative"
