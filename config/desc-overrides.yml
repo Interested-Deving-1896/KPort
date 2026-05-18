@@ -1,0 +1,17 @@
+# config/desc-overrides.yml
+#
+# Manual pkgdesc overrides for packages where the auto-generated description
+# is wrong or misleading (e.g. Neon merged-packages whose debian/control
+# synopsis describes a sub-package rather than the main library, and which
+# have no upstream metainfo.yaml to fall back to).
+#
+# Format:
+#   <kport-pkgname>: "Description text"
+#
+# The generator checks this file after metainfo.yaml lookup and before
+# falling back to debian/control.  Entries here take precedence over both.
+
+desc_overrides:
+  kf6-bluez-qt:    "Qt-style wrapper library for the BlueZ Bluetooth stack"
+  kf6-kcontacts:   "API for address book data"
+  kf6-kdeclarative: "Integration of QML and KDE Frameworks"

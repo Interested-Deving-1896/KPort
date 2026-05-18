@@ -41,6 +41,7 @@ FILTER_PACKAGE=""
 
 SOURCES_FILE="${KPORT_ROOT}/config/sources.yml"
 DEP_MAP_FILE="${KPORT_ROOT}/config/dep-map.yml"
+DESC_OVERRIDES_FILE="${KPORT_ROOT}/config/desc-overrides.yml"
 GENERATED_DIR="${KPORT_ROOT}/generated"
 CANDIDATES_FILE="${GENERATED_DIR}/dep-map-candidates.yml"
 CACHE_FILE="${KPORT_ROOT}/db/sources-cache.json"
@@ -195,21 +196,39 @@ for dep in raw_bd.split(','):
         deps.append(dep)
 print(f"BUILD_DEPENDS={' '.join(deps)}")
 
-# Find the primary binary package: not -dev, not transitional (no Replaces only)
+# Find the primary binary package.
+# Skip sub-package stanzas whose name suffix or description prefix indicates
+# they are not the main installable binary (dev headers, docs, data-only,
+# CLI tools, transitional dummies, etc.).
+_SUB_PKG_SUFFIXES = ('-dev', '-doc', '-docs', '-data', '-dbg', '-debug',
+                     '-bin', '-tools', '-cli', '-common', '-runtime',
+                     '-examples', '-demos')
+_SUB_DESC_PREFIXES = ('data files for', 'runtime files for', 'documentation for',
+                      'development files for', 'debug symbols for',
+                      'command line tool for', 'commandline tool for',
+                      'dummy transitional', 'transitional dummy',
+                      'transitional package', 'arch independent files')
+
 primary = None
 for b in binary_stanzas:
     name = b.get('package', '')
-    desc = b.get('description', '')
-    # Skip -dev packages and dummy transitionals
-    if name.endswith('-dev'):
+    desc = b.get('description', '').lower()
+    # Skip by name suffix
+    if any(name.endswith(s) for s in _SUB_PKG_SUFFIXES):
         continue
-    if 'transitional' in desc.lower() or 'dummy' in desc.lower():
+    # Skip by description prefix (catches merged packages where the first
+    # stanza is a data/runtime sub-package)
+    if any(desc.startswith(p) for p in _SUB_DESC_PREFIXES):
+        continue
+    if 'transitional' in desc or 'dummy' in desc:
         continue
     if primary is None:
         primary = b
 
+_used_fallback = False
 if primary is None and binary_stanzas:
     primary = binary_stanzas[0]
+    _used_fallback = True
 
 if primary:
     pkg_name = primary.get('package', '')
@@ -217,6 +236,45 @@ if primary:
     # The field value has continuation lines joined with spaces by our parser,
     # so split on ' . ' (the Debian paragraph separator) and take the first part.
     raw_desc = primary.get('description', '')
+
+    # When the fallback stanza was selected (all stanzas were sub-packages),
+    # the synopsis is often "data files for X" or similar.  In that case,
+    # skip the synopsis and use the first sentence of the long description.
+    #
+    # The parser joins all continuation lines with spaces, so the field looks like:
+    #   "data files for pkg RealDesc first sentence. . Second paragraph."
+    # The Debian paragraph separator ". " becomes " . " in the joined string.
+    # The synopsis has no trailing period — the long desc starts at the first
+    # uppercase word that follows the package-name token(s) after the prefix.
+    if _used_fallback:
+        parts = raw_desc.split(' . ')
+        synopsis_chunk = parts[0].strip()  # may include long-desc first sentence
+        if any(synopsis_chunk.lower().startswith(p) for p in _SUB_DESC_PREFIXES):
+            # Strategy 1: find ". Capital" boundary inside the chunk (synopsis ends with period)
+            m = re.search(r'\.\s+([A-Z])', synopsis_chunk)
+            if m:
+                raw_desc = synopsis_chunk[m.start(1):]
+            else:
+                # Strategy 2: strip the matched prefix and the package-name token(s)
+                # that follow it, then use the remainder as the description.
+                # The prefix is all-lowercase; after it comes the pkg name (one or
+                # more hyphenated/lowercase tokens), then the real description which
+                # starts with an uppercase letter.
+                matched_prefix = next(p for p in _SUB_DESC_PREFIXES
+                                      if synopsis_chunk.lower().startswith(p))
+                after_prefix = synopsis_chunk[len(matched_prefix):].strip()
+                # Skip pkg-name tokens (no uppercase start) to reach the description
+                words = after_prefix.split()
+                found = False
+                for i, w in enumerate(words):
+                    if w[0].isupper():
+                        raw_desc = ' '.join(words[i:])
+                        found = True
+                        break
+                # Strategy 3: fall back to parts[1] if available
+                if not found and len(parts) > 1:
+                    raw_desc = parts[1].strip()
+
     # Use the first sentence (up to first full stop) as the synopsis
     first_sentence = re.split(r'\.\s', raw_desc)[0].strip()
     # If still too long, truncate at word boundary before 80 chars
@@ -327,6 +385,21 @@ load_dep_map() {
   info "Loaded ${#DEP_MAP[@]} dep-map entries"
 }
 
+# Load desc-overrides.yml into the DESC_OVERRIDES associative array.
+declare -A DESC_OVERRIDES=()
+load_desc_overrides() {
+  local file="$1"
+  [[ -f "$file" ]] || return 0   # optional file — silently skip if absent
+  while IFS= read -r line; do
+    [[ "$line" =~ ^[[:space:]]*# ]] && continue
+    [[ -z "${line// }" ]] && continue
+    [[ "$line" =~ ^desc_overrides: ]] && continue
+    if [[ "$line" =~ ^[[:space:]]+([^:]+):[[:space:]]+\"(.+)\"$ ]]; then
+      DESC_OVERRIDES["${BASH_REMATCH[1]// /}"]="${BASH_REMATCH[2]}"
+    fi
+  done < "$file"
+}
+
 # Translate a single Debian dep name to a KPort dep name.
 # Outputs the translated name, or the original with a warning if unmapped.
 # Sets UNMAPPED flag if the dep was not in the map.
@@ -377,14 +450,102 @@ infer_category() {
   echo "$category_hint"
 }
 
-# Infer KDE Frameworks tier from Build-Depends.
-# A package is tier N if all its KF6 deps are tier < N.
-# For generation purposes we use a simple heuristic: packages with no KF6
-# build-deps are tier1; those depending on tier1 are tier2, etc.
-# We default to tier1 for frameworks and let the human reviewer adjust.
+# Derive the invent.kde.org project path from a Homepage URL.
+# Handles the common patterns:
+#   https://projects.kde.org/projects/…/<ns>/<repo>  → <ns>/<repo>  (last two segments)
+#   https://invent.kde.org/<ns>/<repo>               → <ns>/<repo>
+# Returns empty string if the URL doesn't match a known pattern.
+#
+# Namespace aliases: some projects.kde.org namespaces differ from invent.kde.org.
+declare -A _KDE_NS_ALIASES=(
+  [kdesupport]="frameworks"
+  [kde/frameworks]="frameworks"
+  [kde/pim]="pim"
+  [kde/workspace]="plasma"
+)
+_homepage_to_invent_path() {
+  local homepage="$1"
+  local path=""
+  # projects.kde.org/projects/... — take the last two path segments
+  if [[ "$homepage" =~ projects\.kde\.org/projects/(.+) ]]; then
+    local tail="${BASH_REMATCH[1]%/}"   # strip trailing slash
+    # Extract last two slash-separated segments
+    local repo ns
+    repo="${tail##*/}"
+    ns="${tail%/*}"
+    ns="${ns##*/}"
+    # Apply multi-segment namespace aliases (e.g. kde/frameworks → frameworks)
+    local full_ns="${tail%/*}"
+    for alias_key in "${!_KDE_NS_ALIASES[@]}"; do
+      if [[ "$full_ns" == "$alias_key" ]]; then
+        ns="${_KDE_NS_ALIASES[$alias_key]}"
+        break
+      fi
+    done
+    [[ -n "$ns" && -n "$repo" ]] && path="${ns}/${repo}"
+  # invent.kde.org/<ns>/<repo>
+  elif [[ "$homepage" =~ invent\.kde\.org/([^/]+/[^/?#]+) ]]; then
+    path="${BASH_REMATCH[1]%/}"
+  fi
+  echo "$path"
+}
+
+# Fetch metainfo.yaml from the upstream KDE repo on invent.kde.org.
+# Prints two lines:  METAINFO_DESC=<value>  and  METAINFO_TIER=<value>
+# Prints nothing (silently) if the file cannot be fetched.
+fetch_metainfo() {
+  local homepage="$1"
+  local invent_path
+  invent_path=$(_homepage_to_invent_path "$homepage")
+  [[ -z "$invent_path" ]] && return 0
+
+  local encoded_path
+  encoded_path=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1], safe=''))" "$invent_path")
+
+  local raw
+  # Use -L to follow redirects (some KDE repos redirect to a canonical project ID URL)
+  raw=$(curl -sfL "${GITLAB_API}/projects/${encoded_path}/repository/files/metainfo.yaml/raw?ref=master" \
+    ${GITLAB_TOKEN:+-H "PRIVATE-TOKEN: ${GITLAB_TOKEN}"} 2>/dev/null) || return 0
+  [[ -z "$raw" ]] && return 0
+
+  # Parse description and tier from metainfo.yaml.
+  # Use 'subgroup' (e.g. "Tier 3") rather than 'tier' (numeric) because a handful
+  # of KDE repos have an off-by-one in the numeric field while subgroup is correct.
+  local desc tier
+  desc=$(echo "$raw" | python3 -c "
+import sys, re
+for line in sys.stdin:
+    m = re.match(r'^description:\s*(.+)', line)
+    if m:
+        print(m.group(1).strip().strip('\"'))
+        break
+" 2>/dev/null)
+  tier=$(echo "$raw" | python3 -c "
+import sys, re
+for line in sys.stdin:
+    m = re.match(r'^\s*subgroup:\s*Tier\s*(\d+)', line)
+    if m:
+        print(m.group(1))
+        break
+" 2>/dev/null)
+
+  [[ -n "$desc" ]] && echo "METAINFO_DESC=${desc}"
+  [[ -n "$tier" ]] && echo "METAINFO_TIER=${tier}"
+}
+
+# Infer KDE Frameworks tier.
+# Uses metainfo tier value when available; falls back to a heuristic based on
+# the count of kf6- build-deps.
 infer_frameworks_tier() {
   local build_depends="$1"
-  # Count KF6 framework deps (rough heuristic)
+  local metainfo_tier="$2"
+
+  if [[ -n "$metainfo_tier" && "$metainfo_tier" =~ ^[1-4]$ ]]; then
+    echo "tier${metainfo_tier}"
+    return
+  fi
+
+  # Fallback heuristic: count kf6- build-deps
   local kf6_count
   kf6_count=$(echo "$build_depends" | tr ' ' '\n' | grep -c '^kf6-' 2>/dev/null || echo 0)
   if [[ "$kf6_count" -eq 0 ]]; then
@@ -666,6 +827,23 @@ process_project() {
   [[ -z "$pkg_name" ]] && pkg_name="$project_name"
   [[ -z "$pkg_desc" ]] && pkg_desc="KDE package: ${pkg_name}"
 
+  # Fetch metainfo.yaml from upstream KDE repo for authoritative description + tier
+  local metainfo metainfo_desc metainfo_tier
+  metainfo=$(fetch_metainfo "$homepage")
+  metainfo_desc=$(echo "$metainfo" | grep '^METAINFO_DESC=' | cut -d= -f2-)
+  metainfo_tier=$(echo "$metainfo" | grep '^METAINFO_TIER=' | cut -d= -f2-)
+
+  # Apply description in priority order:
+  #   1. desc-overrides.yml (explicit manual override)
+  #   2. upstream metainfo.yaml description
+  #   3. debian/control synopsis (already in pkg_desc from parse_control)
+  local override_desc="${DESC_OVERRIDES[$pkg_name]:-}"
+  if [[ -n "$override_desc" ]]; then
+    pkg_desc="$override_desc"
+  elif [[ -n "$metainfo_desc" ]]; then
+    pkg_desc="$metainfo_desc"
+  fi
+
   # Fetch debian/changelog for version
   local changelog_raw version
   changelog_raw=$(gl_raw "$project_id" "debian/changelog" "$branch") || true
@@ -680,7 +858,7 @@ process_project() {
   # Infer metadata
   local tier gpu_min slot
   if [[ "$category" == "frameworks" ]]; then
-    tier=$(infer_frameworks_tier "$build_depends")
+    tier=$(infer_frameworks_tier "$build_depends" "$metainfo_tier")
     category="frameworks/${tier}"
     slot="6"
   elif [[ "$category" == "plasma" ]]; then
@@ -875,6 +1053,7 @@ main() {
   [[ -n "$GITLAB_TOKEN"    ]] && info "Using authenticated GitLab API"
 
   load_dep_map "$DEP_MAP_FILE"
+  load_desc_overrides "$DESC_OVERRIDES_FILE"
   echo ""
 
   local source_lines
@@ -885,8 +1064,8 @@ main() {
   while IFS='|' read -r src_name base_url group category branch; do
     [[ -z "$src_name" ]] && continue
 
-    # Apply source filter
-    if [[ -n "$FILTER_SOURCE" && "$src_name" != *"$FILTER_SOURCE"* ]]; then
+    # Apply source filter — matches against name or group path
+    if [[ -n "$FILTER_SOURCE" && "$src_name" != *"$FILTER_SOURCE"* && "$group" != *"$FILTER_SOURCE"* ]]; then
       continue
     fi
 
@@ -909,9 +1088,12 @@ main() {
         "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1], safe=''))" \
         "$group")
       local project_json
+      # Use exact path match to avoid prefix collisions (e.g. kf6-kactivities
+      # matching kf6-kactivities-stats when stats sorts first in results).
       project_json=$(gl_get \
         "${GITLAB_API}/groups/${encoded_group}/projects?search=${FILTER_PACKAGE}" \
-        | jq -c '.[0] // empty') || true
+        | jq -c --arg pkg "${group}/${FILTER_PACKAGE}" \
+            'map(select(.path_with_namespace == $pkg)) | .[0] // empty') || true
       if [[ -n "$project_json" ]]; then
         process_project "$project_json" "$category" "$branch"
         (( total_packages++ )) || true
