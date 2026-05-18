@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kdav-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "7535b2b9a6eb35e5b539de780f2d2b84668eb97eec3b7a6cf14d91fbe6bedfec"
 )
 
 depends=(

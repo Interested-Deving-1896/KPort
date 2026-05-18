@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/ktextwidgets-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "6511f9909f90fac951e2873a44dd451b8ac71d38085a62c65a6fb5028e62d84d"
 )
 
 depends=(

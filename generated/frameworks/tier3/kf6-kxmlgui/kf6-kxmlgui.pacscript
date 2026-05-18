@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kxmlgui-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "4383855cea5a7f9a269c72dda15490b8d70c1d23d17950963937332fc5d6b7a0"
 )
 
 depends=(

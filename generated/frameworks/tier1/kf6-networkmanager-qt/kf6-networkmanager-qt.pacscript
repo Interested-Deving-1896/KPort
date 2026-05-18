@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/networkmanager-qt-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "a5cfed06af6156161f7fee56efe1521a6e9e26119327069f1799986f90b432e5"
 )
 
 depends=(

@@ -13,10 +13,10 @@ url="https://projects.kde.org/projects/frameworks/syntax-highlighting"
 license=("LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/frameworks/6.26/kf6-syntax-highlighting-6.26.0.tar.xz"
+  "https://download.kde.org/stable/frameworks/6.26/syntax-highlighting-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "a4e86d167cd5f3c4318584119451f891551c24cd4a0ff1f7ef95e2476a39c5ac"
 )
 
 depends=(

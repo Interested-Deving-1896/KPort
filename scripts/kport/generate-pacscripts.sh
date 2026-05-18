@@ -374,8 +374,14 @@ load_dep_map() {
     [[ -z "${line// }" ]] && continue
     # Skip the dep_map: header
     [[ "$line" =~ ^dep_map: ]] && continue
-    # Parse "  key: value" — strip leading spaces, quotes
-    if [[ "$line" =~ ^[[:space:]]+([^:]+):[[:space:]]+\"?([^\"]+)\"?$ ]]; then
+    # Parse "  key: value" or "  \"key\": value" — strip leading spaces, quotes
+    # Quoted keys (e.g. "python3:any") are matched by the first branch.
+    if [[ "$line" =~ ^[[:space:]]+\"([^\"]+)\":[[:space:]]+\"?([^\"]+)\"?$ ]]; then
+      local key="${BASH_REMATCH[1]}"
+      local val="${BASH_REMATCH[2]// /}"
+      DEP_MAP["$key"]="$val"
+      DEP_MAP_KEYS+=("$key")
+    elif [[ "$line" =~ ^[[:space:]]+([^:]+):[[:space:]]+\"?([^\"]+)\"?$ ]]; then
       local key="${BASH_REMATCH[1]// /}"
       local val="${BASH_REMATCH[2]// /}"
       DEP_MAP["$key"]="$val"

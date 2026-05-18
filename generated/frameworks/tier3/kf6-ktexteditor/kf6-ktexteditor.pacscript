@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/ktexteditor-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "ec7bc094f93d514b5f675ae95c274dd24acc47769d971606d8708cc88f811341"
 )
 
 depends=(

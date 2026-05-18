@@ -13,10 +13,10 @@ url="https://projects.kde.org/projects/kde/frameworks/kwayland"
 license=("LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/frameworks/0.0/kwayland-0.0.tar.xz"
+  "https://download.kde.org/stable/plasma/6.4.3/kwayland-6.4.3.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "ff507d3c435407b3831ead1ea63f6dea6c778ba6a1f5b45895d5fec6f5c1f982"
 )
 
 depends=(

@@ -13,10 +13,10 @@ url="https://invent.kde.org/libraries/polkit-qt-1"
 license=("LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/polkit-qt-1/polkit-qt-1-0.201.tar.xz"
+  "https://download.kde.org/stable/polkit-qt-1/polkit-qt-1-0.201.1.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "95d8e2cae530c546d9437459deb8a1bea38d572f0f9772cc2860dc143637f256"
 )
 
 depends=(

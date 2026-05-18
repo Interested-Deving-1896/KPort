@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kservice-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "f8528524ccafb6a495962dd3260c442377920169f1c444f11657ea42558a53b6"
 )
 
 depends=(

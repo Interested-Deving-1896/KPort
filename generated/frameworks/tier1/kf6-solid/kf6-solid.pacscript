@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/solid-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "85cfab9b0787f59478661140997c485fadab62cec535ffcef2953d312f736c4a"
 )
 
 depends=(

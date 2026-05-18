@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kbookmarks-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "82e8794281870686da9e7e7b5ddc0839f50b15d919357490d508faccb2635030"
 )
 
 depends=(

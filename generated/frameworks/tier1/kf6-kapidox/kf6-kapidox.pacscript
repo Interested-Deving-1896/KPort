@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kapidox-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "6def21600efa777aedd8eac97664e0e3d55fb2dc0898559e6c7bbafda87e16ef"
 )
 
 depends=(

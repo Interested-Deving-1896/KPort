@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kcmutils-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "6d0810649b71528124cdf9dbdeb8b3c6c6d31d787325ca3e4a20c536ecbdf2d9"
 )
 
 depends=(

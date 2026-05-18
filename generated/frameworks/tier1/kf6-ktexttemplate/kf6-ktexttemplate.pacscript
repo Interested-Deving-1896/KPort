@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/ktexttemplate-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "8b84643c32caf58812fec5a910a1fb98865bc7f91e778af860fa98b79d0ff038"
 )
 
 depends=(

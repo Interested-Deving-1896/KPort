@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/knotifyconfig-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "062e22f48a1da485d42ef56b37db1fc502f5f9305871483627d218f357560a28"
 )
 
 depends=(

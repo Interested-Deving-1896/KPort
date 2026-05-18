@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/prison-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "0414ddc310bca5eecfc1a6f9d4463b8a6d81894db4128ac43b4f8c1e14b73b5b"
 )
 
 depends=(

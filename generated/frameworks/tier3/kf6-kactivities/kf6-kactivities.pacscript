@@ -13,10 +13,10 @@ url="https://projects.kde.org/projects/frameworks/kactivities"
 license=("LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/frameworks/0.0/kactivities-0.0.tar.xz"
+  "https://download.kde.org/stable/plasma/6.4.3/plasma-activities-6.4.3.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "1c8dca746602defacd495b9ae637c1700d3be7e7e3cc5d499a5fd669a0b98ef0"
 )
 
 depends=(

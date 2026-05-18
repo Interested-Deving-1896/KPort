@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kauth-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "e6b6562114c2cb71db6ca48fdf0ebed2df70e164c48295b35433a80b03385847"
 )
 
 depends=(

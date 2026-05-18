@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kpeople-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "bd1092cd9900d0ee3b3d08d0971e669a82d1a11c9bec6e2322d713b59191b873"
 )
 
 depends=(

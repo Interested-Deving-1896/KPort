@@ -13,10 +13,10 @@ url="https://invent.kde.org/libraries/ktextaddons"
 license=("LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/ktextaddons/ktextaddons-2.0.tar.xz"
+  "https://download.kde.org/stable/ktextaddons/ktextaddons-2.0.1.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "b52356be07215f0ace0b8e2a6df8bcd8f3572ef5c0aff89631b043b10adb0c8a"
 )
 
 depends=(

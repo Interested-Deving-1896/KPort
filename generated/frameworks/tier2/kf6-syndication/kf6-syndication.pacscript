@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/syndication-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "6130b8bc976cb078eda34b833ecd558a156b4e6bc4cb55e57ac362cb2998ba47"
 )
 
 depends=(

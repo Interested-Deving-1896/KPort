@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kwidgetsaddons-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "65044882e30b305fe9fb20331a354cd811ca9d80b5c7f9fa722639f3334fe630"
 )
 
 depends=(

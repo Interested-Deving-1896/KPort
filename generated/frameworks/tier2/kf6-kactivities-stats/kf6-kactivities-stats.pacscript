@@ -13,10 +13,10 @@ url="https://projects.kde.org/projects/frameworks/kactivities-stats"
 license=("LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/frameworks/0.0/kactivities-stats-0.0.tar.xz"
+  "https://download.kde.org/stable/plasma/6.4.3/plasma-activities-stats-6.4.3.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "991002e3da9b5969b9583cd169050a23aacbe02f2d7d4ab1a19f5bd7c72b3b6b"
 )
 
 depends=(

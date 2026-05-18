@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kiconthemes-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "ed6c0c0bfed517dd5b6462d9b1c84ebe7bc99c7a75214921b5978f086df8653d"
 )
 
 depends=(

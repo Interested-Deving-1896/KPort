@@ -13,10 +13,10 @@ url="http://projects.kde.org/sonnet"
 license=("LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/frameworks/6.26/kf6-sonnet-6.26.0.tar.xz"
+  "https://download.kde.org/stable/frameworks/6.26/sonnet-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "3ac4e165c0b3c79eda416b754bb837292f354188a1220f2065f57f686489af25"
 )
 
 depends=(

@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kuserfeedback-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "6cc18dca65a24af2ac262cb9c8761991701c8081a7133487b4ec936003f3f864"
 )
 
 depends=(

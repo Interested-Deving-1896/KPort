@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/attica-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "eb2d3d2d8b12c2ab4d192c4ae6f07b0188a40aa002b3056db6369b47b2f9df96"
 )
 
 depends=(

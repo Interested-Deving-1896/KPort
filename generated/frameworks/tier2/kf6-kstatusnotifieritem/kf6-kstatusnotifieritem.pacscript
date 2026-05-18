@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kstatusnotifieritem-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "898914c94820f99889d879f33cabbb5fbe7b9f4e24a6a1d9a9b4439489bc3266"
 )
 
 depends=(
