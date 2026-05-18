@@ -128,6 +128,10 @@ rm -f "$gen_pacscript"
 rmdir "$(dirname "$gen_pacscript")" 2>/dev/null || true
 
 kport_info "${C_GREEN}✔${C_RESET} Promoted ${pkgname} → ${dest_file}"
+
+# Invalidate search index so next search triggers a rebuild
+rm -f "${KPORT_DB}/index.json" 2>/dev/null || true
+
 echo ""
 kport_info "Next steps:"
 echo "  1. Review ${dest_file}"

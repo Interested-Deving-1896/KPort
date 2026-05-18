@@ -6,12 +6,14 @@
 # Commands:
 #   detect              Detect hardware and write hardware.conf
 #   search  <query>     Search for packages by name or description
+#   index               Build the search index (run after sync or promote)
 #   info    <pkg>       Show package metadata, USE flags, and dependencies
 #   install <pkg...>    Build and install packages
 #   remove  <pkg...>    Uninstall packages
 #   upgrade             Rebuild world set for changed USE flags or versions
 #   promote <pkg>       Move a generated/ skeleton to packages/ for review
 #   sync                Pull updates for all enabled overlay repositories
+#   world               List installed packages
 #
 # Global options:
 #   --root <path>       KPort tree root (default: auto-detected)
