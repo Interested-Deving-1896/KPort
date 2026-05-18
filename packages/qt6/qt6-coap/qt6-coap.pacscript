@@ -8,7 +8,7 @@
 
 pkgname="qt6-coap"
 pkgver="6.10.2"
-pkgdesc="Qt Coap Library Constrained Application Protocol (CoAP) is a machine-to-machine"
+pkgdesc="Qt CoAP library — Constrained Application Protocol (RFC 7252) client"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://www.qt.io/developers/"
 license=("GPL-2.0-or-later")

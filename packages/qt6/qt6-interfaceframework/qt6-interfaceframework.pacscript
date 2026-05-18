@@ -7,17 +7,17 @@
 # ── Standard Pacstall variables ───────────────────────────────────────────────
 
 pkgname="qt6-interfaceframework"
-pkgver="6.9.3"
-pkgdesc="Qt Interface Framework Generator Qt Interface"
+pkgver="6.10.2"
+pkgdesc="Qt Interface Framework — code generator and runtime for feature-based APIs"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://www.qt.io/developers/"
 license=("GPL-2.0-or-later")
 
 source=(
-  "https://github.com/qt/qtinterfaceframework/archive/refs/tags/v6.9.3.tar.gz"
+  "https://github.com/qt/qtinterfaceframework/archive/refs/tags/v6.10.2.tar.gz"
 )
 sha256sums=(
-  "ac02cb9019a06e3fbbd975ceb1dfbe2688729be63a82e68889d78663948daf0b"
+  "3216e85233c5a3853471698acc54a54db26d7f6781c3a5578847bd4d3a272a47"
 )
 
 depends=(
