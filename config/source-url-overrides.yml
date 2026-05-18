@@ -1,0 +1,40 @@
+# config/source-url-overrides.yml
+#
+# Manual source URL overrides for packages whose debian/watch file is wrong
+# (e.g. copy-paste errors in the Neon packaging repo that point to a different
+# package's tarball entirely).
+#
+# Format:
+#   <kport-pkgname>: "<url-template>"
+#
+# URL templates support the same placeholders as build_source_url:
+#   $pkgver        — full version (e.g. 6.26.0)
+#   $pkgver_minor  — major.minor (e.g. 6.26)
+#   $_pkgname      — KPort package name (e.g. kf6-syntax-highlighting)
+#
+# The generator checks this file before using the watch-derived URL.
+# Entries here take precedence over both the watch file and the category
+# fallback pattern.
+
+source_url_overrides:
+  # ── Wrong watch file (points to a different package entirely) ─────────────
+  # Each of these has a copy-paste error in neon/kf6/*/debian/watch.
+  kf6-syntax-highlighting: "https://download.kde.org/stable/frameworks/$pkgver_minor/syntax-highlighting-$pkgver.tar.xz"
+  kf6-sonnet:              "https://download.kde.org/stable/frameworks/$pkgver_minor/sonnet-$pkgver.tar.xz"
+  kf6-kcalendarcore:       "https://download.kde.org/stable/frameworks/$pkgver_minor/kcalendarcore-$pkgver.tar.xz"
+  kf6-qqc2-desktop-style:  "https://download.kde.org/stable/frameworks/$pkgver_minor/qqc2-desktop-style-$pkgver.tar.xz"
+  kf6-oxygen-icon-theme:   "https://download.kde.org/stable/oxygen-icons/oxygen-icons-$pkgver.tar.xz"
+  # ktextaddons watch points to kservice — version comes from wrong changelog.
+  # Pin to the version Neon unstable currently ships.
+  kf6-ktextaddons:         "https://download.kde.org/stable/ktextaddons/ktextaddons-2.0.1.tar.xz"
+  libpolkit-qt6-1-1:       "https://download.kde.org/stable/polkit-qt-1/polkit-qt-1-$pkgver.tar.xz"
+
+  # ── Plasma-path packages (moved from KF release path to Plasma) ───────────
+  # These packages are now released as part of Plasma, not KDE Frameworks.
+  # Their Neon changelog version is "0.0" (placeholder), so $pkgver cannot be
+  # used.  URLs are pinned to the Plasma release that Neon unstable tracks.
+  # Update these when Neon bumps the Plasma version.
+  kf6-kactivities:         "https://download.kde.org/stable/plasma/6.4.3/plasma-activities-6.4.3.tar.xz"
+  kf6-kactivities-stats:   "https://download.kde.org/stable/plasma/6.4.3/plasma-activities-stats-6.4.3.tar.xz"
+  kf6-kwayland:            "https://download.kde.org/stable/plasma/6.4.3/kwayland-6.4.3.tar.xz"
+  kf6-plasma-framework:    "https://download.kde.org/stable/plasma/6.4.3/libplasma-6.4.3.tar.xz"

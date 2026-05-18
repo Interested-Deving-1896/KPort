@@ -42,6 +42,7 @@ FILTER_PACKAGE=""
 SOURCES_FILE="${KPORT_ROOT}/config/sources.yml"
 DEP_MAP_FILE="${KPORT_ROOT}/config/dep-map.yml"
 DESC_OVERRIDES_FILE="${KPORT_ROOT}/config/desc-overrides.yml"
+SOURCE_URL_OVERRIDES_FILE="${KPORT_ROOT}/config/source-url-overrides.yml"
 GENERATED_DIR="${KPORT_ROOT}/generated"
 CANDIDATES_FILE="${GENERATED_DIR}/dep-map-candidates.yml"
 CACHE_FILE="${KPORT_ROOT}/db/sources-cache.json"
@@ -406,6 +407,27 @@ load_desc_overrides() {
   done < "$file"
 }
 
+# Load source-url-overrides.yml into SOURCE_URL_OVERRIDES associative array.
+# Uses Python to parse so that URL values containing $ are not misinterpreted
+# by the bash regex engine.  Emits "key TAB val" lines; bash reads them with
+# IFS=$'\t'.
+declare -A SOURCE_URL_OVERRIDES=()
+load_source_url_overrides() {
+  local file="$1"
+  [[ -f "$file" ]] || return 0
+  while IFS=$'\t' read -r key val; do
+    [[ -n "$key" ]] && SOURCE_URL_OVERRIDES["$key"]="$val"
+  done < <(python3 - "$file" << 'PYEOF'
+import sys, re
+with open(sys.argv[1]) as f:
+    for line in f:
+        m = re.match(r'^\s+([^:#][^:]*?):\s+"(.+)"\s*$', line)
+        if m:
+            print(m.group(1).strip() + "\t" + m.group(2))
+PYEOF
+  )
+}
+
 # Translate a single Debian dep name to a KPort dep name.
 # Outputs the translated name, or the original with a warning if unmapped.
 # Sets UNMAPPED flag if the dep was not in the map.
@@ -615,6 +637,17 @@ build_source_url() {
   # Minor version = first two components (e.g. "6.26.0" → "6.26")
   local minor_ver
   minor_ver=$(echo "$version" | cut -d. -f1-2)
+
+  # Check source-url-overrides.yml first — takes precedence over watch file.
+  # Needed for packages whose debian/watch points to the wrong tarball entirely.
+  local override_url="${SOURCE_URL_OVERRIDES[$pkg_name]:-}"
+  if [[ -n "$override_url" ]]; then
+    override_url="${override_url/\$pkgver_minor/$minor_ver}"
+    override_url="${override_url/\$pkgver/$version}"
+    override_url="${override_url/\$_pkgname/$pkg_name}"
+    echo "$override_url"
+    return
+  fi
 
   if [[ -n "$watch_url" ]]; then
     local url="$watch_url"
@@ -1060,6 +1093,7 @@ main() {
 
   load_dep_map "$DEP_MAP_FILE"
   load_desc_overrides "$DESC_OVERRIDES_FILE"
+  load_source_url_overrides "$SOURCE_URL_OVERRIDES_FILE"
   echo ""
 
   local source_lines

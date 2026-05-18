@@ -64,6 +64,7 @@ _kport_setup_color
 # ── Logging ───────────────────────────────────────────────────────────────────
 
 KPORT_VERBOSE="${KPORT_VERBOSE:-false}"
+export KPORT_VERBOSE
 
 kport_info()    { echo -e "${C_GREEN}::${C_RESET} $*"; }
 kport_warn()    { echo -e "${C_YELLOW}!! ${C_RESET}$*" >&2; }
@@ -89,7 +90,13 @@ while [[ $# -gt 0 ]]; do
       sed -n '2,/^$/p' "${BASH_SOURCE[0]}" | grep '^#' | sed 's/^# \?//'
       exit 0 ;;
     --) shift; KPORT_ARGS+=("$@"); break ;;
-    -*) kport_die "Unknown option: $1 (try 'kport --help')" ;;
+    # Once a command name has been collected, pass unknown flags through to
+    # the sub-command rather than dying here.
+    -*) if [[ ${#KPORT_ARGS[@]} -gt 0 ]]; then
+          KPORT_ARGS+=("$1"); shift
+        else
+          kport_die "Unknown option: $1 (try 'kport --help')"
+        fi ;;
     *)  KPORT_ARGS+=("$1"); shift ;;
   esac
 done
@@ -113,8 +120,13 @@ if [[ ! -f "$CMD_SCRIPT" ]]; then
   exit 1
 fi
 
-# Source common library before dispatching
+# Source common library and export all its functions so they are available
+# in the sub-command script launched via exec bash below.
 # shellcheck source=lib/kport/common.sh
 source "${KPORT_LIB}/common.sh"
+export -f kport_find_pacscript kport_pacscript_var kport_pacscript_array \
+          kport_is_installed kport_db_read kport_db_write kport_db_remove \
+          kport_world_add kport_world_remove kport_hw_read kport_is_masked \
+          kport_header kport_kv kport_confirm
 
 exec bash "$CMD_SCRIPT" "${KPORT_CMD_ARGS[@]}"

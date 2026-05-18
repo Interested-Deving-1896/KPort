@@ -27,8 +27,6 @@ depends=(
 makedepends=(
   "bison"
   "cmake"
-  "dh-python"
-  "dh-sequence-python3"
   "doxygen"
   "graphviz"
   "kf6-extra-cmake-modules"
