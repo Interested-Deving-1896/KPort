@@ -1,0 +1,96 @@
+#!/usr/bin/env bash
+# KPort pacscript — frameworks/tier3/kf6-ktexteditor
+# Promoted from generated/ — review and test before merging to main
+#
+# Advanced embeddable text editor
+
+# ── Standard Pacstall variables ───────────────────────────────────────────────
+
+pkgname="kf6-ktexteditor"
+pkgver="6.26.0"
+pkgdesc="Advanced embeddable text editor"
+url="https://projects.kde.org/projects/frameworks/ktexteditor"
+license=("LGPL-2.0-or-later")
+
+source=(
+  "https://download.kde.org/stable/frameworks/6.26/ktexteditor-6.26.0.tar.xz"
+)
+sha256sums=(
+  "ec7bc094f93d514b5f675ae95c274dd24acc47769d971606d8708cc88f811341"
+)
+
+depends=(
+  "libjs-underscore"
+)
+
+makedepends=(
+  "cmake"
+  "doxygen"
+  "graphviz"
+  "kf6-extra-cmake-modules"
+  "kf6-karchive-dev"
+  "kf6-kbookmarks-dev"
+  "kf6-kcolorscheme-dev"
+  "kf6-kcompletion-dev"
+  "kf6-kconfig-dev"
+  "kf6-kcoreaddons-dev"
+  "kf6-kguiaddons-dev"
+  "kf6-ki18n-dev"
+  "kf6-kiconthemes-dev"
+  "kf6-kio-dev"
+  "kf6-kitemviews-dev"
+  "kf6-kjobwidgets-dev"
+  "kf6-kparts-dev"
+  "kf6-kservice-dev"
+  "kf6-kwidgetsaddons-dev"
+  "kf6-kxmlgui-dev"
+  "kf6-solid-dev"
+  "kf6-sonnet-dev"
+  "kf6-syntax-highlighting-dev"
+  "libcups2-dev"
+  "libeditorconfig-dev"
+  "libgit2-dev"
+  "perl"
+  "pkgconf"
+  "qt6-base-dev"
+  "qt6-declarative-dev"
+  "qt6-multimedia-dev"
+  "qt6-speech-dev"
+  "qt6-tools-dev"
+  "xauth"
+  "xvfb"
+)
+
+# ── KPort extensions ──────────────────────────────────────────────────────────
+
+KSLOT="6"
+KCATEGORY="frameworks/tier3"
+KNEON_CHANNEL="unstable"
+KCPU_MIN="x86-64-v1"
+KGPU_MIN="gpu-sw"
+
+KUSE=(
+  "-docs"
+  "-test"
+)
+
+# ── Build ─────────────────────────────────────────────────────────────────────
+
+build() {
+  _kport_lib="${KPORT_LIB_DIR:-/usr/lib/kport}/use-helpers.sh"
+  [[ -f "$_kport_lib" ]] && source "$_kport_lib"
+
+  cmake -B build -G Ninja \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_TESTING=$(use_flag test ON OFF 2>/dev/null || echo OFF) \
+    -DBUILD_QCH=$(use_flag docs ON OFF 2>/dev/null || echo OFF)
+
+  cmake --build build --parallel "$(nproc)"
+}
+
+# ── Package ───────────────────────────────────────────────────────────────────
+
+package() {
+  DESTDIR="$pkgdir" cmake --install build
+}

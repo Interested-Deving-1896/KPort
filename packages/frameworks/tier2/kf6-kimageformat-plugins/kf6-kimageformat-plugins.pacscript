@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+# KPort pacscript — frameworks/tier2/kf6-kimageformat-plugins
+# Promoted from generated/ — review and test before merging to main
+#
+# Image format plugins for Qt
+
+# ── Standard Pacstall variables ───────────────────────────────────────────────
+
+pkgname="kf6-kimageformat-plugins"
+pkgver="6.26.0"
+pkgdesc="Image format plugins for Qt"
+url="https://projects.kde.org/projects/frameworks/kimageformats"
+license=("LGPL-2.0-or-later")
+
+source=(
+  "https://download.kde.org/stable/frameworks/6.26/kimageformats-6.26.0.tar.xz"
+)
+sha256sums=(
+  "c192552ee1831fd5e09af4e3633bb24726dfb4031170c4285024683bedaf9972"
+)
+
+depends=(
+  "python3-imath"
+)
+
+makedepends=(
+  "cmake"
+  "kf6-extra-cmake-modules"
+  "kf6-karchive-dev"
+  "libavif-dev"
+  "libcups2-dev"
+  "libjxl-dev"
+  "libjxr-dev"
+  "libheif-dev"
+  "libopenexr-dev"
+  "libopenjp2-7-dev"
+  "libraw-dev"
+  "pkgconf"
+  "python3-imath"
+  "qt6-base-dev"
+)
+
+# ── KPort extensions ──────────────────────────────────────────────────────────
+
+KSLOT="6"
+KCATEGORY="frameworks/tier2"
+KNEON_CHANNEL="unstable"
+KCPU_MIN="x86-64-v1"
+KGPU_MIN="gpu-sw"
+
+KUSE=(
+  "-test"
+)
+
+# ── Build ─────────────────────────────────────────────────────────────────────
+
+build() {
+  _kport_lib="${KPORT_LIB_DIR:-/usr/lib/kport}/use-helpers.sh"
+  [[ -f "$_kport_lib" ]] && source "$_kport_lib"
+
+  cmake -B build -G Ninja \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DBUILD_TESTING=$(use_flag test ON OFF 2>/dev/null || echo OFF) \
+    -DBUILD_QCH=$(use_flag docs ON OFF 2>/dev/null || echo OFF)
+
+  cmake --build build --parallel "$(nproc)"
+}
+
+# ── Package ───────────────────────────────────────────────────────────────────
+
+package() {
+  DESTDIR="$pkgdir" cmake --install build
+}
