@@ -44,12 +44,34 @@ export KPORT_DB_WORLD KPORT_DB_INSTALLED
 kport_find_pacscript() {
   local pkgname="$1"
 
-  # Search overlays first (higher priority)
-  if [[ -d "$KPORT_OVERLAYS_DIR" ]]; then
-    local overlay_hit
-    overlay_hit=$(find "$KPORT_OVERLAYS_DIR" -name "${pkgname}.pacscript" \
-      -not -path "*/example/*" 2>/dev/null | head -1)
-    [[ -n "$overlay_hit" ]] && echo "$overlay_hit" && return 0
+  # Search enabled overlays in priority order (highest first)
+  # Overlays are registered in config/repositories.yml; only enabled ones are searched.
+  if [[ -d "$KPORT_OVERLAYS_DIR" && -f "${KPORT_CONFIG_DIR}/repositories.yml" ]]; then
+    # Extract enabled overlay names (simple grep-based parse, no yq dependency)
+    local overlay_name overlay_hit
+    while IFS= read -r overlay_name; do
+      [[ -z "$overlay_name" ]] && continue
+      overlay_hit=$(find "${KPORT_OVERLAYS_DIR}/${overlay_name}" \
+        -name "${pkgname}.pacscript" 2>/dev/null | head -1)
+      [[ -n "$overlay_hit" ]] && echo "$overlay_hit" && return 0
+    done < <(python3 -c "
+import re, sys
+try:
+    txt = open('${KPORT_CONFIG_DIR}/repositories.yml').read()
+    # Find all enabled overlay blocks and extract their names
+    blocks = re.findall(r'-\s+name:\s+(\S+).*?enabled:\s*(true|false)', txt, re.DOTALL)
+    # Sort by priority (higher first) — extract priority per block
+    named = []
+    for name, enabled in blocks:
+        if enabled == 'true':
+            m = re.search(r'-\s+name:\s+' + re.escape(name) + r'.*?priority:\s*(\d+)', txt, re.DOTALL)
+            priority = int(m.group(1)) if m else 0
+            named.append((priority, name))
+    for _, name in sorted(named, reverse=True):
+        print(name)
+except Exception:
+    pass
+" 2>/dev/null)
   fi
 
   # Search main packages tree
