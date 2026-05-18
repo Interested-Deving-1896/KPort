@@ -17,7 +17,7 @@
 #
 # Default accepted keywords (equivalent to ACCEPT_KEYWORDS in make.conf):
 accept_keywords:
-  stability: [stable, testing]
+  stability: [stable, testing, unstable]
   cpu: [x86-64-v1, x86-64-v2, x86-64-v3, x86-64-v4, aarch64, aarch64-v8.2]
   gpu: [gpu-sw, gpu-gl2, gpu-gl4, gpu-vk12, gpu-vk13]
 

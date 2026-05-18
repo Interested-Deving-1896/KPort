@@ -202,6 +202,13 @@ for pkgname in "${INSTALL_ORDER[@]}"; do
     continue
   fi
 
+  if ! kport_check_keyword "$pkgname" "$category" "$pacscript"; then
+    kport_warn "${pkgname}: keyword mismatch — skipped"
+    kport_info "  accept with: echo '${category}/${pkgname}: stability: [$(kport_pacscript_var "$pacscript" KNEON_CHANNEL)]' >> ~/.config/kport/package.accept_keywords"
+    (( failed++ )) || true
+    continue
+  fi
+
   kport_header "Installing ${pkgname} ${pkgver}"
   kport_kv "Category"   "$category"
   kport_kv "Pacscript"  "$pacscript"

@@ -129,6 +129,6 @@ source "${KPORT_LIB}/common.sh"
 export -f kport_find_pacscript kport_pacscript_var kport_pacscript_array \
           kport_is_installed kport_db_read kport_db_write kport_db_remove \
           kport_world_add kport_world_remove kport_hw_read kport_is_masked \
-          kport_header kport_kv kport_confirm
+          kport_check_keyword kport_header kport_kv kport_confirm
 
 exec bash "$CMD_SCRIPT" "${KPORT_CMD_ARGS[@]}"
