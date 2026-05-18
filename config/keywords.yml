@@ -9,11 +9,13 @@
 #   unstable  — Neon Unstable / git builds (may break)
 #
 # CPU arch keywords (ordered lowest → highest within each arch family):
+#   i686:     i686-baseline  i686-sse3
 #   x86-64:   x86-64-v1  x86-64-v2  x86-64-v3  x86-64-v4
 #   aarch64:  aarch64-v8  aarch64-v8.2  aarch64-v9  aarch64-v9.2
 #   riscv64:  riscv64-rv64gc  riscv64-rv64gcv
 #
 # GPU tier keywords (ordered lowest → highest capability):
+#   i686 / legacy x86:  gpu-sw  gpu-gl2  gpu-gl4  (Vulkan not available on 32-bit)
 #   x86-64 / discrete:  gpu-sw  gpu-gl2  gpu-gl4  gpu-vk12  gpu-vk13
 #   ARM SoC:            gpu-mali-g52  gpu-mali-g610  gpu-immortalis-g715
 #                       gpu-adreno-6xx  gpu-adreno-7xx
@@ -23,17 +25,25 @@
 accept_keywords:
   stability: [stable, testing, unstable]
   cpu:
+    # i686 (32-bit x86) tiers
+    - i686-baseline
+    - i686-sse3
+    # x86-64 tiers
     - x86-64-v1
     - x86-64-v2
     - x86-64-v3
     - x86-64-v4
+    # aarch64 tiers
     - aarch64-v8
     - aarch64-v8.2
     - aarch64-v9
     - aarch64-v9.2
+    # riscv64 tiers
     - riscv64-rv64gc
     - riscv64-rv64gcv
   gpu:
+    # i686 / legacy x86 tiers (Vulkan not available on 32-bit userspace)
+    # gpu-sw and gpu-gl2 are shared with x86-64; gpu-gl4 is the i686 ceiling
     # x86-64 / discrete tiers
     - gpu-sw
     - gpu-gl2

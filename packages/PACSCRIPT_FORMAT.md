@@ -71,15 +71,43 @@ KUSE=(
 ### KCPU_MIN — minimum CPU tier
 
 ```bash
-KCPU_MIN="x86-64-v1"   # x86-64-v1 | x86-64-v2 | x86-64-v3 | x86-64-v4
-                        # aarch64 | aarch64-v8.2
+KCPU_MIN="x86-64-v1"   # i686-baseline | i686-sse3
+                        # x86-64-v1 | x86-64-v2 | x86-64-v3 | x86-64-v4
+                        # aarch64-v8 | aarch64-v8.2 | aarch64-v9 | aarch64-v9.2
+                        # riscv64-rv64gc | riscv64-rv64gcv
 ```
+
+Omit `KCPU_MIN` entirely for packages that produce no compiled, arch-specific
+output (pure data, icons, translations, themes). Setting `KCPU_MIN="x86-64-v1"`
+on such packages incorrectly blocks installation on aarch64 and riscv64.
 
 ### KGPU_MIN — minimum GPU tier
 
 ```bash
 KGPU_MIN="gpu-sw"      # gpu-sw | gpu-gl2 | gpu-gl4 | gpu-vk12 | gpu-vk13
+                        # gpu-mali-g52 | gpu-mali-g610 | gpu-immortalis-g715
+                        # gpu-adreno-6xx | gpu-adreno-7xx
+                        # gpu-img-bxm
 ```
+
+On i686, the maximum available tier is `gpu-gl4`. Do not set `KGPU_MIN` to
+`gpu-vk12` or `gpu-vk13` for packages targeting 32-bit — no Vulkan ICD ships
+a 32-bit userspace library.
+
+## 32-bit (i686) support
+
+The main `packages/` tree targets 64-bit platforms only. Qt 6 and KDE
+Frameworks 6 require a 64-bit target; there is no supported path to build them
+for i686.
+
+32-bit packages live in the `community-32bit` overlay
+(`overlays/community-32bit/`). Packages there must:
+
+- Use a toolkit that still supports i686: GTK3, GTK4, SDL2, ncurses, or none.
+- Set `KCPU_MIN` to `i686-baseline` or `i686-sse3` (not `x86-64-*`).
+- Set `KGPU_MIN` to `gpu-sw`, `gpu-gl2`, or `gpu-gl4`.
+- Not depend on any package from the main KPort tree that carries
+  `KCPU_MIN="x86-64-*"`.
 
 ### KNPU_MIN — minimum NPU tier (optional, for AI-accelerated packages)
 

@@ -37,7 +37,6 @@ makedepends=(
 KSLOT="6"
 KCATEGORY="gear"
 KNEON_CHANNEL="unstable"
-KCPU_MIN="x86-64-v1"
 KGPU_MIN="gpu-sw"
 
 KUSE=(
