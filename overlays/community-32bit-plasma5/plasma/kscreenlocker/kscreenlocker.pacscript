@@ -14,7 +14,7 @@ source=(
   "https://download.kde.org/stable/plasma/${pkgver}/kscreenlocker-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "dba5021350541f44809bc1d3b9e7546e46f13a1dcbc0d3e2ed25a8d395aff1b7"
 )
 
 depends=(

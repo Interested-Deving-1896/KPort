@@ -14,7 +14,7 @@ source=(
   "https://download.kde.org/stable/plasma/${pkgver}/milou-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "b0f2ea9941913a6365235cae5268d0fa5f325c25e5ca9adde37055322e8b0a7d"
 )
 
 depends=(

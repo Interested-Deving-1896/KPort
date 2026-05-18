@@ -59,9 +59,25 @@ error() { echo "[error] $*" >&2; exit 1; }
 extract_source_url() {
   local file="$1"
   # Extract the content of the source=(...) block, then pull the first https:// URL.
-  awk '/^source=\(/{found=1} found{print} /^\)/{if(found) exit}' "$file" \
+  local raw_url
+  raw_url=$(awk '/^source=\(/{found=1} found{print} /^\)/{if(found) exit}' "$file" \
     | grep -oP '(?<=")(https://[^"]+)(?=")' \
-    | head -1
+    | head -1)
+
+  # Expand shell variable references that appear literally in the URL
+  # (e.g. ${pkgver}, ${pkgname}).  Read the values from the pacscript itself.
+  if [[ "$raw_url" == *'${'* ]]; then
+    local pkgver pkgname
+    pkgver=$(grep -m1 '^pkgver=' "$file" | cut -d'"' -f2)
+    pkgname=$(grep -m1 '^pkgname=' "$file" | cut -d'"' -f2)
+    raw_url="${raw_url//\$\{pkgver\}/$pkgver}"
+    raw_url="${raw_url//\$\{pkgname\}/$pkgname}"
+    # Also handle bare $pkgver / $pkgname without braces
+    raw_url="${raw_url//\$pkgver/$pkgver}"
+    raw_url="${raw_url//\$pkgname/$pkgname}"
+  fi
+
+  echo "$raw_url"
 }
 
 # Check whether the sha256sums array still contains a SKIP placeholder.
@@ -71,13 +87,13 @@ has_skip_sha256() {
 }
 
 # Patch the SKIP placeholder in sha256sums with the real checksum.
-# Replaces the first occurrence of "SKIP" (with its trailing comment if any).
+# Handles both:
+#   "SKIP"   # replace with actual sha256 after download
+#   "SKIP"
 patch_sha256() {
   local file="$1"
   local checksum="$2"
-  # Replace:  "SKIP"   # replace with actual sha256 after download
-  # With:     "<checksum>"
-  sed -i "s|\"SKIP\".*# replace with actual sha256 after download|\"${checksum}\"|" "$file"
+  sed -i "s|\"SKIP\".*|\"${checksum}\"|" "$file"
 }
 
 # ── Main ──────────────────────────────────────────────────────────────────────

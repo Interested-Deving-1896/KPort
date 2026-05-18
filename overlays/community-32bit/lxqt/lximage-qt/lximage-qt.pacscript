@@ -14,7 +14,7 @@ source=(
   "https://github.com/lxqt/lximage-qt/releases/download/${pkgver}/lximage-qt-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "0857650bdb32c5ba5befbd726fbff62137e45d2cf26bc88b0d32622e718cd34e"
 )
 
 depends=(

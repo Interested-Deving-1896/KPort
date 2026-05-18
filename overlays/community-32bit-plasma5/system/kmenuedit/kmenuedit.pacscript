@@ -14,7 +14,7 @@ source=(
   "https://download.kde.org/stable/plasma/${pkgver}/kmenuedit-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "bcb45f19782e65eda267452a0453d8f8be2b80cc303bac5bf1ec2f54096ed5d8"
 )
 
 depends=(

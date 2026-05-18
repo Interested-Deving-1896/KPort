@@ -14,7 +14,7 @@ source=(
   "https://github.com/lxqt/pcmanfm-qt/releases/download/${pkgver}/pcmanfm-qt-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "b1c6abb3bd8dca6bd2290fab424fef73527d5a1bb60a67dfd20966545dfee443"
 )
 
 depends=(

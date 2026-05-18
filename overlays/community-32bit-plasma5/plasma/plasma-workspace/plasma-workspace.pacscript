@@ -15,7 +15,7 @@ source=(
   "https://download.kde.org/stable/plasma/${pkgver}/plasma-workspace-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "4f74a707739faef4bac0e2b833de6e092a995adfe153ed758f6ce6c4ba1708c6"
 )
 
 depends=(

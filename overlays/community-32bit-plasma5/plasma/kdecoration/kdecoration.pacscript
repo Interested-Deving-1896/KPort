@@ -14,7 +14,7 @@ source=(
   "https://download.kde.org/stable/plasma/${pkgver}/kdecoration-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "867e2169d6e8b8755d4a22f2d48bcf39413e7d9872eab878871fd7a0b03747ec"
 )
 
 depends=(

@@ -14,7 +14,7 @@ source=(
   "https://github.com/lxqt/lxqt-menu-data/releases/download/${pkgver}/lxqt-menu-data-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "820549ebd50a7437a9af5f229d0a5611944473e1f74bc7c8a2829a7606a2f99e"
 )
 
 makedepends=(

@@ -14,7 +14,7 @@ source=(
   "https://download.kde.org/stable/plasma/${pkgver}/kactivitymanagerd-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "1161138ccae929de011283a69fc57e8643ddab583ce21b0b98bc94bcf5494214"
 )
 
 depends=(

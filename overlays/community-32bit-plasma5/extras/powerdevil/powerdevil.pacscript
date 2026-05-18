@@ -15,7 +15,7 @@ source=(
   "https://download.kde.org/stable/plasma/${pkgver}/powerdevil-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "b1106e602729c24d109d8de0b0035e9e96801bd505f6b9e6c122962a7ca036f9"
 )
 
 depends=(

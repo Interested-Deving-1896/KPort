@@ -14,7 +14,7 @@ source=(
   "https://download.kde.org/stable/plasma/${pkgver}/plasma-pa-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "c730cf3c2b4737844f536aacb30253c4a37cefc7aebbac88041a8ce8888985d2"
 )
 
 depends=(

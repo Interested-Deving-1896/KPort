@@ -14,7 +14,7 @@ source=(
   "https://github.com/lxqt/liblxqt/releases/download/${pkgver}/liblxqt-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "b55073e7673e19d30339cabf5692a86b3aee244f3009f67e424b7c919f4d96f0"
 )
 
 depends=(

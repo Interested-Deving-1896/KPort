@@ -15,7 +15,7 @@ source=(
   "https://github.com/lxqt/lxqt-powermanagement/releases/download/${pkgver}/lxqt-powermanagement-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "a0d4e3c429a138453606d3067d189e0d163ff61ceaa8239100b2997b2e0b532d"
 )
 
 depends=(

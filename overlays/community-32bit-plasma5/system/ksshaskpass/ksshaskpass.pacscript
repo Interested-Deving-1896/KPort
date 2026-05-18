@@ -14,7 +14,7 @@ source=(
   "https://download.kde.org/stable/plasma/${pkgver}/ksshaskpass-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "6bda11fe7735949a210871f56691e497920ed0d90fe0f9ac7338f58a7bc926ce"
 )
 
 depends=(

@@ -14,7 +14,7 @@ source=(
   "https://github.com/lxqt/libfm-qt/releases/download/${pkgver}/libfm-qt-${pkgver}.tar.xz"
 )
 sha256sums=(
-  "SKIP"
+  "2ee3882e023df1df31a53f03575856d38364aa63bec39e9a47fde3730d6f7753"
 )
 
 depends=(
