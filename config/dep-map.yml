@@ -95,6 +95,8 @@ dep_map:
   plasma-activities-dev:     "kf6-kactivities"
   plasma-activities-stats:   "kf6-kactivities-stats"
   plasma-activities-stats-dev: "kf6-kactivities-stats"
+  kwayland:                  "kf6-kwayland"
+  kwayland-dev:              "kf6-kwayland"
 
   # ── System libraries (satisfied by apt) ───────────────────────────────────
   cmake:                     "~apt:cmake"
