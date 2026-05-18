@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma-wayland-protocols/plasma-wayland-protocols-1.21.0.tar.xz"
 )
 sha256sums=(
-  "698a7b28b711270314e396e248ae86087cfeaed01372009063995be6e1dc85ba"   # replace with actual sha256 after download
+  "698a7b28b711270314e396e248ae86087cfeaed01372009063995be6e1dc85ba"
 )
 
 depends=(

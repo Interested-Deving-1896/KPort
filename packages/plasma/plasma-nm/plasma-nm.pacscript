@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/plasma-nm-6.6.5.tar.xz"
 )
 sha256sums=(
-  "c92d09d2978dbbe6b5c897beac822cd053c17473f1d61506e152bfcb46b70b9b"   # replace with actual sha256 after download
+  "c92d09d2978dbbe6b5c897beac822cd053c17473f1d61506e152bfcb46b70b9b"
 )
 
 depends=(

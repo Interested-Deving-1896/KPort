@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/qqc2-breeze-style-6.6.5.tar.xz"
 )
 sha256sums=(
-  "8d279f966903219721941ea9f41681630dc14fa45769d9c672c57493f6c99603"   # replace with actual sha256 after download
+  "8d279f966903219721941ea9f41681630dc14fa45769d9c672c57493f6c99603"
 )
 
 depends=(

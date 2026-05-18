@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/breeze-gtk-6.6.5.tar.xz"
 )
 sha256sums=(
-  "76caad4ca2e3ce8b02ae1ebe0c068101bb07db51da47f88fa3a40cdce393abf6"   # replace with actual sha256 after download
+  "76caad4ca2e3ce8b02ae1ebe0c068101bb07db51da47f88fa3a40cdce393abf6"
 )
 
 depends=(

@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/plasma-firewall-6.6.5.tar.xz"
 )
 sha256sums=(
-  "d4acad029c24eaaa98f307e5ff39903aa6a72f373c80f3a3c17ededfa450f8ec"   # replace with actual sha256 after download
+  "d4acad029c24eaaa98f307e5ff39903aa6a72f373c80f3a3c17ededfa450f8ec"
 )
 
 depends=(

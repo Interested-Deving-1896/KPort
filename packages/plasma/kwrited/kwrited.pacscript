@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/kwrited-6.6.5.tar.xz"
 )
 sha256sums=(
-  "b9df634be2aa1442d8247d6250a87d7dfb1ccd6f9bcd01c0e62102d5ab6936a7"   # replace with actual sha256 after download
+  "b9df634be2aa1442d8247d6250a87d7dfb1ccd6f9bcd01c0e62102d5ab6936a7"
 )
 
 depends=(

@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/layer-shell-qt-6.6.5.tar.xz"
 )
 sha256sums=(
-  "e8c145545ac49d5325f16ff710b521deab6e5b9745fcc18ab431252224a8f982"   # replace with actual sha256 after download
+  "e8c145545ac49d5325f16ff710b521deab6e5b9745fcc18ab431252224a8f982"
 )
 
 depends=(

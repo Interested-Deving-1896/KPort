@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/bluedevil-6.6.5.tar.xz"
 )
 sha256sums=(
-  "4396447a83b5dab5c4867690824180c36f4f3922107463722fed42202d8a45ff"   # replace with actual sha256 after download
+  "4396447a83b5dab5c4867690824180c36f4f3922107463722fed42202d8a45ff"
 )
 
 depends=(

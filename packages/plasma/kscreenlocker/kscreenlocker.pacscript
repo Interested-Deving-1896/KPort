@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/kscreenlocker-6.6.5.tar.xz"
 )
 sha256sums=(
-  "9ba0aee32364051eeb213d48dd3c208ae0ce7062190a30f855735ba4efe389cc"   # replace with actual sha256 after download
+  "9ba0aee32364051eeb213d48dd3c208ae0ce7062190a30f855735ba4efe389cc"
 )
 
 depends=(

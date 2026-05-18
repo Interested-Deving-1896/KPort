@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/plasma-disks-6.6.5.tar.xz"
 )
 sha256sums=(
-  "660609a1f489c197d35419aeacbc08ec724c5e13538a736eb3d81ac331b9f639"   # replace with actual sha256 after download
+  "660609a1f489c197d35419aeacbc08ec724c5e13538a736eb3d81ac331b9f639"
 )
 
 depends=(
