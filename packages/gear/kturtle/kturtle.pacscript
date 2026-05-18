@@ -33,8 +33,6 @@ depends=(
   "kf6-kxmlgui"
   "qt6-base"
   "qt6-svg"
-).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
 )
 
 makedepends=(

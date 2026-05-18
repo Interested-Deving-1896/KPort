@@ -21,8 +21,14 @@ sha256sums=(
 )
 
 depends=(
-  # No named runtime deps found in debian/control (only ${shlibs:Depends}).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
+  "libpulse-mainloop-glib0"
+  "libpulse0"
+  "libqt5core5a"
+  "libqt5gui5"
+  "libqt5widgets5"
+  "qt5-phonon"
+  "qt6-5compat"
+  "qt6-base"
 )
 
 makedepends=(

@@ -10,7 +10,7 @@ pkgname="klines"
 pkgver="26.04.1"
 pkgdesc="color lines game"
 # Fall back to invent.kde.org canonical URL when no homepage is set
-url="http://games.kde.org/"
+url="https://games.kde.org/"
 license=("GPL-2.0-or-later")
 
 source=(
@@ -32,8 +32,6 @@ depends=(
   "kf6-kxmlgui"
   "~apt:libkf6kdegames6-6"
   "qt6-base"
-).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
 )
 
 makedepends=(

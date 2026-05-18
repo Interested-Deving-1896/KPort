@@ -24,8 +24,6 @@ depends=(
   "kf6-karchive"
   "qt6-base"
   "qt6-declarative"
-).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
 )
 
 makedepends=(

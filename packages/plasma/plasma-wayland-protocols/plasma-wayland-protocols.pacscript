@@ -20,10 +20,7 @@ sha256sums=(
   "698a7b28b711270314e396e248ae86087cfeaed01372009063995be6e1dc85ba"
 )
 
-depends=(
-  # No named runtime deps found in debian/control (only ${shlibs:Depends}).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
-)
+depends=()
 
 makedepends=(
   "cmake"

@@ -6,7 +6,7 @@
 pkgname="kf6-baloowidgets"
 pkgver="26.04.1"
 pkgdesc="widgets for use with Baloo"
-url="http://projects.kde.org/baloo-widgets"
+url="https://projects.kde.org/baloo-widgets"
 license=("LGPL-2.0-or-later")
 
 source=(

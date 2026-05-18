@@ -10,7 +10,7 @@ pkgname="kdegraphics-thumbnailers"
 pkgver="26.04.1"
 pkgdesc="graphics file format thumbnailers for KDE SC These plugins allow KDE software"
 # Fall back to invent.kde.org canonical URL when no homepage is set
-url="http://www.kde.org/"
+url="https://www.kde.org/"
 license=("GPL-2.0-or-later")
 
 source=(
@@ -28,8 +28,6 @@ depends=(
   "libkexiv2"
   "libqmobipocket6-2"
   "qt6-base"
-).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
 )
 
 makedepends=(

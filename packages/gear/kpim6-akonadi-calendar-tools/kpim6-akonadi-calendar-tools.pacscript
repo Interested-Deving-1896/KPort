@@ -10,7 +10,7 @@ pkgname="kpim6-akonadi-calendar-tools"
 pkgver="26.04.1"
 pkgdesc="KDE command line tools for interacting with calendars"
 # Fall back to invent.kde.org canonical URL when no homepage is set
-url="http://pim.kde.org/"
+url="https://pim.kde.org/"
 license=("GPL-2.0-or-later")
 
 source=(

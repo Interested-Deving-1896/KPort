@@ -10,7 +10,7 @@ pkgname="kpim6-pimcommon"
 pkgver="26.04.1"
 pkgdesc="Common library for KDE PIM This library provides the common parts used across"
 # Fall back to invent.kde.org canonical URL when no homepage is set
-url="http://pim.kde.org/"
+url="https://pim.kde.org/"
 license=("GPL-2.0-or-later")
 
 source=(

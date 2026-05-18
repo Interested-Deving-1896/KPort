@@ -7,21 +7,22 @@
 # ── Standard Pacstall variables ───────────────────────────────────────────────
 
 pkgname="kf6-kwayland"
-pkgver="6.4.3"
+pkgver="6.6.5"
 pkgdesc="Qt-style API to interact with the wayland-client API"
 url="https://projects.kde.org/projects/kde/frameworks/kwayland"
 license=("LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/plasma/6.4.3/kwayland-6.4.3.tar.xz"
+  "https://download.kde.org/stable/plasma/6.6.5/kwayland-6.6.5.tar.xz"
 )
 sha256sums=(
-  "ff507d3c435407b3831ead1ea63f6dea6c778ba6a1f5b45895d5fec6f5c1f982"
+  "afbcd53ca8a5fb501038415f1473c3d11556eb56ed8f653ece03f77d799cad01"
 )
 
 depends=(
-  # No named runtime deps found in debian/control (only ${shlibs:Depends}).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
+  "libwayland-client0"
+  "qt6-base"
+  "qt6-wayland"
 )
 
 makedepends=(

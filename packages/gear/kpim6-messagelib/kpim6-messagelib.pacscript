@@ -10,7 +10,7 @@ pkgname="kpim6-messagelib"
 pkgver="26.04.1"
 pkgdesc="KDE PIM messaging library, data files"
 # Fall back to invent.kde.org canonical URL when no homepage is set
-url="http://pim.kde.org/"
+url="https://pim.kde.org/"
 license=("GPL-2.0-or-later")
 
 source=(
@@ -64,8 +64,6 @@ depends=(
   "~apt:libssl3t64"
   "qt6-base"
   "qt6-webengine"
-).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
 )
 
 makedepends=(

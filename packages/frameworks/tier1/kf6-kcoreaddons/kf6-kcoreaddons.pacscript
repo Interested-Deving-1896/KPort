@@ -9,7 +9,7 @@
 pkgname="kf6-kcoreaddons"
 pkgver="6.26.0"
 pkgdesc="Addons to QtCore"
-url="http://projects.kde.org/kcoreaddons"
+url="https://projects.kde.org/kcoreaddons"
 license=("LGPL-2.0-or-later")
 
 source=(

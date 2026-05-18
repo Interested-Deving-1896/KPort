@@ -10,7 +10,7 @@ pkgname="kpim6-akonadi-mime"
 pkgver="26.04.1"
 pkgdesc="Akonadi MIME handling library This library provides MIME handling helpers using"
 # Fall back to invent.kde.org canonical URL when no homepage is set
-url="http://pim.kde.org/"
+url="https://pim.kde.org/"
 license=("GPL-2.0-or-later")
 
 source=(
@@ -31,8 +31,6 @@ depends=(
   "kpim6-kmime"
   "qt6-base"
   "qt6-declarative"
-).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
 )
 
 makedepends=(

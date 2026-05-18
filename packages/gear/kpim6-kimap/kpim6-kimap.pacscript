@@ -27,8 +27,6 @@ depends=(
   "kpim6-kmime"
   "~apt:libsasl2-2"
   "qt6-base"
-).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
 )
 
 makedepends=(

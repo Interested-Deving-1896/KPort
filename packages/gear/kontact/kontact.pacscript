@@ -10,7 +10,7 @@ pkgname="kontact"
 pkgver="26.04.1"
 pkgdesc="integrated application for personal information management"
 # Fall back to invent.kde.org canonical URL when no homepage is set
-url="http://pim.kde.org/"
+url="https://pim.kde.org/"
 license=("GPL-2.0-or-later")
 
 source=(

@@ -30,8 +30,6 @@ depends=(
   "kf6-kwidgetsaddons"
   "kpim6-kidentitymanagement"
   "qt6-base"
-).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
 )
 
 makedepends=(

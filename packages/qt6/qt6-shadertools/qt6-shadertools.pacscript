@@ -21,8 +21,7 @@ sha256sums=(
 )
 
 depends=(
-  # No named runtime deps found in debian/control (only ${shlibs:Depends}).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
+  "qt6-base"
 )
 
 makedepends=(
@@ -44,7 +43,7 @@ makedepends=(
 KSLOT="0"
 KCATEGORY="qt6"
 KNEON_CHANNEL="unstable"
-KCPU_MIN="x86-64-v1"
+KCPU_MIN="x86-64-v2"
 KGPU_MIN="gpu-vk12"
 
 KUSE=(

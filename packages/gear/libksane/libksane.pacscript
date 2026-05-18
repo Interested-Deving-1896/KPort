@@ -27,8 +27,6 @@ depends=(
   "kf6-kwidgetsaddons"
   "~apt:libksanecore"
   "qt6-base"
-).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
 )
 
 makedepends=(

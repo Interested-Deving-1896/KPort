@@ -7,22 +7,21 @@
 # ── Standard Pacstall variables ───────────────────────────────────────────────
 
 pkgname="qt6-mqtt"
-pkgver="6.10.1"
+pkgver="6.10.2"
 pkgdesc="Qt MQTT Library"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://www.qt.io/developers/"
 license=("GPL-2.0-or-later")
 
 source=(
-  "https://github.com/qt/qtmqtt/archive/refs/tags/v6.10.1.tar.gz"
+  "https://github.com/qt/qtmqtt/archive/refs/tags/v6.10.2.tar.gz"
 )
 sha256sums=(
-  "4c0f246daa2009c8b3b9fb0172970fbb6452a0c2846ed5fe4de87ed4b884f9f9"
+  "884925fc6fa116f0cc4f1db80335daaf249ada5fbba30186536ed6329dc6032a"
 )
 
 depends=(
-  # No named runtime deps found in debian/control (only ${shlibs:Depends}).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
+  "qt6-base"
 )
 
 makedepends=(

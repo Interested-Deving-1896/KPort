@@ -51,7 +51,7 @@ makedepends=(
 KSLOT="0"
 KCATEGORY="qt6"
 KNEON_CHANNEL="unstable"
-KCPU_MIN="x86-64-v1"
+KCPU_MIN="x86-64-v2"
 KGPU_MIN="gpu-vk12"
 
 KUSE=(

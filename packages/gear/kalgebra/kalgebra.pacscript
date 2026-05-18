@@ -10,7 +10,7 @@ pkgname="kalgebra"
 pkgver="26.04.1"
 pkgdesc="algebraic graphing calculator"
 # Fall back to invent.kde.org canonical URL when no homepage is set
-url="http://edu.kde.org/"
+url="https://edu.kde.org/"
 license=("GPL-2.0-or-later")
 
 source=(

@@ -7,21 +7,54 @@
 # ── Standard Pacstall variables ───────────────────────────────────────────────
 
 pkgname="kf6-plasma-framework"
-pkgver="6.4.3"
+pkgver="6.6.5"
 pkgdesc="Plugin based UI runtime used to write primary user interfaces"
 url="https://invent.kde.org/frameworks/plasma-framework"
 license=("LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/plasma/6.4.3/libplasma-6.4.3.tar.xz"
+  "https://download.kde.org/stable/plasma/6.6.5/libplasma-6.6.5.tar.xz"
 )
 sha256sums=(
-  "f508ceced32a114462e5e31195600ee440a1a21b8eb77ba20033cfb892bb0cc8"
+  "82e02b2098f4bac90f28cdd4f9d3a4da4557440ec8347220d8fee293c1f98d8b"
 )
 
 depends=(
-  # No named runtime deps found in debian/control (only ${shlibs:Depends}).
-  # Populate after a test build by inspecting ldd output or dpkg -I.
+  "kf6-kcmutils"
+  "kf6-kcolorscheme"
+  "kf6-kconfig"
+  "kf6-kcoreaddons"
+  "kf6-kglobalaccel"
+  "kf6-ki18n"
+  "kf6-kiconthemes"
+  "kf6-kio"
+  "kf6-kirigami"
+  "kf6-knotifications"
+  "kf6-kpackage"
+  "kf6-ksvg"
+  "kf6-kwidgetsaddons"
+  "kf6-kwindowsystem"
+  "libegl1"
+  "libglx0"
+  "libopengl0"
+  "libwayland-client0"
+  "libx11-6"
+  "libxcb-composite0"
+  "libxcb-damage0"
+  "libxcb-render0"
+  "libxcb1"
+  "plasma-activities"
+  "qml6-module-org-kde-kconfig"
+  "qml6-module-org-kde-kirigami2"
+  "qml6-module-org-kde-kquickcontrols"
+  "qml6-module-org-kde-kquickcontrolsaddons"
+  "qml6-module-qtqml-models"
+  "qml6-module-qtquick"
+  "qml6-module-qtquick-controls"
+  "qml6-module-qtquick-templates"
+  "qt6-base"
+  "qt6-declarative"
+  "qt6-wayland"
 )
 
 makedepends=(
