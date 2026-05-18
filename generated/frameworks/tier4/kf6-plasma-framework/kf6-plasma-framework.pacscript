@@ -13,10 +13,10 @@ url="https://invent.kde.org/frameworks/plasma-framework"
 license=("LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/frameworks/0.0/plasma-framework-0.0.tar.xz"
+  "https://download.kde.org/stable/plasma/6.4.3/libplasma-6.4.3.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "f508ceced32a114462e5e31195600ee440a1a21b8eb77ba20033cfb892bb0cc8"
 )
 
 depends=(

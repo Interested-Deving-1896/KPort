@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kholidays-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "fc4f46cb5bb8e4766f550fe1a8b401731d797fcf6afa7cb53679048c215a60be"
 )
 
 depends=(

@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/breeze-icons-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "4e123fac511dfab2b7c505857849a5cecfac2ce6194e3230c51ceec31676b06e"
 )
 
 depends=(

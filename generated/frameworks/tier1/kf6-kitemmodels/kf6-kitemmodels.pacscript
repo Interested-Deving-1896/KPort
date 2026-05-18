@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kitemmodels-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "a996201062ff7d21f9db972debc2d9615762ddb0fd9da069a42b7fd7bba1e61d"
 )
 
 depends=(

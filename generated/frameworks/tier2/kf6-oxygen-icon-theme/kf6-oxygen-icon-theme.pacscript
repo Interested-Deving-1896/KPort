@@ -13,10 +13,10 @@ url="http://www.kde.org/"
 license=("LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/oxygen-icons/oxygen-icons-6.1.tar.xz"
+  "https://download.kde.org/stable/oxygen-icons/oxygen-icons-6.1.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "16ca971079c5067c4507cabf1b619dc87dd6b326fd5c2dd9f5d43810f2174d68"
 )
 
 depends=(

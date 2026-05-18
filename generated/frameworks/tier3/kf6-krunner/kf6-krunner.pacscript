@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/krunner-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "3519c7fe170be1359a4c38dd5269de64c0208ccfeb950661002ddfa4e92f2bf0"
 )
 
 depends=(

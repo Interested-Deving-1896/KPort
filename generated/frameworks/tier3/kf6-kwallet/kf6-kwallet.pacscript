@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kwallet-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "2321f8591f1f225d3d7253fae9ee61d0789db231b3eeae6a5f8a14c013531389"
 )
 
 depends=(

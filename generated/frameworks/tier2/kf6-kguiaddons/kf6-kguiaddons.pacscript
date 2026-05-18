@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kguiaddons-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "8375342f852104f36fd72a6870eb9795183af4516592cd6fa73445ea6b813172"
 )
 
 depends=(

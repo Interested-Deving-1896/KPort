@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kjobwidgets-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "8057b7bd132cc2b469ac406f95ba22bc3cfc240c1031485f19fa072ab942f71e"
 )
 
 depends=(

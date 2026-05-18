@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/threadweaver-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "ad32daeafac62077590885f3abc4bcac1abbc6faeb34c20b32f6040648f7de1b"
 )
 
 depends=(

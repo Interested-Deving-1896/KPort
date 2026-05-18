@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/extra-cmake-modules-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "f4e10d9d45aafb5273e996196040f4e420f0bc4071c208282aae94d9ad8e1743"
 )
 
 depends=(

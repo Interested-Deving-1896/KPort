@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kpty-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "7613c26cfaa7465a2fe28a22762ceb38266414e7f4a94a127c09dc0628625553"
 )
 
 depends=(

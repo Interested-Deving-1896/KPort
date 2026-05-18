@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kdnssd-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "8439daed9c4b942a74393daf23c8d97fdaabd81b93dc347f91bbb45a2bf85248"
 )
 
 depends=(

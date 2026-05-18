@@ -13,10 +13,10 @@ url="https://projects.kde.org/projects/kde/pim/kcalcore"
 license=("LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/frameworks/6.26/kf6-kcalendarcore-6.26.0.tar.xz"
+  "https://download.kde.org/stable/frameworks/6.26/kcalendarcore-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "386be0eee392d8432b6b7fafd3dead95dd1fc74f81790928c580f81e6222a17c"
 )
 
 depends=(

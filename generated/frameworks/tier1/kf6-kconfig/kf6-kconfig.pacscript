@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kconfig-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "8bb5aa918d8e60ec140a33db3c329414d2319dc97a1644b368da5576125c92b5"
 )
 
 depends=(

@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kcrash-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "d05d93863a745ce0d4ab8ccff684a84a813ee4cbcc68c9c7a5175107b107e931"
 )
 
 depends=(

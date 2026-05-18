@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kglobalaccel-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "3f19d22d143577e5ddcc883170fe19a56f8f65766e41c4f9c011c4dfbde17a61"
 )
 
 depends=(

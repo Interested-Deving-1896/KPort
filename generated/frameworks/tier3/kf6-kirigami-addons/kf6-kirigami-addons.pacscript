@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/kirigami-addons/kirigami-addons-1.12.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "513051dff8417da1819d6ae89d6c21a03654c9a60891df60df6aba13df19d21b"
 )
 
 depends=(

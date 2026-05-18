@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/bluez-qt-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "ebeb301eaeb6ec6729b27969556839165ba582ebe242b42cde71c8faa80d63df"
 )
 
 depends=(

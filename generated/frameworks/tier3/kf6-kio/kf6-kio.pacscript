@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kio-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "567f64db9766986b5535d884a5db30203685c33e67f56892bceff30e1bd5cc8a"
 )
 
 depends=(

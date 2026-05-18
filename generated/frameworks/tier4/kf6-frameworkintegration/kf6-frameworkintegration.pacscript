@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/frameworkintegration-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "84ebbad39b559e271bcec4817eba9124903ca660ad4f5c3f73f21a5f4a32062d"
 )
 
 depends=(

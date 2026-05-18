@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/baloo-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "702f5b868aaef48153c6c3828111b3b335403079491a8f37043ebd89c6995b30"
 )
 
 depends=(

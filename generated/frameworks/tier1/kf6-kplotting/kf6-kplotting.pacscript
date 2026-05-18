@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kplotting-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "bb120f446e6bfc376129e03663e4b3b9e7146abc948ccc68da19187840f9f181"
 )
 
 depends=(

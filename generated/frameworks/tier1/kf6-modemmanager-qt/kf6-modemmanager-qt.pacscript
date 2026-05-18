@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/modemmanager-qt-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "bef456ac0a5983bcc14a1580cb0d32a001241f380d901cb503613855380af3a5"
 )
 
 depends=(

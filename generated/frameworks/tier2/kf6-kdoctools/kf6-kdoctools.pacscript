@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kdoctools-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "3fbea5de215076130007f3c18e16b870774ffa4fc85ddace201ac020d0245fb6"
 )
 
 depends=(

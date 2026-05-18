@@ -13,10 +13,10 @@ url="https://cgit.kde.org/qqc2-desktop-style.git/"
 license=("LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/frameworks/6.26/qqc2-desktop-style--6.26.0.tar.xz"
+  "https://download.kde.org/stable/frameworks/6.26/qqc2-desktop-style-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "1805fa31355ff86c02158fd2b8d396fd88835d01db97d8700314c48ee3360986"
 )
 
 depends=(

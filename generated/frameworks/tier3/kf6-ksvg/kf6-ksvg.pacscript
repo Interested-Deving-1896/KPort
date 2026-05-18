@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/ksvg-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "f3a7412e227d13b1cafec91c1b58dd3f86980abefc08b2535b46bef362b4c07e"
 )
 
 depends=(

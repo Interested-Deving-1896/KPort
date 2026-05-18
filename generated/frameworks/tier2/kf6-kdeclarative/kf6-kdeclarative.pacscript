@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kdeclarative-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "9a464e560e436cd3a626ca6aab894f414c6212d2de8b9c5a8eda33be213e00d8"
 )
 
 depends=(

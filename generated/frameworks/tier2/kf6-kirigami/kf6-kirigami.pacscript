@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kirigami-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "b268785b271198acec7fe4b6177eafdee890e180245c7168916da3ccff1425ff"
 )
 
 depends=(

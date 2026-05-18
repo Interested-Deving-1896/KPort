@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kquickcharts-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "ae3e0784a2a2d1396cb751cc61f43a567e066d6434971246b1a18365481a1b52"
 )
 
 depends=(

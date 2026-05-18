@@ -16,7 +16,7 @@ source=(
   "https://download.kde.org/stable/frameworks/6.26/kcontacts-6.26.0.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "dce9af34050fcf09c8b4ece6df5a0abedbaf02fe85039fc371c5e11e91443cf0"
 )
 
 depends=(
