@@ -75,8 +75,8 @@ for entry in "${world_entries[@]}"; do
     bash -c 'source "${KPORT_LIB}/use-helpers.sh" && use_active_flags' 2>/dev/null \
     | tr '\n' ' ' | sed 's/ $//')
 
-  local reason=""
-  local needs_upgrade=false
+  reason=""
+  needs_upgrade=false
 
   # Version check
   if [[ "$avail_ver" != "$inst_ver" ]] && [[ "$USE_CHANGED_ONLY" != "true" ]]; then

@@ -45,8 +45,13 @@ _kport_resolve_one() {
   # Find pacscript
   local pacscript
   pacscript=$(kport_find_pacscript "$pkgname") || {
-    kport_warn "  Dependency not found in KPort tree: ${pkgname}"
-    # Not a fatal error — may be an ~apt: dep that slipped through
+    # Warn only for names that look like KPort packages (kf6-*, plasma-*, kport-*).
+    # Bare apt names (qt6-base-dev, libfoo-dev, etc.) are system deps — skip silently.
+    if [[ "$pkgname" == kf6-* || "$pkgname" == plasma-* || "$pkgname" == kport-* ]]; then
+      kport_warn "  KPort package not found: ${pkgname}"
+    else
+      kport_verbose "  system dep (apt): ${pkgname}"
+    fi
     unset '_KPORT_RESOLVE_VISITED[$pkgname]'
     return 0
   }

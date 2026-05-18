@@ -72,12 +72,12 @@ for search_root in "${search_dirs[@]}"; do
       [[ "$pkgname" != "$QUERY" ]] && continue
     else
       # Case-insensitive match against name or description
-      local lower_query="${QUERY,,}"
+      lower_query="${QUERY,,}"
       [[ "${pkgname,,}" != *"$lower_query"* && "${pkgdesc,,}" != *"$lower_query"* ]] && continue
     fi
 
     # Format result
-    local installed_marker=""
+    installed_marker=""
     kport_is_installed "$pkgname" && installed_marker=" ${C_GREEN}[installed]${C_RESET}"
 
     echo -e "${C_BOLD}${pkgname}${C_RESET} ${C_DIM}${pkgver}${C_RESET}${installed_marker}"

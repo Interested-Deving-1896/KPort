@@ -491,6 +491,11 @@ declare -A _KDE_NS_ALIASES=(
   [kde/pim]="pim"
   [kde/workspace]="plasma"
 )
+# Some projects.kde.org paths use a different repo name than invent.kde.org.
+# Map "namespace/old-repo-name" → "namespace/new-repo-name".
+declare -A _KDE_REPO_ALIASES=(
+  ["pim/kcalcore"]="frameworks/kcalendarcore"
+)
 _homepage_to_invent_path() {
   local homepage="$1"
   local path=""
@@ -510,10 +515,24 @@ _homepage_to_invent_path() {
         break
       fi
     done
-    [[ -n "$ns" && -n "$repo" ]] && path="${ns}/${repo}"
+    if [[ -n "$ns" && -n "$repo" ]]; then
+      path="${ns}/${repo}"
+      # Apply repo-level aliases (e.g. pim/kcalcore → frameworks/kcalendarcore)
+      path="${_KDE_REPO_ALIASES[$path]:-$path}"
+    fi
   # invent.kde.org/<ns>/<repo>
   elif [[ "$homepage" =~ invent\.kde\.org/([^/]+/[^/?#]+) ]]; then
     path="${BASH_REMATCH[1]%/}"
+  # Short-form projects.kde.org/<repo> (no /projects/ prefix) — old-style URLs.
+  # These are always KDE Frameworks repos; map to frameworks/<repo>.
+  elif [[ "$homepage" =~ projects\.kde\.org/([^/?#]+)$ ]]; then
+    path="frameworks/${BASH_REMATCH[1]}"
+  # api.kde.org/frameworks/<repo>/... — KDE API docs URL; extract repo name.
+  elif [[ "$homepage" =~ api\.kde\.org/frameworks/([^/?#/]+) ]]; then
+    path="frameworks/${BASH_REMATCH[1]}"
+  # cgit.kde.org/<repo>.git — old cgit URL; strip .git suffix.
+  elif [[ "$homepage" =~ cgit\.kde\.org/([^/?#]+)\.git ]]; then
+    path="frameworks/${BASH_REMATCH[1]}"
   fi
   echo "$path"
 }
@@ -762,7 +781,8 @@ render_pacscript() {
 pkgname="${pkg_name}"
 pkgver="${version}"
 pkgdesc="$(echo "$pkg_desc" | sed 's/"/\\"/g')"
-url="${homepage}"
+# Fall back to invent.kde.org canonical URL when no homepage is set
+url="${homepage:-https://invent.kde.org/frameworks/${pkg_name#kf6-}}"
 license=(${license})
 
 source=(
@@ -866,9 +886,18 @@ process_project() {
   [[ -z "$pkg_name" ]] && pkg_name="$project_name"
   [[ -z "$pkg_desc" ]] && pkg_desc="KDE package: ${pkg_name}"
 
-  # Fetch metainfo.yaml from upstream KDE repo for authoritative description + tier
+  # Fetch metainfo.yaml from upstream KDE repo for authoritative description + tier.
+  # When the Neon control file has no Homepage field, derive the invent.kde.org
+  # path directly from the package name for known namespaces.
+  local metainfo_homepage="$homepage"
+  if [[ -z "$metainfo_homepage" && "$category" == "frameworks" ]]; then
+    # Strip kf6- prefix and common suffixes to get the upstream repo name
+    local repo_name="${pkg_name#kf6-}"
+    repo_name="${repo_name%-qt}"   # e.g. bluez-qt → bluez (wrong; keep as-is)
+    metainfo_homepage="https://invent.kde.org/frameworks/${pkg_name#kf6-}"
+  fi
   local metainfo metainfo_desc metainfo_tier
-  metainfo=$(fetch_metainfo "$homepage")
+  metainfo=$(fetch_metainfo "$metainfo_homepage")
   metainfo_desc=$(echo "$metainfo" | grep '^METAINFO_DESC=' | cut -d= -f2-)
   metainfo_tier=$(echo "$metainfo" | grep '^METAINFO_TIER=' | cut -d= -f2-)
 
