@@ -8,7 +8,7 @@
 
 pkgname="qt6-datavis3d"
 pkgver="6.10.2"
-pkgdesc="Qt 6 Data Visualization library Qt is a cross-platform C++ application framework"
+pkgdesc="Qt 6 Data Visualization library"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://www.qt.io/developers/"
 license=("GPL-2.0-or-later")

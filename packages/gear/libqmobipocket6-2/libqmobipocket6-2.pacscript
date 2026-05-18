@@ -8,7 +8,7 @@
 
 pkgname="libqmobipocket6-2"
 pkgver="26.04.1"
-pkgdesc="library for reading Mobipocket documents QMobipocket is a Qt library for"
+pkgdesc="library for reading Mobipocket documents"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="http://www.kde.org/"
 license=("GPL-2.0-or-later")
@@ -36,7 +36,7 @@ makedepends=(
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
-KSLOT="0"
+KSLOT="6"
 KCATEGORY="gear"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"

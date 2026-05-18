@@ -8,7 +8,7 @@
 
 pkgname="bluedevil"
 pkgver="6.6.5"
-pkgdesc="KDE Bluetooth stack BlueDevil is a set of components which integrate Bluetooth"
+pkgdesc="KDE Bluetooth stack"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://projects.kde.org/projects/kde/workspace/bluedevil"
 license=("GPL-2.0-or-later" "LGPL-2.0-or-later")

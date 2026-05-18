@@ -8,7 +8,7 @@
 
 pkgname="qt6-interfaceframework"
 pkgver="6.9.3"
-pkgdesc="Qt Interface Framework Generator Qt Interface Framework provides a way for you"
+pkgdesc="Qt Interface Framework Generator Qt Interface"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://www.qt.io/developers/"
 license=("GPL-2.0-or-later")

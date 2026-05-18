@@ -8,7 +8,7 @@
 
 pkgname="kmplot"
 pkgver="26.04.1"
-pkgdesc="mathematical function plotter for KDE KmPlot is a powerful mathematical plotter"
+pkgdesc="mathematical function plotter for KDE"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://projects.kde.org/projects/kde/kdeedu/kmplot"
 license=("GPL-2.0-or-later")
@@ -40,7 +40,7 @@ makedepends=(
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
-KSLOT="0"
+KSLOT="6"
 KCATEGORY="gear"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"

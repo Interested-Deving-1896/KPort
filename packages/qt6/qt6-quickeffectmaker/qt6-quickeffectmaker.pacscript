@@ -8,7 +8,7 @@
 
 pkgname="qt6-quickeffectmaker"
 pkgver="6.10.2"
-pkgdesc="Qt Quick Effect Maker Qt Quick Effect Maker is a tool for creating shader"
+pkgdesc="Qt Quick Effect Maker Qt Quick Effect"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://www.qt.io/developers/"
 license=("GPL-2.0-or-later")

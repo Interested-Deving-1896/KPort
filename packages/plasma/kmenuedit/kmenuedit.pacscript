@@ -8,7 +8,7 @@
 
 pkgname="kmenuedit"
 pkgver="6.6.5"
-pkgdesc="XDG menu editor This package provides a menu editor which may be used to edit"
+pkgdesc="XDG menu editor"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://projects.kde.org/projects/kde/workspace/kmenuedit"
 license=("GPL-2.0-or-later" "LGPL-2.0-or-later")

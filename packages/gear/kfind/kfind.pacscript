@@ -8,7 +8,7 @@
 
 pkgname="kfind"
 pkgver="26.04.1"
-pkgdesc="file search utility KFind can be used to find files and directories on your"
+pkgdesc="file search utility"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="http://www.kde.org/"
 license=("GPL-2.0-or-later")
@@ -43,7 +43,7 @@ makedepends=(
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
-KSLOT="0"
+KSLOT="6"
 KCATEGORY="gear"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"

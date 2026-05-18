@@ -8,7 +8,7 @@
 
 pkgname="blinken"
 pkgver="26.04.1"
-pkgdesc="KDE version of the Simon electronic memory game Blinken is based on an"
+pkgdesc="KDE version of the Simon electronic memory game"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="http://edu.kde.org/applications/all/blinken"
 license=("GPL-2.0-or-later")
@@ -42,7 +42,7 @@ makedepends=(
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
-KSLOT="0"
+KSLOT="6"
 KCATEGORY="gear"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"

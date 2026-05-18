@@ -8,7 +8,7 @@
 
 pkgname="libksysguard"
 pkgver="6.6.5"
-pkgdesc="Library to retrieve and display information on the current status of computer hardware"
+pkgdesc="Library to retrieve and display information on the current status of computer"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://projects.kde.org/projects/kde/workspace/libksysguard"
 license=("GPL-2.0-or-later" "LGPL-2.0-or-later")

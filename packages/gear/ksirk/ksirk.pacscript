@@ -8,7 +8,7 @@
 
 pkgname="ksirk"
 pkgver="26.04.1"
-pkgdesc="Risk strategy game KsirK is a strategy game inspired by the well known game Risk"
+pkgdesc="Risk strategy game"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="http://games.kde.org/"
 license=("GPL-2.0-or-later")
@@ -54,7 +54,7 @@ makedepends=(
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
-KSLOT="0"
+KSLOT="6"
 KCATEGORY="gear"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"

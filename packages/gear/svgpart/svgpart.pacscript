@@ -8,7 +8,7 @@
 
 pkgname="svgpart"
 pkgver="26.04.1"
-pkgdesc="KDE SVG KPart SvgPart is a small KDE KPart component to display SVG images in"
+pkgdesc="KDE SVG KPart"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://projects.kde.org/projects/kde/kdegraphics/svgpart"
 license=("GPL-2.0-or-later")
@@ -39,7 +39,7 @@ makedepends=(
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
-KSLOT="0"
+KSLOT="6"
 KCATEGORY="gear"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"

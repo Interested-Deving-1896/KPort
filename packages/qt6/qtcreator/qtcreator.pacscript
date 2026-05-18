@@ -8,7 +8,7 @@
 
 pkgname="qtcreator"
 pkgver="19.0.0"
-pkgdesc="integrated development environment (IDE) for Qt Qt Creator is a cross-platform"
+pkgdesc="integrated development environment (IDE) for Qt Qt"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://doc.qt.io/qt-5/topics-app-development.html"
 license=("GPL-2.0-or-later")

@@ -8,7 +8,7 @@
 
 pkgname="kf6-ktextaddons"
 pkgver="2.0.1"
-pkgdesc="Text addons (autocorrection, text to speak, grammar checking, text translator, emoticon support, custom editor, autogenerate text)"
+pkgdesc="Text addons (autocorrection, text to speak, grammar checking, text translator"
 url="https://invent.kde.org/libraries/ktextaddons"
 license=("LGPL-2.0-or-later")
 

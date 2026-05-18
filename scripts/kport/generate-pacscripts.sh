@@ -169,6 +169,10 @@ for stanza in stanzas:
     for line in stanza.splitlines():
         if line.startswith(' ') or line.startswith('\t'):
             if current_key:
+                # For Description, only the first (synopsis) line matters;
+                # skip continuation lines to avoid merging long description.
+                if current_key == 'description':
+                    continue
                 fields[current_key] = fields.get(current_key, '') + ' ' + line.strip()
         else:
             m = re.match(r'^([A-Za-z0-9_-]+):\s*(.*)', line)

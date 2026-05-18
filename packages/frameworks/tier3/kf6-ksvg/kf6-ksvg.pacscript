@@ -8,7 +8,7 @@
 
 pkgname="kf6-ksvg"
 pkgver="6.26.0"
-pkgdesc="A library for rendering SVG-based themes with stylesheet re-coloring and on-disk caching"
+pkgdesc="A library for rendering"
 url="https://projects.kde.org/projects/frameworks/ksvg"
 license=("LGPL-2.0-or-later")
 

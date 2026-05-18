@@ -8,7 +8,7 @@
 
 pkgname="kwin-wayland"
 pkgver="6.6.5"
-pkgdesc="KDE window manager, wayland version KWin is an easy to use, but flexible,"
+pkgdesc="KDE window manager, wayland version"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://projects.kde.org/projects/kde/workspace/kwin"
 license=("GPL-2.0-or-later" "LGPL-2.0-or-later")

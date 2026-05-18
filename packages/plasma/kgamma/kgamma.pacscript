@@ -8,7 +8,7 @@
 
 pkgname="kgamma"
 pkgver="6.6.5"
-pkgdesc="monitor calibration panel for KDE This package contains a settings panel for"
+pkgdesc="monitor calibration panel for KDE"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="http://www.kde.org/"
 license=("GPL-2.0-or-later" "LGPL-2.0-or-later")

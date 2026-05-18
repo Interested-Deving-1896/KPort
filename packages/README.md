@@ -2,17 +2,18 @@
 
 Human-reviewed, production-ready pacscripts. Organised by category.
 
-| Category | Contents |
-|---|---|
-| `frameworks/tier1` | KF6 Tier 1 — no KDE deps (KArchive, KConfig, KCoreAddons, …) |
-| `frameworks/tier2` | KF6 Tier 2 — depends only on Tier 1 |
-| `frameworks/tier3` | KF6 Tier 3 — depends on Tier 1+2 |
-| `frameworks/tier4` | KF6 Tier 4 — depends on Tier 1+2+3 |
-| `plasma` | Plasma 6 desktop stack (KWin, Plasma Shell, SDDM, …) |
-| `gear` | KDE Gear applications (Dolphin, Konsole, Kdenlive, …) |
-| `qt6` | Qt6 base built against KDE Neon's stack |
-| `runtime` | Non-KDE runtime dependencies (Mesa, Wayland, PipeWire, …) |
-| `tools` | Build tooling (Craft, kde-builder, kdesrc-build, …) |
+| Category | Packages | Contents |
+|---|---|---|
+| `frameworks/tier1` | 32 | KF6 Tier 1 — no KDE deps (KArchive, KConfig, KCoreAddons, …) |
+| `frameworks/tier2` | 17 | KF6 Tier 2 — depends only on Tier 1 |
+| `frameworks/tier3` | 23 | KF6 Tier 3 — depends on Tier 1+2 |
+| `frameworks/tier4` | 3 | KF6 Tier 4 — depends on Tier 1+2+3 |
+| `plasma` | 41 | Plasma 6 desktop stack (KWin, Plasma Shell, SDDM, …) |
+| `gear` | 104 | KDE Gear applications (Dolphin, Konsole, Kdenlive, …) |
+| `qt6` | 49 | Qt6 modules built against KDE Neon's stack |
+| `runtime` | — | Non-KDE runtime dependencies (Mesa, Wayland, PipeWire, …) |
+| `tools` | — | Build tooling (Craft, kde-builder, kdesrc-build, …) |
+| **Total** | **269** | |
 
 ## Pacscript naming convention
 

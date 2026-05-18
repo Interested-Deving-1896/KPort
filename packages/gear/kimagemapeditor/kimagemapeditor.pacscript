@@ -8,7 +8,7 @@
 
 pkgname="kimagemapeditor"
 pkgver="26.04.1"
-pkgdesc="HTML image map editor KImageMapEditor is a tool that allows you to edit image"
+pkgdesc="HTML image map editor"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="http://www.kde.org/"
 license=("GPL-2.0-or-later")
@@ -47,7 +47,7 @@ makedepends=(
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
-KSLOT="0"
+KSLOT="6"
 KCATEGORY="gear"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"

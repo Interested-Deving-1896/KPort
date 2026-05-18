@@ -8,7 +8,7 @@
 
 pkgname="qt6-phonon-backend-vlc"
 pkgver="0.11.3"
-pkgdesc="Qt6 Phonon VLC backend Phonon is the KF6 multimedia API, which provides a"
+pkgdesc="Qt6 Phonon VLC backend"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://invent.kde.org/libraries/phonon-vlc.git"
 license=("GPL-2.0-or-later")

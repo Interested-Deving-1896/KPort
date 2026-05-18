@@ -8,7 +8,7 @@
 
 pkgname="qt6-phonon"
 pkgver="4.11.1"
-pkgdesc="multimedia framework from KDE using Qt - core library Phonon is a Qt multimedia"
+pkgdesc="multimedia framework from KDE using Qt - core library"
 # Fall back to invent.kde.org canonical URL when no homepage is set
 url="https://invent.kde.org/frameworks/qt6-phonon"
 license=("GPL-2.0-or-later")
