@@ -10,7 +10,8 @@ pkgname="kf6-kwayland"
 pkgver="6.6.5"
 pkgdesc="Qt-style API to interact with the wayland-client API"
 url="https://projects.kde.org/projects/kde/frameworks/kwayland"
-license=("LGPL-2.0-or-later")
+license=("GPL-2.0-or-later" "LGPL-2.0-or-later")
+provides=("kwayland")
 
 source=(
   "https://download.kde.org/stable/plasma/6.6.5/kwayland-6.6.5.tar.xz"
@@ -32,7 +33,7 @@ makedepends=(
   "kf6-extra-cmake-modules"
   "libegl1-mesa-dev"
   "libwayland-dev"
-  "pkg-config"
+  "pkgconf"
   "plasma-wayland-protocols"
   "qt6-base-dev"
   "qt6-tools-dev"
@@ -46,7 +47,7 @@ KSLOT="6"
 KCATEGORY="plasma"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"
-KGPU_MIN="gpu-gl2"
+KGPU_MIN="gpu-gl4"
 
 KUSE=(
   "+wayland"
