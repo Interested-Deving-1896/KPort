@@ -1,62 +1,48 @@
 #!/usr/bin/env bash
-# KPort pacscript — frameworks/tier4/kf6-purpose
+# KPort pacscript — plasma/kf6-kquickcharts
 # Promoted from generated/ — review and test before merging to main
 #
-# abstraction to provide and leverage actions of a specific kind, runtime Purpose
+# A QtQuick module providing high-performance charts.
 
 # ── Standard Pacstall variables ───────────────────────────────────────────────
 
-pkgname="kf6-purpose"
+pkgname="kf6-kquickcharts"
 pkgver="6.26.0"
-pkgdesc="abstraction to provide and leverage actions of a specific kind, runtime Purpose"
-url="https://cgit.kde.org/purpose.git/"
+pkgdesc="A QtQuick module providing high-performance charts."
+url="https://invent.kde.org/kde/kquickcharts"
 license=("LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/frameworks/6.26/purpose-6.26.0.tar.xz"
+  "https://download.kde.org/stable/frameworks/6.26/kquickcharts-6.26.0.tar.xz"
 )
 sha256sums=(
-  "cc7b7599d1ac7ce7ed07351a35d742fac1b7e554b208a7b1c92e859b3b4add30"
+  "ae3e0784a2a2d1396cb751cc61f43a567e066d6434971246b1a18365481a1b52"
 )
 
 depends=(
-  "kf6-bluez-qt"
-  "kf6-kcmutils"
-  "kf6-kirigami"
-  "kf6-prison"
-  "qml6-module-sso-onlineaccounts"
-  "qt6-5compat"
-  "qt6-base"
-  "qt6-declarative"
+  "kf6-kirigami2"
 )
 
 makedepends=(
   "cmake"
-  "intltool"
-  "kaccounts-integration-dev"
+  "doxygen"
+  "graphviz"
   "kf6-extra-cmake-modules"
-  "kf6-kcmutils-dev"
   "kf6-kconfig-dev"
-  "kf6-kcoreaddons-dev"
   "kf6-kdeclarative-dev"
-  "kf6-ki18n-dev"
-  "kf6-kio-dev"
-  "kf6-kirigami-dev"
-  "kf6-knotifications-dev"
-  "kf6-kwallet-dev"
-  "kf6-prison-dev"
-  "libaccounts-glib-dev"
-  "pkgconf"
-  "qml6-module-sso-onlineaccounts"
-  "qt6-5compat-dev"
+  "kf6-kirigami2-dev"
   "qt6-base-dev"
   "qt6-declarative-dev"
+  "qt6-shadertools-dev"
+  "qt6-tools-dev"
+  "xauth"
+  "xvfb"
 )
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
 KSLOT="6"
-KCATEGORY="frameworks/tier4"
+KCATEGORY="plasma"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"
 KGPU_MIN="gpu-sw"

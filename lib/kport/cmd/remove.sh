@@ -51,7 +51,6 @@ done
 
 kport_header "Remove plan (${#to_remove[@]} package(s))"
 for pkg in "${to_remove[@]}"; do
-  local ver category
   ver=$(kport_db_read "$pkg" version)
   category=$(kport_db_read "$pkg" category)
   printf "  ${C_BOLD}%-30s${C_RESET} ${C_DIM}%-12s  %s${C_RESET}\n" \
@@ -75,17 +74,15 @@ ok=0; failed=0
 for pkg in "${to_remove[@]}"; do
   kport_header "Removing ${pkg}"
 
-  local category
   category=$(kport_db_read "$pkg" category)
 
   # Remove installed files
-  local files_list="${KPORT_DB_INSTALLED}/${pkg}/files"
+  files_list="${KPORT_DB_INSTALLED}/${pkg}/files"
   if [[ -f "$files_list" ]]; then
-    local file_count
     file_count=$(wc -l < "$files_list")
     kport_info "Removing ${file_count} files..."
 
-    local remove_failed=0
+    remove_failed=0
     while IFS= read -r f; do
       [[ -z "$f" ]] && continue
       if [[ -f "$f" || -L "$f" ]]; then
@@ -96,7 +93,6 @@ for pkg in "${to_remove[@]}"; do
     # Remove empty directories left behind
     while IFS= read -r f; do
       [[ -z "$f" ]] && continue
-      local dir
       dir=$(dirname "$f")
       [[ -d "$dir" ]] && sudo rmdir --ignore-fail-on-non-empty "$dir" 2>/dev/null || true
     done < "$files_list"

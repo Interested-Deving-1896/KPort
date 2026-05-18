@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
-# KPort pacscript — frameworks/tier2/kf6-kactivities-stats
+# KPort pacscript — plasma/kf6-kactivities
 # Promoted from generated/ — review and test before merging to main
 #
-# Activities Stats Libary
+# Activities Libary
 
 # ── Standard Pacstall variables ───────────────────────────────────────────────
 
-pkgname="kf6-kactivities-stats"
+pkgname="kf6-kactivities"
 pkgver="0.0"
-pkgdesc="Activities Stats Libary"
-url="https://projects.kde.org/projects/frameworks/kactivities-stats"
+pkgdesc="Activities Libary"
+url="https://projects.kde.org/projects/frameworks/kactivities"
 license=("LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/plasma/6.4.3/plasma-activities-stats-6.4.3.tar.xz"
+  "https://download.kde.org/stable/plasma/6.4.3/plasma-activities-6.4.3.tar.xz"
 )
 sha256sums=(
-  "991002e3da9b5969b9583cd169050a23aacbe02f2d7d4ab1a19f5bd7c72b3b6b"
+  "1c8dca746602defacd495b9ae637c1700d3be7e7e3cc5d499a5fd669a0b98ef0"
 )
 
 depends=(
@@ -29,8 +29,9 @@ makedepends=(
   "doxygen"
   "graphviz"
   "kf6-extra-cmake-modules"
-  "kf6-kactivities"
   "kf6-kconfig"
+  "kf6-kcoreaddons"
+  "kf6-kwindowsystem"
   "libboost-dev"
   "qt6-base-dev"
   "qt6-declarative-dev"
@@ -40,7 +41,7 @@ makedepends=(
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
 KSLOT="6"
-KCATEGORY="frameworks/tier2"
+KCATEGORY="plasma"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"
 KGPU_MIN="gpu-sw"

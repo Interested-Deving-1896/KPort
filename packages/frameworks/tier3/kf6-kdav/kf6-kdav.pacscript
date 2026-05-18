@@ -1,22 +1,22 @@
 #!/usr/bin/env bash
-# KPort pacscript — frameworks/tier3/kf6-kactivities
+# KPort pacscript — frameworks/tier3/kf6-kdav
 # Promoted from generated/ — review and test before merging to main
 #
-# Activities Libary
+# DAV protocol implementation with KJobs - arch independent files A DAV protocol
 
 # ── Standard Pacstall variables ───────────────────────────────────────────────
 
-pkgname="kf6-kactivities"
-pkgver="0.0"
-pkgdesc="Activities Libary"
-url="https://projects.kde.org/projects/frameworks/kactivities"
+pkgname="kf6-kdav"
+pkgver="6.26.0"
+pkgdesc="DAV protocol implementation with KJobs - arch independent files A DAV protocol"
+url="http://pim.kde.org/"
 license=("LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/plasma/6.4.3/plasma-activities-6.4.3.tar.xz"
+  "https://download.kde.org/stable/frameworks/6.26/kdav-6.26.0.tar.xz"
 )
 sha256sums=(
-  "1c8dca746602defacd495b9ae637c1700d3be7e7e3cc5d499a5fd669a0b98ef0"
+  "7535b2b9a6eb35e5b539de780f2d2b84668eb97eec3b7a6cf14d91fbe6bedfec"
 )
 
 depends=(
@@ -29,12 +29,15 @@ makedepends=(
   "doxygen"
   "graphviz"
   "kf6-extra-cmake-modules"
-  "kf6-kconfig"
-  "kf6-kcoreaddons"
-  "kf6-kwindowsystem"
-  "libboost-dev"
+  "kf6-kbookmarks-dev"
+  "kf6-kcolorscheme-dev"
+  "kf6-kcompletion-dev"
+  "kf6-kconfig-dev"
+  "kf6-kcoreaddons-dev"
+  "kf6-ki18n-dev"
+  "kf6-kio-dev"
+  "kf6-kwidgetsaddons-dev"
   "qt6-base-dev"
-  "qt6-declarative-dev"
   "qt6-tools-dev"
 )
 

@@ -86,7 +86,7 @@ for entry in "${world_entries[@]}"; do
 
   # USE flag check
   if [[ "$current_use" != "$inst_use" ]] && [[ "$VERSION_ONLY" != "true" ]]; then
-    local use_reason="USE flags changed"
+    use_reason="USE flags changed"
     reason="${reason:+${reason}, }${use_reason}"
     needs_upgrade=true
   fi

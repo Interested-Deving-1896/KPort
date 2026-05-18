@@ -1,45 +1,50 @@
 #!/usr/bin/env bash
-# KPort pacscript — frameworks/tier2/kf6-oxygen-icon-theme
+# KPort pacscript — frameworks/tier1/kf6-bluez-qt
 # Promoted from generated/ — review and test before merging to main
 #
-# Oxygen icon theme Oxygen was the standard icon theme for KDE 4, but follows the
+# Qt-style wrapper library for the BlueZ Bluetooth stack
 
 # ── Standard Pacstall variables ───────────────────────────────────────────────
 
-pkgname="kf6-oxygen-icon-theme"
-pkgver="6.1.0"
-pkgdesc="Oxygen icon theme Oxygen was the standard icon theme for KDE 4, but follows the"
-url="http://www.kde.org/"
+pkgname="kf6-bluez-qt"
+pkgver="6.26.0"
+pkgdesc="Qt-style wrapper library for the BlueZ Bluetooth stack"
+url="https://projects.kde.org/projects/kde/workspace/bluez-qt"
 license=("LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/oxygen-icons/oxygen-icons-6.1.0.tar.xz"
+  "https://download.kde.org/stable/frameworks/6.26/bluez-qt-6.26.0.tar.xz"
 )
 sha256sums=(
-  "16ca971079c5067c4507cabf1b619dc87dd6b326fd5c2dd9f5d43810f2174d68"
+  "ebeb301eaeb6ec6729b27969556839165ba582ebe242b42cde71c8faa80d63df"
 )
 
 depends=(
-  "hicolor-icon-theme"
+  # No named runtime deps found in debian/control (only ${shlibs:Depends}).
+  # Populate after a test build by inspecting ldd output or dpkg -I.
 )
 
 makedepends=(
   "cmake"
+  "doxygen"
+  "graphviz"
   "kf6-extra-cmake-modules"
-  "fdupes"
-  "imagemagick"
+  "libxkbcommon-dev"
   "qt6-base-dev"
+  "qt6-declarative-dev"
+  "qt6-tools-dev"
 )
 
 # ── KPort extensions ──────────────────────────────────────────────────────────
 
 KSLOT="6"
-KCATEGORY="frameworks/tier2"
+KCATEGORY="frameworks/tier1"
 KNEON_CHANNEL="unstable"
 KCPU_MIN="x86-64-v1"
 KGPU_MIN="gpu-sw"
 
 KUSE=(
+  "-docs"
   "-test"
 )
 
