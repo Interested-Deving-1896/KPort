@@ -751,5 +751,5 @@ dep_map:
   xwayland:                      "~apt:xwayland"
   "${misc:Depends}":             "~ignore"
   "python3:any":                 "~apt:python3"
-  kf6-baloowidgets:              "~apt:kf6-baloowidgets"
-  kf6-baloowidgets-dev:          "~apt:kf6-baloowidgets-dev"
+  kf6-baloowidgets:              "kf6-baloowidgets"
+  kf6-baloowidgets-dev:          "kf6-baloowidgets"
