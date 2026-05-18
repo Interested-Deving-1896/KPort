@@ -17,11 +17,10 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/kde-cli-tools-6.6.5.tar.xz"
 )
 sha256sums=(
-  "17eca02cf3d50d266c85f444bfef3b7c1c07a59b2cdebf6ca24e6fd81b80d122"   # replace with actual sha256 after download
+  "17eca02cf3d50d266c85f444bfef3b7c1c07a59b2cdebf6ca24e6fd81b80d122"
 )
 
 depends=(
-  "kde-cli-tools-data"
   "kf6-kdesu"
   "kf6-kio"
 )

@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/milou-6.6.5.tar.xz"
 )
 sha256sums=(
-  "3f6285e5fb6a9dc7634352bb3aff802dc391040e92cd3c7f1b9601dd9d5c54d0"   # replace with actual sha256 after download
+  "3f6285e5fb6a9dc7634352bb3aff802dc391040e92cd3c7f1b9601dd9d5c54d0"
 )
 
 depends=(

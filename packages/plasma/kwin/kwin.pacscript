@@ -9,16 +9,16 @@
 # ── Standard Pacstall variables ───────────────────────────────────────────────
 
 pkgname="kwin"
-pkgver="6.3.0"
+pkgver="6.6.5"
 pkgdesc="KDE Plasma 6 — window manager and Wayland compositor"
 url="https://invent.kde.org/plasma/kwin"
 license=("GPL-2.0-or-later" "LGPL-2.0-or-later")
 
 source=(
-  "https://download.kde.org/stable/plasma/${pkgver}/kwin-${pkgver}.tar.xz"
+  "https://download.kde.org/stable/plasma/6.6.5/kwin-6.6.5.tar.xz"
 )
 sha256sums=(
-  "SKIP"   # replace with actual sha256 after download
+  "6c187ce7a5506090b438ef900103836fa0537674dde8b31e5b497ef321643cb4"
 )
 
 depends=(
@@ -26,7 +26,7 @@ depends=(
   "kf6-kcoreaddons"
   "kf6-kcrash"
   "kf6-kdbusaddons"
-  "kf6-kdecoration"
+  "kdecoration"
   "kf6-kglobalaccel"
   "kf6-ki18n"
   "kf6-kidletime"
@@ -56,7 +56,7 @@ makedepends=(
   "kf6-kcoreaddons-dev"
   "kf6-kcrash-dev"
   "kf6-kdbusaddons-dev"
-  "kf6-kdecoration-dev"
+  "kdecoration"
   "kf6-kglobalaccel-dev"
   "kf6-ki18n-dev"
   "kf6-kidletime-dev"

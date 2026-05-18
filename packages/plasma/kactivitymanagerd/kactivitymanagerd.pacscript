@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/kactivitymanagerd-6.6.5.tar.xz"
 )
 sha256sums=(
-  "859bb8e7a6efb4210a82512abec4d7b6ea9ac6f883a2b1db4d3de5ca11452224"   # replace with actual sha256 after download
+  "859bb8e7a6efb4210a82512abec4d7b6ea9ac6f883a2b1db4d3de5ca11452224"
 )
 
 depends=(

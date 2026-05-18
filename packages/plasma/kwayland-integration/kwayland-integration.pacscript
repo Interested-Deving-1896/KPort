@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/kwayland-integration-6.6.5.tar.xz"
 )
 sha256sums=(
-  "2720764c73963fe06bd78e2eca329eba61fb625dff6d3dcf4a68ec167766ce6e"   # replace with actual sha256 after download
+  "2720764c73963fe06bd78e2eca329eba61fb625dff6d3dcf4a68ec167766ce6e"
 )
 
 depends=(

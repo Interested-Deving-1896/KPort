@@ -336,23 +336,32 @@ for line in content.splitlines():
         continue
     # Strip opts=... prefix
     line = re.sub(r'^opts=[^\s]+\s+', '', line)
-    # The full watch pattern looks like:
-    #   https://download.kde.org/stable/frameworks/([\d\.]*)/karchive-(.*)\.tar\.xz
-    # We want to reconstruct a template URL with $pkgver_minor and $pkgver placeholders.
-    # Strategy: replace each (...) capture group in order with the right placeholder.
-    m = re.match(r'(https://download\.kde\.org/\S+)', line)
+    # Match KDE download URLs or Qt mirror/official URLs:
+    #   KDE: https://download.kde.org/stable/frameworks/([\d\.]*)/karchive-(.*).tar.xz
+    #   Qt:  https://mirror.netcologne.de/qtproject/.../qt/([\d\.]+)/([\d\.]+)(\d)/submodules/qt<mod>-everywhere-src-([\d\.]+\d).tar.xz
+    m = re.match(r'(https://(?:download\.kde\.org|[^/]*qtproject[^/]*|download\.qt\.io)/\S+)', line)
     if not m:
         continue
     url = m.group(1)
-    # Replace first capture group (version directory) with $pkgver_minor
-    url = re.sub(r'\([^)]+\)', '$pkgver_minor', url, count=1)
-    # Replace second capture group (full version in filename) with $pkgver
-    url = re.sub(r'\([^)]+\)', '$pkgver', url, count=1)
+    # Count capture groups to distinguish Qt (3 groups) from KDE (2 groups)
+    groups = re.findall(r'\([^)]+\)', url)
+    if len(groups) >= 3 and ('qtproject' in url or 'download.qt.io' in url):
+        # Qt watch pattern: (major.minor) / (major.minor)(patch) / qt<mod>-everywhere-src-(version)
+        # group 0: major.minor dir  -> $pkgver_minor
+        url = re.sub(r'\([^)]+\)', '$pkgver_minor', url, count=1)
+        # groups 1+2: full version dir written as two adjacent groups -> collapse to $pkgver
+        url = re.sub(r'\([^)]+\)\s*\([^)]+\)', '$pkgver', url, count=1)
+        # remaining group: version in filename -> $pkgver
+        url = re.sub(r'\([^)]+\)', '$pkgver', url, count=1)
+    else:
+        # KDE pattern: 2 groups
+        url = re.sub(r'\([^)]+\)', '$pkgver_minor', url, count=1)
+        url = re.sub(r'\([^)]+\)', '$pkgver', url, count=1)
     # Handle uscan @PACKAGE@ / @ANY_VERSION@ / @ARCHIVE_EXT@ macros
     url = re.sub(r'@PACKAGE@',      '$_pkgname', url)
     url = re.sub(r'@ANY_VERSION@',  '-$pkgver',  url)
     url = re.sub(r'@ARCHIVE_EXT@',  '.tar.xz',   url)
-    # Strip any trailing regex anchors
+    # Strip trailing regex anchors
     url = re.sub(r'\\\..*$', '.tar.xz', url)
     print(url)
     break
@@ -689,6 +698,11 @@ build_source_url() {
       ;;
     gear*)
       echo "https://download.kde.org/stable/release-service/${version}/src/${pkg_name}-${version}.tar.xz"
+      ;;
+    qt6*)
+      # Qt module name: strip "qt6-" prefix and map to "qt<module>-everywhere-src"
+      local qt_mod="${pkg_name#qt6-}"
+      echo "https://download.qt.io/official_releases/qt/${minor_ver}/${version}/submodules/qt${qt_mod}-everywhere-src-${version}.tar.xz"
       ;;
     *)
       echo "https://download.kde.org/stable/${pkg_name}/${version}/${pkg_name}-${version}.tar.xz"

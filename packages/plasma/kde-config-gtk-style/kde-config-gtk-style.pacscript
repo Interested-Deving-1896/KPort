@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/kde-gtk-config-6.6.5.tar.xz"
 )
 sha256sums=(
-  "2902a012ba85d2d201f879d17f0b4f51910e43a1cb0d761788b063b0c17d7b10"   # replace with actual sha256 after download
+  "2902a012ba85d2d201f879d17f0b4f51910e43a1cb0d761788b063b0c17d7b10"
 )
 
 depends=(
@@ -38,7 +38,7 @@ makedepends=(
   "kf6-knewstuff"
   "libgtk-3-dev"
   "libgtk2.0-dev"
-  "libkdecorations3-dev"
+  "kdecoration"
   "libx11-dev"
   "qt6-base-dev"
   "qt6-svg-dev"

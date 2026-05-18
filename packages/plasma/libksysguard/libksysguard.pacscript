@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/libksysguard-6.6.5.tar.xz"
 )
 sha256sums=(
-  "f088854a021028b7b0f6a735c89e9aa53bd13e903af11ed16a49c944e33b00df"   # replace with actual sha256 after download
+  "f088854a021028b7b0f6a735c89e9aa53bd13e903af11ed16a49c944e33b00df"
 )
 
 depends=(

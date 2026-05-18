@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/kmenuedit-6.6.5.tar.xz"
 )
 sha256sums=(
-  "1c24f15e13d16ad9c0643ea2a0849420329fd10b62fd262b48cdade678274828"   # replace with actual sha256 after download
+  "1c24f15e13d16ad9c0643ea2a0849420329fd10b62fd262b48cdade678274828"
 )
 
 depends=(

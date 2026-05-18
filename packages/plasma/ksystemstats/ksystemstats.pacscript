@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/ksystemstats-6.6.5.tar.xz"
 )
 sha256sums=(
-  "6b5e2f2a6aaae97489e75818e7f83c2586578022760821c677cdebcefa542e36"   # replace with actual sha256 after download
+  "6b5e2f2a6aaae97489e75818e7f83c2586578022760821c677cdebcefa542e36"
 )
 
 depends=(

@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/breeze-plymouth-6.6.5.tar.xz"
 )
 sha256sums=(
-  "d102ee8ae3c6fe9353553a8fc4fc5f152c1287e504c2ce975c2c721f3c2c881a"   # replace with actual sha256 after download
+  "d102ee8ae3c6fe9353553a8fc4fc5f152c1287e504c2ce975c2c721f3c2c881a"
 )
 
 depends=(

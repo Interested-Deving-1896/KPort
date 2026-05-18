@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/libkscreen-6.6.5.tar.xz"
 )
 sha256sums=(
-  "f2fd11f2f65ff9ca4ff3b50b9953018a929b1bf3263b32ec171c4298e4662149"   # replace with actual sha256 after download
+  "f2fd11f2f65ff9ca4ff3b50b9953018a929b1bf3263b32ec171c4298e4662149"
 )
 
 depends=(

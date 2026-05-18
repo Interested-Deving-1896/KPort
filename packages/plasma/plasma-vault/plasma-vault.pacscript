@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/plasma-vault-6.6.5.tar.xz"
 )
 sha256sums=(
-  "68a4e3cd160db15646882c5a40aec3aa3eb709701a3b4274d02b6393feabb268"   # replace with actual sha256 after download
+  "68a4e3cd160db15646882c5a40aec3aa3eb709701a3b4274d02b6393feabb268"
 )
 
 depends=(

@@ -17,7 +17,7 @@ source=(
   "https://download.kde.org/stable/plasma/6.6.5/plasma-workspace-6.6.5.tar.xz"
 )
 sha256sums=(
-  "64d753cadcb9cde6ac09eeedf6b02ec5ccdfbd01722c5e9f2533fd0993b0d854"   # replace with actual sha256 after download
+  "64d753cadcb9cde6ac09eeedf6b02ec5ccdfbd01722c5e9f2533fd0993b0d854"
 )
 
 depends=(
@@ -48,7 +48,6 @@ depends=(
   "kf6-prison"
   "kf6-qqc2-desktop-style"
   "kio-extras"
-  "kwin-common"
   "kwin-wayland"
   "language-selector-common"
   "layer-shell-qt"
