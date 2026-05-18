@@ -2,7 +2,7 @@
 #
 # KPort GPU compatibility detection.
 # Determines GPU tier, vendor, and capability flags.
-# Supports x86-64 (PCI), aarch64 (ARM SoC), and riscv64 (SoC).
+# Supports x86-64 (PCI), i686 (legacy PCI / VESA), aarch64 (ARM SoC), and riscv64 (SoC).
 #
 # Outputs shell variable assignments:
 #   GPU_TIER      — capability tier (see below)
@@ -14,6 +14,12 @@
 #   GPU_VRAM_MB   — VRAM in MiB (0 if unknown / unified memory)
 #
 # GPU tier definitions (unified capability scale):
+#
+#   i686 / legacy x86 GPU tiers:
+#     gpu-sw        software rendering / VESA framebuffer only
+#     gpu-gl2       OpenGL 2.x (legacy discrete, e.g. GeForce 6/7, Radeon X series)
+#     gpu-gl4       OpenGL 4.x (Intel HD 2000+, AMD GCN, NVIDIA Fermi+ with Mesa)
+#                   Vulkan drivers do not ship for 32-bit userspace; gl4 is the ceiling.
 #
 #   x86-64 / discrete GPU tiers:
 #     gpu-sw        software rendering only (llvmpipe / no GPU)
@@ -116,11 +122,47 @@ _drm_driver_name() {
 }
 
 _dt_compatible() {
-  # Read device tree compatible strings for GPU nodes
-  find /sys/firmware/devicetree/base -name 'compatible' 2>/dev/null \
-    | xargs grep -ail 'mali\|panfrost\|powervr\|pvr\|adreno\|msm\|apple-agx\|img' \
-      2>/dev/null | head -5 \
-    | xargs -r cat 2>/dev/null | tr '\0' '\n' | tr '[:upper:]' '[:lower:]'
+  # Read device tree compatible strings for GPU nodes.
+  #
+  # Source 1: upstream kernels expose the full DT under /sys/firmware/devicetree.
+  local dt_strings=""
+  dt_strings=$(
+    find /sys/firmware/devicetree/base -name 'compatible' 2>/dev/null \
+      | xargs grep -ail 'mali\|panfrost\|powervr\|pvr\|adreno\|msm\|apple-agx\|img' \
+        2>/dev/null | head -5 \
+      | xargs -r cat 2>/dev/null | tr '\0' '\n' | tr '[:upper:]' '[:lower:]'
+  )
+
+  # Source 2: downstream/vendor kernels (QCOM, Android-derived) often omit
+  # /sys/firmware/devicetree entirely but still expose OF_COMPATIBLE in the
+  # platform device uevent.  Scan all platform device uevents for GPU-related
+  # OF_COMPATIBLE entries.  The field is NUL-separated on older kernels and
+  # newline-separated on newer ones; normalise both.
+  local uevent_strings=""
+  uevent_strings=$(
+    grep -rl 'OF_COMPATIBLE' /sys/bus/platform/devices/*/uevent 2>/dev/null \
+      | xargs grep -h 'OF_COMPATIBLE' 2>/dev/null \
+      | grep -iE 'adreno|msm|mali|panfrost|powervr|pvr|apple-agx|img' \
+      | sed 's/OF_COMPATIBLE[_0-9]*=//g' \
+      | tr '[:upper:]' '[:lower:]' \
+      | tr '\0' '\n'
+  )
+
+  # Source 3: DRM card uevent — some downstream kernels set OF_COMPATIBLE here
+  # even when the platform bus entries are absent.
+  local drm_uevent_strings=""
+  drm_uevent_strings=$(
+    for uevent_path in /sys/class/drm/card*/device/uevent; do
+      [[ -f "$uevent_path" ]] || continue
+      grep 'OF_COMPATIBLE' "$uevent_path" 2>/dev/null \
+        | sed 's/OF_COMPATIBLE[_0-9]*=//g' \
+        | tr '[:upper:]' '[:lower:]' \
+        | tr '\0' '\n'
+    done
+  )
+
+  printf '%s\n%s\n%s\n' "$dt_strings" "$uevent_strings" "$drm_uevent_strings" \
+    | grep -v '^$' | sort -u
 }
 
 detect_soc_gpu() {
@@ -326,6 +368,109 @@ detect_capability_flags() {
   GPU_FLAGS="${flags[*]:-}"
 }
 
+# ── i686 / legacy x86 GPU detection ──────────────────────────────────────────
+#
+# On 32-bit x86 we use the same PCI vendor detection as x86-64, but cap the
+# tier at gpu-gl4: no Vulkan driver ships a 32-bit (i686) userspace library.
+# If no DRM device is found at all, fall back to gpu-sw (VESA framebuffer).
+#
+# Tier assignment heuristic:
+#   - Intel i965 (Gen4+) and later → gpu-gl4 via Mesa i965/iris
+#   - Intel i830–i915 (Gen2/3)     → gpu-gl2
+#   - AMD GCN (Radeon HD 7000+)    → gpu-gl4 via Mesa radeonsi
+#   - AMD pre-GCN (Radeon X/HD2000–6000) → gpu-gl2 via Mesa r300/r600
+#   - NVIDIA Fermi+ (GTX 400+)     → gpu-gl4 via Nouveau
+#   - NVIDIA pre-Fermi             → gpu-gl2 via Nouveau
+#   - No DRM device / VESA only    → gpu-sw
+
+detect_i686_gpu() {
+  # Vendor detection reuses the existing PCI helpers.
+  GPU_VENDOR=$(detect_vendor_from_drm)
+  [[ "$GPU_VENDOR" == "gpu-unknown" ]] && GPU_VENDOR=$(detect_vendor_from_lspci)
+  GPU_MODEL=$(detect_model_from_drm)
+
+  # If no DRM device exists at all, we're on VESA or a pure framebuffer.
+  if [[ "$GPU_VENDOR" == "gpu-unknown" ]] && \
+     ! ls /sys/class/drm/card* &>/dev/null 2>&1; then
+    GPU_TIER="gpu-sw"
+    GPU_VENDOR="gpu-unknown"
+    GPU_MODEL="VESA / framebuffer"
+    return 0
+  fi
+
+  # Use glxinfo to determine the actual OpenGL version available.
+  # On i686 this is the most reliable signal — PCI IDs alone don't tell us
+  # which Mesa version is installed or whether the driver is loaded.
+  if command -v glxinfo &>/dev/null; then
+    local gl_out gl_version major
+    gl_out=$(glxinfo 2>/dev/null) || true
+    gl_version=$(echo "$gl_out" | grep 'OpenGL version string' \
+      | grep -oP '\d+\.\d+' | head -1)
+    major=$(echo "$gl_version" | cut -d. -f1)
+    case "$major" in
+      4|3) GPU_TIER="gpu-gl4" ;;  # gl4 is the ceiling on i686
+      2)   GPU_TIER="gpu-gl2" ;;
+      *)   GPU_TIER="gpu-sw"  ;;
+    esac
+    local gpu_name
+    gpu_name=$(echo "$gl_out" | grep 'OpenGL renderer string' \
+      | sed 's/.*: //' | head -c 80)
+    [[ -n "$gpu_name" ]] && GPU_MODEL="$gpu_name"
+    return 0
+  fi
+
+  # glxinfo unavailable — fall back to PCI vendor heuristics.
+  # These are conservative: we'd rather under-report than over-promise.
+  case "$GPU_VENDOR" in
+    gpu-intel)
+      # Check PCI device ID range to distinguish Gen2/3 (gl2) from Gen4+ (gl4).
+      # Gen4+ device IDs start at 0x2972 (i965 G).  We use lspci class 0300.
+      local intel_id
+      intel_id=$(lspci -n 2>/dev/null | grep ' 0300: 8086:' \
+        | grep -oP '8086:\K[0-9a-fA-F]+' | head -1)
+      if [[ -n "$intel_id" ]]; then
+        local id_dec
+        id_dec=$(printf '%d' "0x${intel_id}" 2>/dev/null || echo 0)
+        # Gen4 starts at 0x2972 (decimal 10610)
+        [[ "$id_dec" -ge 10610 ]] && GPU_TIER="gpu-gl4" || GPU_TIER="gpu-gl2"
+      else
+        GPU_TIER="gpu-gl2"
+      fi
+      ;;
+    gpu-amd)
+      # GCN starts with Radeon HD 7000 series (device IDs 0x6798+).
+      local amd_id
+      amd_id=$(lspci -n 2>/dev/null | grep ' 0300: 1002:' \
+        | grep -oP '1002:\K[0-9a-fA-F]+' | head -1)
+      if [[ -n "$amd_id" ]]; then
+        local id_dec
+        id_dec=$(printf '%d' "0x${amd_id}" 2>/dev/null || echo 0)
+        # GCN first device ID 0x6798 (decimal 26520)
+        [[ "$id_dec" -ge 26520 ]] && GPU_TIER="gpu-gl4" || GPU_TIER="gpu-gl2"
+      else
+        GPU_TIER="gpu-gl2"
+      fi
+      ;;
+    gpu-nvidia)
+      # Fermi starts at GF100 (device IDs 0x06C0+).
+      local nv_id
+      nv_id=$(lspci -n 2>/dev/null | grep ' 0300: 10de:' \
+        | grep -oP '10de:\K[0-9a-fA-F]+' | head -1)
+      if [[ -n "$nv_id" ]]; then
+        local id_dec
+        id_dec=$(printf '%d' "0x${nv_id}" 2>/dev/null || echo 0)
+        # Fermi GF100 0x06C0 (decimal 1728)
+        [[ "$id_dec" -ge 1728 ]] && GPU_TIER="gpu-gl4" || GPU_TIER="gpu-gl2"
+      else
+        GPU_TIER="gpu-gl2"
+      fi
+      ;;
+    *)
+      GPU_TIER="gpu-sw"
+      ;;
+  esac
+}
+
 # ── Run detection ─────────────────────────────────────────────────────────────
 
 ARCH=$(uname -m)
@@ -347,6 +492,11 @@ case "$ARCH" in
       GPU_MODEL=$(detect_model_from_drm)
       detect_via_vulkan || detect_via_opengl || true
     fi
+    ;;
+  i686|i586|i486|i386)
+    # 32-bit x86: PCI vendor + GL probing, capped at gpu-gl4.
+    # Vulkan detection is skipped — no 32-bit Vulkan ICD ships in practice.
+    detect_i686_gpu
     ;;
   *)
     # x86-64 and others: PCI vendor + Vulkan/GL

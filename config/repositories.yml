@@ -29,6 +29,17 @@ repositories:
     enabled: true
     auto_sync: false
 
+  # Community 32-bit overlay — lightweight packages for i686 systems.
+  # Qt 6 / KDE Frameworks 6 are 64-bit only; this overlay targets GTK/SDL/
+  # toolkit-free utilities that still build on 32-bit x86.
+  # Enable by setting enabled: true, or point url at a hosted fork.
+  - name: community-32bit
+    description: "Lightweight i686 (32-bit x86) packages"
+    url: ""
+    priority: 15
+    enabled: false
+    auto_sync: false
+
   # Example community overlay:
   # - name: kde-git-builds
   #   description: "Bleeding-edge KDE git snapshot builds"

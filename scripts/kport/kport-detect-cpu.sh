@@ -2,15 +2,19 @@
 #
 # KPort CPU compatibility detection.
 # Determines the CPU microarchitecture tier and feature flags.
-# Supports x86-64, aarch64 (ARM), and riscv64.
+# Supports x86-64, i686, aarch64 (ARM), and riscv64.
 #
 # Outputs shell variable assignments suitable for sourcing or writing
 # to hardware.conf:
-#   CPU_ARCH    — x86-64 | aarch64 | riscv64 | unknown
+#   CPU_ARCH    — x86-64 | i686 | aarch64 | riscv64 | unknown
 #   CPU_TIER    — architecture-specific tier string (see below)
 #   CPU_FLAGS   — space-separated list of notable CPU feature flags
 #   CPU_MODEL   — human-readable CPU model string
 #   CPU_CORES   — logical core count
+#
+# i686 tier definitions (32-bit x86, ordered lowest → highest):
+#   i686-baseline  Pentium 4 / Prescott minimum (SSE2, no x86-64)
+#   i686-sse3      Core 2 era (SSE3 + SSSE3, still 32-bit)
 #
 # x86-64 tier definitions (from the x86-64 psABI):
 #   x86-64-v1   baseline (cmov, cx8, fpu, fxsr, mmx, syscall, sse, sse2)
@@ -41,6 +45,47 @@ for arg in "$@"; do
   [[ "$arg" == "--export" ]] && EXPORT_MODE=true
   [[ "$arg" == "--json"   ]] && JSON_MODE=true
 done
+
+# ── i686 detection ───────────────────────────────────────────────────────────
+#
+# 32-bit x86 kernels report "i686" (or i386/i486/i586) from uname -m.
+# We classify into two tiers based on SSE3/SSSE3 availability:
+#   i686-baseline  SSE2 present, no SSE3 (Pentium 4 Prescott, Celeron D)
+#   i686-sse3      SSE3 + SSSE3 present (Core 2 Duo and later 32-bit CPUs)
+#
+# Note: x86-64 CPUs running a 32-bit kernel also land here.  The tier still
+# reflects the instruction set available to 32-bit userspace.
+
+detect_i686() {
+  local tier="i686-baseline"
+
+  local cpuflags
+  cpuflags=$(grep -m1 '^flags' /proc/cpuinfo 2>/dev/null | sed 's/flags\s*:\s*//')
+
+  has_flag() { echo "$cpuflags" | grep -qw "$1"; }
+
+  # SSE3 + SSSE3 → i686-sse3 (Core 2 era)
+  if has_flag sse3 && has_flag ssse3; then
+    tier="i686-sse3"
+  fi
+
+  local notable=()
+  for f in sse sse2 sse3 ssse3 sse4_1 sse4_2 pae nx aes cx16 popcnt; do
+    has_flag "$f" && notable+=("$f")
+  done
+  local flags="${notable[*]:-}"
+
+  local cores model
+  cores=$(nproc 2>/dev/null || echo "1")
+  model=$(grep -m1 'model name' /proc/cpuinfo 2>/dev/null \
+    | sed 's/model name\s*:\s*//' | tr -s ' ' | head -c 80 || echo "Unknown i686")
+
+  echo "CPU_ARCH=\"i686\""
+  echo "CPU_TIER=\"${tier}\""
+  echo "CPU_FLAGS=\"${flags}\""
+  echo "CPU_CORES=\"${cores}\""
+  echo "CPU_MODEL=\"${model}\""
+}
 
 # ── x86-64 detection ─────────────────────────────────────────────────────────
 
@@ -212,9 +257,14 @@ ARCH=$(uname -m)
 raw_output=""
 
 case "$ARCH" in
-  aarch64|arm64) raw_output=$(detect_aarch64) ;;
-  x86_64)        raw_output=$(detect_x86_64)  ;;
-  riscv64)       raw_output=$(detect_riscv64) ;;
+  aarch64|arm64)    raw_output=$(detect_aarch64) ;;
+  x86_64)           raw_output=$(detect_x86_64)  ;;
+  riscv64)          raw_output=$(detect_riscv64) ;;
+  i686|i586|i486|i386)
+    # All 32-bit x86 variants are classified under the i686 tier system.
+    # i386/i486/i586 are too old to run a modern Linux userspace in practice,
+    # but we report them as i686-baseline rather than unknown.
+    raw_output=$(detect_i686) ;;
   *)
     raw_output="CPU_ARCH=\"unknown\""$'\n'
     raw_output+="CPU_TIER=\"unknown\""$'\n'

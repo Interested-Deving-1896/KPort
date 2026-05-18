@@ -22,7 +22,7 @@ KPORT_GENERATED_DIR="${KPORT_ROOT}/generated"
 KPORT_OVERLAYS_DIR="${KPORT_ROOT}/overlays"
 KPORT_CONFIG_DIR="${KPORT_ROOT}/config"
 
-KPORT_HW_CONF="${KPORT_CONF}/hardware.conf"
+KPORT_HW_CONF="${KPORT_HW_CONF:-${KPORT_CONF}/hardware.conf}"
 KPORT_USE_CONF="${KPORT_CONF}/use.conf"
 KPORT_PKG_USE="${KPORT_CONF}/package.use"
 KPORT_PKG_UNMASK="${KPORT_CONF}/package.unmask"
@@ -301,6 +301,7 @@ kport_check_keyword() {
       # Each arch family is ordered independently. Cross-arch comparison is
       # undefined — a package requiring x86-64-v3 cannot run on aarch64.
       # We only block when both system tier and KCPU_MIN are in the same family.
+      local -a i686_cpu_order=(i686-baseline i686-sse3)
       local -a x86_cpu_order=(x86-64-v1 x86-64-v2 x86-64-v3 x86-64-v4)
       local -a arm_cpu_order=(aarch64-v8 aarch64-v8.2 aarch64-v9 aarch64-v9.2)
       local -a rv_cpu_order=(riscv64-rv64gc riscv64-rv64gcv)
@@ -317,9 +318,10 @@ kport_check_keyword() {
         return 0
       }
 
-      _kport_cpu_family_check x86_cpu_order || return 1
-      _kport_cpu_family_check arm_cpu_order || return 1
-      _kport_cpu_family_check rv_cpu_order  || return 1
+      _kport_cpu_family_check i686_cpu_order || return 1
+      _kport_cpu_family_check x86_cpu_order  || return 1
+      _kport_cpu_family_check arm_cpu_order  || return 1
+      _kport_cpu_family_check rv_cpu_order   || return 1
     fi
   fi
 

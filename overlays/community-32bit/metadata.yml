@@ -1,0 +1,7 @@
+name: community-32bit
+description: "Community overlay for lightweight i686 (32-bit x86) packages"
+maintainer: community
+url: ""
+priority: 15
+enabled: false
+auto_sync: false
