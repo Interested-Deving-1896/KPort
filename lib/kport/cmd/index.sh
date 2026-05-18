@@ -32,13 +32,15 @@ fi
 
 kport_info "Building search index..."
 
-# Collect all pacscript paths: overlays first, then main tree
+# Collect all pacscript paths: enabled overlays first (priority order), then main tree.
+# Uses list-overlays.py to read repositories.yml — same source as kport_find_pacscript.
 search_dirs=()
-if [[ -d "$KPORT_OVERLAYS_DIR" ]]; then
-  while IFS= read -r d; do
-    [[ "$d" == *"/example" ]] && continue
-    search_dirs+=("$d")
-  done < <(find "$KPORT_OVERLAYS_DIR" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)
+if [[ -d "$KPORT_OVERLAYS_DIR" && -f "${KPORT_CONFIG_DIR}/repositories.yml" ]]; then
+  while IFS= read -r overlay_name; do
+    [[ -z "$overlay_name" ]] && continue
+    overlay_dir="${KPORT_OVERLAYS_DIR}/${overlay_name}"
+    [[ -d "$overlay_dir" ]] && search_dirs+=("$overlay_dir")
+  done < <(python3 "${KPORT_LIB}/list-overlays.py" "${KPORT_CONFIG_DIR}/repositories.yml" 2>/dev/null)
 fi
 search_dirs+=("$KPORT_PACKAGES_DIR")
 
