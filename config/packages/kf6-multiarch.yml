@@ -1,0 +1,264 @@
+# config/packages/kf6-multiarch.yml
+#
+# KDE Frameworks 6 and Qt 6 package definitions for non-amd64 architectures.
+#
+# These packages are sourced from Debian sid (config/sources.yml: debian-sid)
+# rather than KDE Neon, because Neon only publishes amd64 packages.
+#
+# Architectures covered:
+#   i386     — 32-bit x86 (Debian patches Qt 6 to restore 32-bit support)
+#   arm64    — 64-bit ARM / AArch64
+#   riscv64  — RISC-V 64-bit (via debian-ports for some packages)
+#
+# Package naming convention:
+#   <kport-name>:<arch>  maps to  <debian-package>:<arch>
+#
+# Versions reflect Debian sid at time of writing (KF6 6.23.0, Qt 6.10.2).
+# KPort's sync-sources.sh updates these automatically on `kport sync`.
+#
+# Enable a foreign arch first:
+#   kport multiarch enable i386      # or arm64, riscv64, 32bit
+#   kport sync
+#   kport install plasma-desktop:i386
+
+# ── Qt 6 base ────────────────────────────────────────────────────────────────
+qt6:
+  source: debian-sid
+  arch: [i386, arm64, riscv64]
+  packages:
+    qt6-base:
+      debian: qt6-base-dev
+      runtime: [libqt6core6t64, libqt6gui6, libqt6widgets6, libqt6network6]
+      version: "~6.10"
+    qt6-declarative:
+      debian: qt6-declarative-dev
+      runtime: [libqt6qml6, libqt6quick6]
+      version: "~6.10"
+    qt6-wayland:
+      debian: qt6-wayland-dev
+      runtime: [libqt6waylandclient6, libqt6waylandcompositor6]
+      version: "~6.10"
+    qt6-multimedia:
+      debian: qt6-multimedia-dev
+      runtime: [libqt6multimedia6]
+      version: "~6.10"
+    qt6-svg:
+      debian: qt6-svg-dev
+      runtime: [libqt6svg6]
+      version: "~6.10"
+    qt6-tools:
+      debian: qt6-tools-dev
+      runtime: [libqt6designer6, libqt6help6]
+      version: "~6.10"
+
+# ── KDE Frameworks 6 ─────────────────────────────────────────────────────────
+# All 72+ KF6 packages available in Debian sid for i386/arm64/riscv64.
+# Listed here are the core frameworks required by Plasma 6.
+kf6:
+  source: debian-sid
+  arch: [i386, arm64, riscv64]
+  packages:
+    kf6-archive:
+      debian: libkf6archive-dev
+      runtime: [libkf6archive6]
+      version: "~6.23"
+    kf6-auth:
+      debian: libkf6auth-dev
+      runtime: [libkf6auth6, libkf6authcore6]
+      version: "~6.23"
+    kf6-baloo:
+      debian: libkf6baloo-dev
+      runtime: [libkf6baloo6]
+      version: "~6.23"
+    kf6-bookmarks:
+      debian: libkf6bookmarks-dev
+      runtime: [libkf6bookmarks6]
+      version: "~6.23"
+    kf6-codecs:
+      debian: libkf6codecs-dev
+      runtime: [libkf6codecs6]
+      version: "~6.23"
+    kf6-completion:
+      debian: libkf6completion-dev
+      runtime: [libkf6completion6]
+      version: "~6.23"
+    kf6-config:
+      debian: libkf6config-dev
+      runtime: [libkf6configcore6, libkf6configgui6]
+      version: "~6.23"
+    kf6-configwidgets:
+      debian: libkf6configwidgets-dev
+      runtime: [libkf6configwidgets6]
+      version: "~6.23"
+    kf6-coreaddons:
+      debian: libkf6coreaddons-dev
+      runtime: [libkf6coreaddons6]
+      version: "~6.23"
+    kf6-crash:
+      debian: libkf6crash-dev
+      runtime: [libkf6crash6]
+      version: "~6.23"
+    kf6-dbusaddons:
+      debian: libkf6dbusaddons-dev
+      runtime: [libkf6dbusaddons6]
+      version: "~6.23"
+    kf6-declarative:
+      debian: libkf6declarative-dev
+      runtime: [libkf6declarative6]
+      version: "~6.23"
+    kf6-filemetadata:
+      debian: libkf6filemetadata-dev
+      runtime: [libkf6filemetadata6]
+      version: "~6.23"
+    kf6-globalaccel:
+      debian: libkf6globalaccel-dev
+      runtime: [libkf6globalaccel6, libkf6globalaccelbin6]
+      version: "~6.23"
+    kf6-guiaddons:
+      debian: libkf6guiaddons-dev
+      runtime: [libkf6guiaddons6]
+      version: "~6.23"
+    kf6-i18n:
+      debian: libkf6i18n-dev
+      runtime: [libkf6i18n6, libkf6i18nlocaledata6]
+      version: "~6.23"
+    kf6-iconthemes:
+      debian: libkf6iconthemes-dev
+      runtime: [libkf6iconthemes6, libkf6iconwidgets6]
+      version: "~6.23"
+    kf6-itemmodels:
+      debian: libkf6itemmodels-dev
+      runtime: [libkf6itemmodels6]
+      version: "~6.23"
+    kf6-itemviews:
+      debian: libkf6itemviews-dev
+      runtime: [libkf6itemviews6]
+      version: "~6.23"
+    kf6-jobwidgets:
+      debian: libkf6jobwidgets-dev
+      runtime: [libkf6jobwidgets6]
+      version: "~6.23"
+    kf6-kio:
+      debian: libkf6kio-dev
+      runtime: [libkf6kiocore6, libkf6kiofilewidgets6, libkf6kiowidgets6]
+      version: "~6.23"
+    kf6-notifications:
+      debian: libkf6notifications-dev
+      runtime: [libkf6notifications6]
+      version: "~6.23"
+    kf6-parts:
+      debian: libkf6parts-dev
+      runtime: [libkf6parts6]
+      version: "~6.23"
+    kf6-plasma:
+      debian: libkf6plasma-dev
+      runtime: [libkf6plasma6]
+      version: "~6.23"
+    kf6-runner:
+      debian: libkf6runner-dev
+      runtime: [libkf6runner6]
+      version: "~6.23"
+    kf6-service:
+      debian: libkf6service-dev
+      runtime: [libkf6service6]
+      version: "~6.23"
+    kf6-solid:
+      debian: libkf6solid-dev
+      runtime: [libkf6solid6]
+      version: "~6.23"
+    kf6-sonnet:
+      debian: libkf6sonnet-dev
+      runtime: [libkf6sonnetcore6, libkf6sonnetui6]
+      version: "~6.23"
+    kf6-statusnotifieritem:
+      debian: libkf6statusnotifieritem-dev
+      runtime: [libkf6statusnotifieritem6]
+      version: "~6.23"
+    kf6-textwidgets:
+      debian: libkf6textwidgets-dev
+      runtime: [libkf6textwidgets6]
+      version: "~6.23"
+    kf6-unitconversion:
+      debian: libkf6unitconversion-dev
+      runtime: [libkf6unitconversion6]
+      version: "~6.23"
+    kf6-wallet:
+      debian: libkf6wallet-dev
+      runtime: [libkf6wallet6]
+      version: "~6.23"
+    kf6-widgetsaddons:
+      debian: libkf6widgetsaddons-dev
+      runtime: [libkf6widgetsaddons6]
+      version: "~6.23"
+    kf6-windowsystem:
+      debian: libkf6windowsystem-dev
+      runtime: [libkf6windowsystem6]
+      version: "~6.23"
+    kf6-xmlgui:
+      debian: libkf6xmlgui-dev
+      runtime: [libkf6xmlgui6]
+      version: "~6.23"
+
+# ── Plasma 6 desktop — i386/arm64/riscv64 ────────────────────────────────────
+# Plasma 6 desktop packages from Debian sid for non-amd64 architectures.
+# On amd64, use KDE Neon packages instead (higher quality, more up-to-date).
+plasma6:
+  source: debian-sid
+  arch: [i386, arm64, riscv64]
+  packages:
+    plasma-desktop:
+      debian: plasma-desktop
+      runtime: [plasma-desktop, plasma-workspace, kwin-wayland, kwin-x11]
+      version: "~6.3"
+      note: "Full Plasma 6 desktop. On i386, Vulkan is unavailable; uses OpenGL 3.3."
+    plasma-workspace:
+      debian: plasma-workspace
+      runtime: [plasma-workspace]
+      version: "~6.3"
+    kwin:
+      debian: kwin-common
+      runtime: [kwin-common, kwin-wayland, kwin-x11]
+      version: "~6.3"
+      arch_notes:
+        i386: "Vulkan compositor unavailable on 32-bit; OpenGL 3.3 used instead."
+    dolphin:
+      debian: dolphin
+      runtime: [dolphin]
+      version: "~24.12"
+    konsole:
+      debian: konsole
+      runtime: [konsole]
+      version: "~24.12"
+    kate:
+      debian: kate
+      runtime: [kate]
+      version: "~24.12"
+    ark:
+      debian: ark
+      runtime: [ark]
+      version: "~24.12"
+    okular:
+      debian: okular
+      runtime: [okular]
+      version: "~24.12"
+    gwenview:
+      debian: gwenview
+      runtime: [gwenview]
+      version: "~24.12"
+    spectacle:
+      debian: spectacle
+      runtime: [spectacle]
+      version: "~24.12"
+
+# ── i386-specific notes ───────────────────────────────────────────────────────
+# Vulkan is not available in 32-bit userspace (no 32-bit Vulkan ICD loaders).
+# KWin on i386 uses the OpenGL 3.3 compositor backend.
+# GPU keyword gpu-vk12 and gpu-vk13 are masked for i386 (see config/masks.yml).
+#
+# To install the full Plasma 6 desktop on i386:
+#   kport multiarch enable i386
+#   kport sync
+#   kport install plasma-desktop:i386
+#
+# To install individual KF6 libraries for cross-compilation:
+#   kport install kf6-kio:i386 kf6-solid:i386

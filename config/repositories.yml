@@ -14,6 +14,8 @@
 #   priority:    integer, higher = checked first (main tree = 0)
 #   enabled:     false to disable without removing
 #   auto_sync:   true to sync on every `kport sync`
+#   arch:        list of Debian arch names this overlay applies to
+#                (omit to apply to all architectures)
 
 repositories:
 
@@ -29,38 +31,65 @@ repositories:
     enabled: true
     auto_sync: false
 
-  # Community 32-bit overlay — lightweight packages for i686 systems.
-  # Qt 6 / KDE Frameworks 6 are 64-bit only; this overlay targets LXQt 1.4
-  # and other Qt5/toolkit-free packages that still build on 32-bit x86.
+  # ── 32-bit x86 (i386) overlays ────────────────────────────────────────────
+  # i386 is the default 32-bit architecture (see keywords.yml: arch_default_32bit).
+  # Source: Debian sid (patches Qt 6 for 32-bit support).
+  # Enable with: kport multiarch enable i386
+
+  # Lightweight packages for i386 — LXQt 1.4, xterm, and toolkit-free apps
+  # that build cleanly on 32-bit. Does not require Qt 6.
   - name: community-32bit
-    description: "Lightweight i686 (32-bit x86) packages — LXQt 1.4, xterm"
+    description: "Lightweight i386 (32-bit x86) packages — LXQt 1.4, xterm"
     url: "https://github.com/Interested-Deving-1896/KPort.git"
     priority: 15
     enabled: false
     auto_sync: false
+    arch: [i386]
 
-  # KDE Plasma 5.27 LTS for i686. Requires community-32bit (priority 15)
-  # to be enabled alongside it for Qt5/KF5 base libraries.
+  # KDE Plasma 5.27 LTS for i386. Requires community-32bit (priority 15).
   # Validated against Arch Linux 32 extra repository (Plasma 5.27.7).
   - name: community-32bit-plasma5
-    description: "KDE Plasma 5.27 LTS for i686 (32-bit x86)"
+    description: "KDE Plasma 5.27 LTS for i386 (32-bit x86)"
     url: "https://github.com/Interested-Deving-1896/KPort.git"
     priority: 20
     enabled: false
     auto_sync: false
+    arch: [i386]
 
-  # Example community overlay:
-  # - name: kde-git-builds
-  #   description: "Bleeding-edge KDE git snapshot builds"
-  #   url: https://github.com/Interested-Deving-1896/kport-kde-git
-  #   priority: 10
-  #   enabled: false
-  #   auto_sync: true
+  # KDE Plasma 6 / KF6 for i386 via Debian sid.
+  # Debian patches Qt 6 to restore 32-bit x86 support.
+  # Requires: kport multiarch enable i386
+  # Source: debian-sid (config/sources.yml)
+  - name: plasma6-i386
+    description: "KDE Plasma 6 / KF6 for i386 via Debian sid"
+    url: "https://github.com/Interested-Deving-1896/KPort.git"
+    priority: 25
+    enabled: false
+    auto_sync: true
+    arch: [i386]
 
-  # Example hardware-specific overlay:
-  # - name: steamdeck
-  #   description: "Steam Deck optimised KDE packages"
-  #   url: https://github.com/Interested-Deving-1896/kport-steamdeck
-  #   priority: 20
-  #   enabled: false
-  #   auto_sync: true
+  # ── arm64 overlays ────────────────────────────────────────────────────────
+  # Source: Debian sid (full KF6/Qt6 arm64 support).
+  # Enable with: kport multiarch enable arm64
+
+  # KDE Plasma 6 / KF6 for arm64 via Debian sid.
+  - name: plasma6-arm64
+    description: "KDE Plasma 6 / KF6 for arm64 via Debian sid"
+    url: "https://github.com/Interested-Deving-1896/KPort.git"
+    priority: 25
+    enabled: false
+    auto_sync: true
+    arch: [arm64]
+
+  # ── riscv64 overlays ──────────────────────────────────────────────────────
+  # Source: Debian sid + debian-ports (config/sources.yml).
+  # Enable with: kport multiarch enable riscv64
+
+  # KDE Plasma 6 / KF6 for riscv64 via Debian sid/ports.
+  - name: plasma6-riscv64
+    description: "KDE Plasma 6 / KF6 for riscv64 via Debian sid/ports"
+    url: "https://github.com/Interested-Deving-1896/KPort.git"
+    priority: 25
+    enabled: false
+    auto_sync: true
+    arch: [riscv64]
