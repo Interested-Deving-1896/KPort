@@ -4,13 +4,13 @@
 [![Built with Ona](https://ona.com/build-with-ona.svg)](https://app.ona.com/#https://github.com/Interested-Deving-1896/KPort)
 
 <!-- AI:start:what-it-does -->
-KPort provides a Portage-inspired package repository tailored for KDE Neon, integrating Pacstall for package management. It enables users to customize builds with USE flags, ensures compatibility with diverse hardware layers (CPU/GPU/NPU), and automates the generation of pacscripts from KDE Neon packaging. This project is designed for developers and advanced users seeking fine-grained control over their KDE Neon package installations.
+KPort provides a Portage-inspired package management system for KDE Neon, integrating Pacstall with support for USE flags and hardware compatibility layers for CPU, GPU, and NPU. It automates the generation of pacscripts from KDE Neon packaging, enabling users to customize and optimize software installations for their specific hardware and preferences.
 <!-- AI:end:what-it-does -->
 
 ## Architecture
 
 <!-- AI:start:architecture -->
-KPort consists of several key components: a hardware compatibility layer for CPU/GPU/NPU detection, a USE flag system for feature toggling, and automated pacscript generation based on KDE Neon packaging. The `hardware-detect.yml` workflow identifies system hardware and applies relevant optimizations. The repository structure organizes scripts, configurations, and generated files to streamline package management. The `bin` directory contains executable scripts, `config` holds configuration files, `db` manages package metadata, and `overlays` provides custom package definitions. The `generated` directory stores auto-generated pacscripts, while `lib` includes shared library scripts. `packages` defines available packages, and `scripts` contains utility scripts.
+KPort consists of several key components that work together to manage and build packages for KDE Neon with enhanced hardware compatibility and customization. The `bin` directory contains executable scripts for package management tasks. `config` holds configuration files, while `db` manages package metadata. `generated` contains auto-generated pacscripts derived from KDE Neon packaging. `lib` provides shared library scripts used across the project. `overlays` includes custom package overlays, and `packages` stores user-defined package definitions. The `scripts` directory contains utility scripts for automation. Workflows like `hardware-detect.yml` and `pacscript-ci.yml` automate hardware detection and pacscript validation. The directory structure is as follows:
 
 ```plaintext
 .
@@ -24,6 +24,7 @@ KPort consists of several key components: a hardware compatibility layer for CPU
 ├── bin/
 ├── config/
 ├── db/
+├── dep-graph/
 ├── generated/
 ├── lib/
 ├── overlays/
@@ -52,14 +53,9 @@ cd KPort
 ## CI
 
 <!-- AI:start:ci -->
-The repository uses GitHub Actions for continuous integration. Workflows are in `.github/workflows/`.
+- **hardware-detect.yml**: Detects and logs CPU, GPU, and NPU hardware compatibility layers for package builds. No secrets required.
 
-- **pacscript-ci.yml**: Runs on every push or PR touching `packages/`, `config/dep-map.yml`, `lib/`, `bin/kport`, or `scripts/kport/`. Three jobs:
-  - *Shell syntax check* — `bash -n` on all 24 scripts under `lib/`, `bin/kport`, and `scripts/kport/`
-  - *Lint pacscripts* — validates required fields (`pkgname`, `pkgver`, `sha256sums`, `KSLOT`, `KCATEGORY`), 64-char hex sha256sums, and duplicate `depends`/`makedepends` entries across all pacscripts
-  - *Resolver dry-run* — runs `kport_resolve` on five representative leaf packages (kf6-karchive, dolphin, kleopatra, kwin-wayland, qt6-declarative) and fails on missing KPort deps or circular dependency warnings
-
-- **hardware-detect.yml**: Manual workflow (`workflow_dispatch`) that runs the hardware detection scripts and posts CPU/GPU/NPU tier results as a job summary.
+- **pacscript-ci.yml**: Validates and tests automated pacscript generation from KDE Neon packaging. Requires the `PACSTALL_TOKEN` secret for authentication with Pacstall.
 <!-- AI:end:ci -->
 
 ## Mirror chain
@@ -79,13 +75,38 @@ Direct commits to OSP or OOC are detected and opened as PRs back to `Interested-
 ## Contributors
 
 <!-- AI:start:contributors -->
-_Contributors pending._
+[@Interested-Deving-1896](https://github.com/Interested-Deving-1896): 184 commits
+
+*Note: This repository is a mirror. Please refer to the upstream source for the original project.*
 <!-- AI:end:contributors -->
 
 ## Origins
 
 <!-- AI:start:origins -->
-_No dependency graph found. Run `generate-dep-graph.yml` to generate `dep-graph/origins.md`._
+
+KPort is an original project — a Portage-inspired package repository for KDE Neon using Pacstall.
+It was created from the following upstream inspirations:
+
+| Origin | Host | Fork in I-D-1896 |
+|--------|------|-----------------|
+| [KDE/neon-neon-repositories](https://github.com/KDE/neon-neon-repositories) | GitHub | ✅ |
+| [neon/ubuntu-core](https://invent.kde.org/neon/ubuntu-core) | KDE Invent | ✅ |
+| [neon/pkg-kde-tools](https://invent.kde.org/neon/pkg-kde-tools) | KDE Invent | ✅ |
+| [neon/pkg-kde-jenkins](https://invent.kde.org/neon/pkg-kde-jenkins) | KDE Invent | ✅ |
+| [neon/pkg-kde-dev-scripts](https://invent.kde.org/neon/pkg-kde-dev-scripts) | KDE Invent | ✅ |
+| [neon/docker-images](https://invent.kde.org/neon/docker-images) | KDE Invent | ✅ |
+| [neon/qt-kde-team.pages.debian.net](https://invent.kde.org/neon/qt-kde-team.pages.debian.net) | KDE Invent | ✅ |
+| [gentoo/portage](https://github.com/gentoo/portage) | GitHub | ✅ |
+| [pacstall/pacstall](https://github.com/pacstall/pacstall) | GitHub | ✅ |
+| [KDE/craft](https://github.com/KDE/craft) | GitHub | ✅ |
+| [KDE/craft-blueprints-kde](https://github.com/KDE/craft-blueprints-kde) | GitHub | ✅ |
+| [KDE/craft-blueprints-community](https://github.com/KDE/craft-blueprints-community) | GitHub | ✅ |
+| [KDE/kde-builder](https://github.com/KDE/kde-builder) | GitHub | ✅ |
+| [KDE/kdesrc-build](https://github.com/KDE/kdesrc-build) | GitHub | ✅ |
+| [KDE/kde-build-metadata](https://github.com/KDE/kde-build-metadata) | GitHub | ✅ |
+| [KDE/kdevplatform](https://github.com/KDE/kdevplatform) | GitHub | ✅ |
+| [KDE/superbuild](https://github.com/KDE/superbuild) | GitHub | ✅ |
+| [KDE/android-builder](https://github.com/KDE/android-builder) | GitHub | ✅ |
 <!-- AI:end:origins -->
 
 ## Resources
@@ -93,6 +114,7 @@ _No dependency graph found. Run `generate-dep-graph.yml` to generate `dep-graph/
 <!-- AI:start:resources -->
 | File | Description |
 |---|---|
+| [dep-graph/origins.md](https://github.com/Interested-Deving-1896/KPort/blob/main/dep-graph/origins.md) | Dependency graph (Markdown table) |
 | [.gitlab/merge_request_templates/Default.md](https://github.com/Interested-Deving-1896/KPort/blob/main/.gitlab/merge_request_templates/Default.md) | GitLab MR template |
 <!-- AI:end:resources -->
 
