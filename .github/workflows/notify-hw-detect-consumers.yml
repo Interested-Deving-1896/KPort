@@ -13,6 +13,8 @@ on:
       - scripts/kport/kport-detect-cpu.sh
       - scripts/kport/kport-detect-gpu.sh
       - scripts/kport/kport-detect-npu.sh
+      - scripts/kport/kport-build-flags.sh
+      - scripts/kport/kport-toolchain.sh
       - config/hardware.conf.tpl
 
 jobs:
