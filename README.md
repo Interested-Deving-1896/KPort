@@ -10,24 +10,26 @@ KPort provides a Portage-inspired package management system for KDE Neon, integr
 ## Architecture
 
 <!-- AI:start:architecture -->
-KPort consists of several key components: a hardware compatibility layer for CPU, GPU, and NPU detection, a USE flag system for feature toggling, and automated pacscript generation based on KDE Neon packaging. The repository integrates with Pacstall for package management and uses GitHub Actions workflows (`hardware-detect.yml`, `pacscript-ci.yml`) for CI/CD. The directory structure organizes scripts, configuration files, and generated outputs for maintainability. Components interact through shell scripts that process hardware data, apply USE flags, and generate pacscripts dynamically.
+KPort consists of several key components that work together to manage and build packages for KDE Neon with enhanced hardware compatibility and customization. The `bin` directory contains executable scripts for package management tasks. `config` holds configuration files, while `db` manages package metadata. `generated` contains auto-generated pacscripts derived from KDE Neon packaging. `lib` provides shared library scripts used across the project. `overlays` includes custom package overlays, and `packages` stores user-defined package definitions. The `scripts` directory contains utility scripts for automation. Workflows like `hardware-detect.yml` and `pacscript-ci.yml` automate hardware detection and pacscript validation. The directory structure is as follows:
 
 ```plaintext
 .
-├── .devcontainer/       # Development container configuration
-├── .github/             # GitHub Actions workflows
-├── .gitignore           # Git ignore rules
-├── .gitlab-ci.yml       # GitLab CI configuration
-├── LICENSE              # Project license
-├── README.md            # Project documentation
-├── bin/                 # Executable scripts
-├── config/              # Configuration files
-├── db/                  # Database for package metadata
-├── generated/           # Auto-generated pacscripts
-├── lib/                 # Library scripts
-├── overlays/            # Custom package overlays
-├── packages/            # Package definitions
-└── scripts/             # Utility and helper scripts
+├── .devcontainer/
+├── .github/
+├── .gitignore
+├── .gitlab-ci.yml
+├── .gitlab/
+├── LICENSE
+├── README.md
+├── bin/
+├── config/
+├── db/
+├── dep-graph/
+├── generated/
+├── lib/
+├── overlays/
+├── packages/
+└── scripts/
 ```
 <!-- AI:end:architecture -->
 
@@ -51,9 +53,9 @@ cd KPort
 ## CI
 
 <!-- AI:start:ci -->
-`hardware-detect.yml`: Detects CPU, GPU, and NPU hardware compatibility layers. Runs on push and pull request events. No secrets required.
+- **hardware-detect.yml**: Detects and logs CPU, GPU, and NPU hardware compatibility layers for package builds. No secrets required.
 
-`pacscript-ci.yml`: Validates and generates pacscripts from KDE Neon packaging. Runs on push and pull request events. Requires the `PACSTALL_TOKEN` secret for authentication with Pacstall.
+- **pacscript-ci.yml**: Validates and tests automated pacscript generation from KDE Neon packaging. Requires the `PACSTALL_TOKEN` secret for authentication with Pacstall.
 <!-- AI:end:ci -->
 
 ## Mirror chain
@@ -73,7 +75,9 @@ Direct commits to OSP or OOC are detected and opened as PRs back to `Interested-
 ## Contributors
 
 <!-- AI:start:contributors -->
-_Contributors pending._
+[@Interested-Deving-1896](https://github.com/Interested-Deving-1896): 184 commits
+
+*Note: This repository is a mirror. Please refer to the upstream source for the original project.*
 <!-- AI:end:contributors -->
 
 ## Origins
