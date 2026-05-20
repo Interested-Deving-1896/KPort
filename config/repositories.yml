@@ -49,6 +49,38 @@ repositories:
     enabled: false
     auto_sync: false
 
+  # ── Multiarch overlays (Debian sid) ─────────────────────────────────────────
+  # KF6/Qt6/Plasma6 for non-amd64 architectures via Debian sid packages.
+  # Enable with: kport multiarch enable <arch>
+  # Requires: dpkg --add-architecture <arch> + debian-archive-keyring
+
+  - name: plasma6-i386
+    description: "KF6/Qt6/Plasma6 for i386 via Debian sid (32-bit, no Vulkan)"
+    url: "https://github.com/Interested-Deving-1896/KPort.git"
+    priority: 30
+    enabled: false
+    auto_sync: false
+    arch: i386
+    source: "Debian sid (i386)"
+
+  - name: plasma6-arm64
+    description: "KF6/Qt6/Plasma6 for arm64 via Debian sid"
+    url: "https://github.com/Interested-Deving-1896/KPort.git"
+    priority: 30
+    enabled: false
+    auto_sync: false
+    arch: arm64
+    source: "Debian sid (arm64)"
+
+  - name: plasma6-riscv64
+    description: "KF6/Qt6/Plasma6 for riscv64 via Debian Ports"
+    url: "https://github.com/Interested-Deving-1896/KPort.git"
+    priority: 30
+    enabled: false
+    auto_sync: false
+    arch: riscv64
+    source: "Debian Ports (riscv64)"
+
   # Example community overlay:
   # - name: kde-git-builds
   #   description: "Bleeding-edge KDE git snapshot builds"

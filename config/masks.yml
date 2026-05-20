@@ -56,3 +56,23 @@ masks:
   #   gpu: [gpu-sw, gpu-gl2]
   #   reason: "KWin 6.x requires OpenGL 4.x minimum"
 
+# ── i386 masks — Vulkan-dependent packages ────────────────────────────────────
+# No 32-bit Vulkan ICD loader exists; these packages require Vulkan 1.2+.
+# Masked on i386 regardless of GPU tier. OpenGL 3.3 is the ceiling on i386.
+arch_masks:
+  i386:
+    - pkg: qt6/qt6-shadertools
+      reason: "Requires Vulkan 1.2 — no 32-bit Vulkan ICD loader"
+    - pkg: qt6/qt6-quick3d
+      reason: "Requires Vulkan 1.2 — no 32-bit Vulkan ICD loader"
+    - pkg: qt6/qt6-graphs
+      reason: "Requires Vulkan 1.2 — no 32-bit Vulkan ICD loader"
+    - pkg: qt6/qt6-quickeffectmaker
+      reason: "Requires Vulkan 1.2 — no 32-bit Vulkan ICD loader"
+    - pkg: qt6/qt6-datavis3d
+      reason: "Requires Vulkan 1.2 — no 32-bit Vulkan ICD loader"
+    - pkg: plasma/kwin
+      reason: "KWin 6.x Wayland compositor requires Vulkan 1.2 on i386"
+    - pkg: plasma/plasma-desktop
+      reason: "Pulls in kwin; masked transitively on i386"
+

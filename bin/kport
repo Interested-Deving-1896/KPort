@@ -18,6 +18,7 @@
 #   set     <pkg> [+f|-f ...]  Toggle USE flags; --global for global flags
 #   news    [pkg...]    Show git changelog for packages (default: installed)
 #   world               List installed packages (world set vs dep-only)
+#   multiarch <sub>     Manage non-amd64 arch support (enable|disable|list|status)
 #
 # Global options:
 #   --root <path>       KPort tree root (default: auto-detected)

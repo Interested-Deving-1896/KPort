@@ -91,3 +91,43 @@ sources:
     category: tools
     branch: main
     enabled: true
+
+  # ── Debian sid — multiarch package sources ──────────────────────────────────
+  # Debian sid ships KF6 6.23.0 and Qt 6.10.2 for i386/arm64/riscv64.
+  # Debian patches Qt 6 to restore 32-bit support (dropped upstream).
+  # Used by the plasma6-i386 / plasma6-arm64 / plasma6-riscv64 overlays.
+  # These sources are read-only metadata references; packages are installed
+  # via dpkg --add-architecture + apt, not built from source.
+
+  - name: Debian sid (amd64)
+    type: url
+    base_url: https://deb.debian.org/debian
+    group: dists/sid/main
+    category: _debian
+    arch: amd64
+    enabled: true
+
+  - name: Debian sid (i386)
+    type: url
+    base_url: https://deb.debian.org/debian
+    group: dists/sid/main
+    category: _debian
+    arch: i386
+    enabled: true
+
+  - name: Debian sid (arm64)
+    type: url
+    base_url: https://deb.debian.org/debian
+    group: dists/sid/main
+    category: _debian
+    arch: arm64
+    enabled: true
+
+  - name: Debian Ports (riscv64)
+    # riscv64 is in debian-ports, not the main archive
+    type: url
+    base_url: https://deb.debian.org/debian-ports
+    group: dists/sid/main
+    category: _debian
+    arch: riscv64
+    enabled: true

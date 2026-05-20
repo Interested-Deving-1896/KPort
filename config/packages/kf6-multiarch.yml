@@ -1,0 +1,230 @@
+# config/packages/kf6-multiarch.yml
+#
+# KF6 / Qt6 / Plasma6 package name map for non-amd64 architectures.
+# Source: Debian sid (i386/arm64) and Debian Ports (riscv64).
+#
+# Debian sid ships:
+#   KDE Frameworks 6.23.0  — all arches including i386/arm64/riscv64
+#   Qt 6.10.2              — Debian patches Qt6 to restore 32-bit support
+#   Plasma 6.x             — arm64/riscv64 only (kwin masked on i386)
+#
+# Format:
+#   kport_pkg:             KPort canonical package name (category/name)
+#   debian_pkg:            Debian binary package name
+#   arches:                list of arches this mapping applies to
+#   notes:                 optional caveats
+
+# ── Qt 6 base ─────────────────────────────────────────────────────────────────
+qt6:
+  - kport_pkg: qt6/qt6-base
+    debian_pkg: libqt6core6t64
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: qt6/qt6-base-dev
+    debian_pkg: qt6-base-dev
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: qt6/qt6-declarative
+    debian_pkg: libqt6qml6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: qt6/qt6-tools
+    debian_pkg: qt6-tools-dev
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: qt6/qt6-svg
+    debian_pkg: libqt6svg6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: qt6/qt6-multimedia
+    debian_pkg: libqt6multimedia6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: qt6/qt6-wayland
+    debian_pkg: libqt6waylandclient6
+    arches: [arm64, riscv64]
+    notes: "Wayland compositor not available on i386 (kwin masked)"
+
+  - kport_pkg: qt6/qt6-shadertools
+    debian_pkg: libqt6shadertools6
+    arches: [arm64, riscv64]
+    notes: "Requires Vulkan 1.2 — masked on i386"
+
+# ── KDE Frameworks 6 ──────────────────────────────────────────────────────────
+kf6:
+  - kport_pkg: frameworks/kf6-kcoreaddons
+    debian_pkg: libkf6coreaddons6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-kconfig
+    debian_pkg: libkf6config6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-ki18n
+    debian_pkg: libkf6i18n6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-kwidgetsaddons
+    debian_pkg: libkf6widgetsaddons6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-kcompletion
+    debian_pkg: libkf6completion6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-kwindowsystem
+    debian_pkg: libkf6windowsystem6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-solid
+    debian_pkg: libkf6solid6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-kio
+    debian_pkg: libkf6kio6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-kservice
+    debian_pkg: libkf6service6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-knotifications
+    debian_pkg: libkf6notifications6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-kauth
+    debian_pkg: libkf6auth6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-kcrash
+    debian_pkg: libkf6crash6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-kguiaddons
+    debian_pkg: libkf6guiaddons6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-kiconthemes
+    debian_pkg: libkf6iconthemes6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-kitemviews
+    debian_pkg: libkf6itemviews6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-kjobwidgets
+    debian_pkg: libkf6jobwidgets6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-kpackage
+    debian_pkg: libkf6package6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-kparts
+    debian_pkg: libkf6parts6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-ktextwidgets
+    debian_pkg: libkf6textwidgets6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-kxmlgui
+    debian_pkg: libkf6xmlgui6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-kbookmarks
+    debian_pkg: libkf6bookmarks6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-kdeclarative
+    debian_pkg: libkf6declarative6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-kglobalaccel
+    debian_pkg: libkf6globalaccel6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-knewstuff
+    debian_pkg: libkf6newstuff6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-knotifyconfig
+    debian_pkg: libkf6notifyconfig6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-krunner
+    debian_pkg: libkf6runner6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-ktexteditor
+    debian_pkg: libkf6texteditor6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-kwallet
+    debian_pkg: libkf6wallet6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-plasma-framework
+    debian_pkg: libkf6plasma6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-syndication
+    debian_pkg: libkf6syndication6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-karchive
+    debian_pkg: libkf6archive6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-kcodecs
+    debian_pkg: libkf6codecs6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-kcontacts
+    debian_pkg: libkf6contacts6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-kcalendarcore
+    debian_pkg: libkf6calendarcore6
+    arches: [i386, arm64, riscv64]
+
+  - kport_pkg: frameworks/kf6-networkmanager-qt
+    debian_pkg: libkf6networkmanagerqt6
+    arches: [arm64, riscv64]
+    notes: "NetworkManager not available on i386 Debian sid"
+
+# ── Plasma 6 desktop ──────────────────────────────────────────────────────────
+# kwin and plasma-desktop are masked on i386 (Vulkan dependency).
+# Available on arm64 and riscv64.
+plasma6:
+  - kport_pkg: plasma/plasma-workspace
+    debian_pkg: plasma-workspace
+    arches: [arm64, riscv64]
+
+  - kport_pkg: plasma/kwin
+    debian_pkg: kwin-wayland
+    arches: [arm64, riscv64]
+    notes: "Masked on i386 — requires Vulkan 1.2"
+
+  - kport_pkg: plasma/plasma-desktop
+    debian_pkg: plasma-desktop
+    arches: [arm64, riscv64]
+    notes: "Masked on i386 — pulls in kwin"
+
+  - kport_pkg: plasma/plasma-nm
+    debian_pkg: plasma-nm
+    arches: [arm64, riscv64]
+
+  - kport_pkg: plasma/plasma-pa
+    debian_pkg: plasma-pa
+    arches: [arm64, riscv64]
+
+  - kport_pkg: plasma/dolphin
+    debian_pkg: dolphin
+    arches: [i386, arm64, riscv64]
+    notes: "File manager — no Vulkan dependency, available on i386"
+
+  - kport_pkg: plasma/konsole
+    debian_pkg: konsole
+    arches: [i386, arm64, riscv64]
+    notes: "Terminal — no Vulkan dependency, available on i386"
