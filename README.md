@@ -4,7 +4,7 @@
 [![Built with Ona](https://ona.com/build-with-ona.svg)](https://app.ona.com/#https://github.com/Interested-Deving-1896/KPort)
 
 <!-- AI:start:what-it-does -->
-KPort provides a Portage-inspired package management system for KDE Neon, integrating Pacstall with support for USE flags and hardware compatibility layers for CPU, GPU, and NPU. It automates the generation of pacscripts from KDE Neon packaging, enabling users to customize and optimize software installations for their specific hardware and preferences.
+This project provides a Portage-inspired package repository for KDE Neon, integrating Pacstall with features like USE flags and hardware compatibility layers for CPU, GPU, and NPU. It automates the generation of pacscripts from KDE Neon packaging, simplifying package management for developers and users with diverse hardware configurations.
 <!-- AI:end:what-it-does -->
 
 ## Architecture
