@@ -4,37 +4,33 @@
 [![Built with Ona](https://ona.com/build-with-ona.svg)](https://app.ona.com/#https://github.com/Interested-Deving-1896/KPort)
 
 <!-- AI:start:what-it-does -->
-This project provides a package repository for KDE Neon, inspired by Gentoo's Portage system, integrating Pacstall for package management. It addresses hardware compatibility by incorporating CPU, GPU, and NPU layers and automates the generation of pacscripts from KDE Neon packaging. Developers and system integrators use it to streamline package deployment and optimize hardware-specific configurations.
+KPort provides a Portage-inspired package management system for KDE Neon, integrating Pacstall with support for USE flags and hardware compatibility layers for CPU, GPU, and NPU. It automates the generation of pacscripts from KDE Neon packaging, enabling developers and advanced users to customize and optimize their software installations for specific hardware configurations.
 <!-- AI:end:what-it-does -->
 
 ## Architecture
 
 <!-- AI:start:architecture -->
-The architecture consists of several key components working together to manage and build packages for KDE Neon with hardware-specific optimizations. The repository integrates Pacstall for package management, USE flags for feature toggles, and hardware compatibility layers for CPU, GPU, and NPU. Automated workflows handle hardware detection, pacscript generation, and CI/CD for package builds. The directory structure organizes scripts, configurations, and generated files for efficient development and deployment.
+The architecture consists of a package repository system inspired by Portage, tailored for KDE Neon with support for Pacstall, USE flags, and hardware compatibility layers. The system automates pacscript generation from KDE Neon packaging metadata. Key workflows include hardware detection, package building, notification of hardware detection results, and pacscript CI. The repository is structured as follows:
 
 ```plaintext
 .
-├── .devcontainer/         # Development container configuration
-├── .github/               # GitHub Actions workflows
-├── .gitlab-ci.yml         # GitLab CI pipeline configuration
-├── LICENSE                # License file
-├── README.md              # Project documentation
-├── bin/                   # Executable scripts
-├── config/                # Configuration files
-├── db/                    # Package database and metadata
-├── dep-graph/             # Dependency graph utilities
-├── generated/             # Auto-generated pacscripts and files
-├── lib/                   # Shared library scripts
-├── overlays/              # Custom package overlays
-├── packages/              # Package definitions
-├── scripts/               # Helper scripts for automation
-``` 
+├── .devcontainer/       # Development container configuration
+├── .github/             # GitHub workflows (e.g., CI/CD pipelines)
+├── .gitlab-ci.yml       # GitLab CI configuration
+├── LICENSE              # License information
+├── README.md            # Project documentation
+├── bin/                 # Executable scripts for package management
+├── config/              # Configuration files for repository behavior
+├── db/                  # Package database and metadata
+├── dep-graph/           # Dependency graph generation and visualization
+├── generated/           # Auto-generated pacscripts and related files
+├── lib/                 # Shared library scripts
+├── overlays/            # Custom package overlays
+├── packages/            # Package definitions and metadata
+├── scripts/             # Utility scripts for automation
+```
 
-Workflows include:
-- `hardware-detect.yml`: Detects hardware capabilities.
-- `neon-build-ci.yml`: Builds KDE Neon packages.
-- `notify-hw-detect-consumers.yml`: Notifies dependent systems of hardware detection results.
-- `pacscript-ci.yml`: Validates and generates pacscripts.
+Components interact via shared metadata in `db/`, with workflows automating tasks like hardware detection and package builds. Generated files in `generated/` are used for Pacstall integration.
 <!-- AI:end:architecture -->
 
 ## Install
