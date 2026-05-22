@@ -23,6 +23,7 @@ jobs:
     timeout-minutes: 5
     permissions:
       contents: write  # Add permissions to allow dispatching events
+      actions: write    # Added permissions for actions
     steps:
       - name: Dispatch to fork-sync-all
         env:
