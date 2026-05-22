@@ -24,7 +24,7 @@ jobs:
     steps:
       - name: Dispatch to fork-sync-all
         env:
-          GH_TOKEN: ${{ secrets.SYNC_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Changed from SYNC_TOKEN to GITHUB_TOKEN
         run: |
           curl -sf \
             -X POST \
