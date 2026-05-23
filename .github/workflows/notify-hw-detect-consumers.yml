@@ -24,6 +24,7 @@ jobs:
     permissions:
       contents: write  # Add permissions to allow dispatching events
       actions: write    # Added permissions for actions
+      repository_dispatch: write  # Added permissions for dispatching events
     steps:
       - name: Dispatch to fork-sync-all
         env:
