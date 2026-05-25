@@ -115,7 +115,6 @@ It was created from the following upstream inspirations:
 | File | Description |
 |---|---|
 | [dep-graph/origins.md](https://github.com/Interested-Deving-1896/KPort/blob/main/dep-graph/origins.md) | Dependency graph (Markdown table) |
-| [.gitlab/merge_request_templates/Default.md](https://github.com/Interested-Deving-1896/KPort/blob/main/.gitlab/merge_request_templates/Default.md) | GitLab MR template |
 <!-- AI:end:resources -->
 
 ## License
