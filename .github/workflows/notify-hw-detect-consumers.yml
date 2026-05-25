@@ -29,11 +29,11 @@ jobs:
     steps:
       - name: Dispatch to fork-sync-all
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}  # Ensure the correct secret is used
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}  # Ensure the correct secret is used
         run: |
           curl -sf \
             -X POST \
-            -H "Authorization: token ${GH_TOKEN}" \
+            -H "Authorization: token ${GITHUB_TOKEN}" \
             -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/Interested-Deving-1896/fork-sync-all/dispatches" \
             -d '{
