@@ -45,6 +45,34 @@ CHANNEL_NIGHTLY_CI_REQUIRED=false
 
 NEON_SUPPORTED_SUITES=noble jammy
 
+# ── Devuan / non-systemd channel variants ────────────────────────────────────
+#
+# On Devuan (and other non-systemd systems), KPort appends "-devuan" to the
+# effective channel name (e.g. "stable-devuan"). The underlying Neon archive
+# URL and suite are identical to the base channel; the suffix signals that
+# systemd-dependent packages will be masked or substituted at install time.
+#
+# These entries are informational — they do not correspond to separate apt
+# repositories. The filtering is performed by lib/kport/devuan.sh.
+
+CHANNEL_STABLE_DEVUAN_URL=${CHANNEL_STABLE_URL}
+CHANNEL_STABLE_DEVUAN_SUITE_NOBLE=${CHANNEL_STABLE_SUITE_NOBLE}
+CHANNEL_STABLE_DEVUAN_SIGNING_KEY=${CHANNEL_STABLE_SIGNING_KEY}
+CHANNEL_STABLE_DEVUAN_STABILITY=production
+CHANNEL_STABLE_DEVUAN_SYSTEMD_FILTER=true
+
+CHANNEL_UNSTABLE_DEVUAN_URL=${CHANNEL_UNSTABLE_URL}
+CHANNEL_UNSTABLE_DEVUAN_SUITE_NOBLE=${CHANNEL_UNSTABLE_SUITE_NOBLE}
+CHANNEL_UNSTABLE_DEVUAN_SIGNING_KEY=${CHANNEL_UNSTABLE_SIGNING_KEY}
+CHANNEL_UNSTABLE_DEVUAN_STABILITY=pre-release
+CHANNEL_UNSTABLE_DEVUAN_SYSTEMD_FILTER=true
+
+CHANNEL_NIGHTLY_DEVUAN_URL=${CHANNEL_NIGHTLY_URL}
+CHANNEL_NIGHTLY_DEVUAN_SUITE_NOBLE=${CHANNEL_NIGHTLY_SUITE_NOBLE}
+CHANNEL_NIGHTLY_DEVUAN_SIGNING_KEY=${CHANNEL_NIGHTLY_SIGNING_KEY}
+CHANNEL_NIGHTLY_DEVUAN_STABILITY=snapshot
+CHANNEL_NIGHTLY_DEVUAN_SYSTEMD_FILTER=true
+
 # ── Default channel for new consumers ────────────────────────────────────────
 
 NEON_DEFAULT_CHANNEL=stable

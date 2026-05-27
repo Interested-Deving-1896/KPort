@@ -1,0 +1,226 @@
+# config/pangea.yml
+#
+# KDE Neon Pangea Tooling conventions for KPort.
+#
+# Pangea is KDE Neon's Ruby/Docker CI pipeline:
+#   https://invent.kde.org/neon/pangea-tooling
+#
+# This file captures naming conventions, archive layout, and Jenkins job
+# structure so KPort can map its own package names to Neon's infrastructure.
+
+# ── Channel definitions ──────────────────────────────────────────────────────
+#
+# KPort channel name → Neon archive/Jenkins identifiers
+channels:
+  stable:
+    neon_name: release
+    archive_suite: noble          # Ubuntu 24.04 LTS
+    archive_component: main
+    jenkins_folder: Release
+    package_suffix: ""            # no suffix on stable packages
+    description: "KDE Neon User Edition (stable)"
+
+  unstable:
+    neon_name: unstable
+    archive_suite: noble
+    archive_component: main
+    jenkins_folder: Unstable
+    package_suffix: "-unstable"
+    description: "KDE Neon Developer Edition (unstable)"
+
+  nightly:
+    neon_name: nightly
+    archive_suite: noble
+    archive_component: main
+    jenkins_folder: Nightly
+    package_suffix: "-nightly"
+    description: "KDE Neon Nightly builds"
+
+# ── Archive layout ───────────────────────────────────────────────────────────
+#
+# Base URL: https://archive.neon.kde.org/<neon_name>
+# Packages file: <base>/dists/<suite>/main/binary-<arch>/Packages.gz
+archive:
+  base_url: "https://archive.neon.kde.org"
+  packages_path: "dists/%{suite}/main/binary-%{arch}/Packages.gz"
+  sources_path: "dists/%{suite}/main/source/Sources.gz"
+
+# ── Version format ───────────────────────────────────────────────────────────
+#
+# Neon version strings follow the pattern:
+#   <upstream_version>+p<neon_patch>+git<YYYYMMDDTHHMMSSz>
+#
+# Examples:
+#   6.3.0+p24.04+git20250501T120000Z
+#   5.116.0+p24.04+git20250430T083000Z
+#
+# The +git timestamp is a UTC snapshot identifier, not a semver pre-release.
+version:
+  pattern: '^(?<upstream>[\d.]+)\+p(?<neon_patch>[^+]+)(?:\+git(?<snapshot>\d{8}T\d{6}Z))?$'
+  upstream_group: upstream
+  neon_patch_group: neon_patch
+  snapshot_group: snapshot
+
+# ── Component groups ─────────────────────────────────────────────────────────
+#
+# Pangea organises packages into component groups that map to Jenkins folders
+# and archive components. KPort uses these to resolve the correct Jenkins job
+# path: /job/neon/job/<channel>/job/<component>/job/<package>/
+#
+# Prefixes are matched in order; first match wins.
+component_groups:
+  frameworks:
+    jenkins_path: frameworks
+    prefixes:
+      - kf6-
+      - kf5-
+      - libkf6
+      - libkf5
+    description: "KDE Frameworks (kf6-*, kf5-*)"
+
+  plasma:
+    jenkins_path: plasma
+    prefixes:
+      - plasma-
+      - kwin
+      - kscreen
+      - powerdevil
+      - bluedevil
+      - breeze
+      - drkonqi
+      - kde-gtk-config
+      - kdecoration
+      - kgamma
+      - kinfocenter
+      - kmenuedit
+      - kpipewire
+      - ksshaskpass
+      - ksystemstats
+      - kwallet-pam
+      - kwayland
+      - layer-shell-qt
+      - libkscreen
+      - libksysguard
+      - milou
+      - oxygen
+      - polkit-kde-agent-1
+      - print-manager
+      - sddm-kcm
+      - systemsettings
+      - xdg-desktop-portal-kde
+    description: "KDE Plasma desktop components"
+
+  gear:
+    jenkins_path: gear
+    prefixes:
+      - dolphin
+      - konsole
+      - kate
+      - okular
+      - gwenview
+      - ark
+      - spectacle
+      - elisa
+      - kdenlive
+      - kmail
+      - kontact
+      - korganizer
+      - kaddressbook
+      - akregator
+      - kwrite
+      - kcalc
+      - kcharselect
+      - kcolorchooser
+      - kfind
+      - khelpcenter
+      - kjots
+      - kleopatra
+      - kmouth
+      - knotes
+      - kolourpaint
+      - kruler
+      - ksystemlog
+      - ktimer
+      - kwalletmanager
+      - marble
+      - partitionmanager
+      - sweeper
+    description: "KDE Gear applications"
+
+  pim:
+    jenkins_path: pim
+    prefixes:
+      - akonadi
+      - kdepim
+      - kpim
+      - libkgapi
+      - libkleo
+      - messagelib
+      - pimcommon
+    description: "KDE PIM stack (Akonadi, KMail, etc.)"
+
+  multimedia:
+    jenkins_path: multimedia
+    prefixes:
+      - phonon
+      - gstreamer
+    description: "Multimedia backends"
+
+  # Fallback — packages not matching any prefix above
+  misc:
+    jenkins_path: misc
+    prefixes: []
+    description: "Miscellaneous KDE packages"
+
+# ── Jenkins layout ───────────────────────────────────────────────────────────
+#
+# Job path template:
+#   /job/neon/job/<jenkins_folder>/job/<component_jenkins_path>/job/<package>/
+#
+# API suffix for JSON: api/json?tree=lastBuild[result,timestamp,url]
+jenkins:
+  base_url: "https://build.neon.kde.org"
+  job_path_template: "/job/neon/job/%{channel}/job/%{component}/job/%{package}/"
+  api_suffix: "api/json"
+  last_build_tree: "lastBuild[result,timestamp,url,number]"
+  last_successful_tree: "lastSuccessfulBuild[result,timestamp,url,number]"
+
+# ── systemd-dependent packages ───────────────────────────────────────────────
+#
+# These packages have hard dependencies on systemd and cannot be installed
+# on Devuan or other non-systemd systems without substitution or masking.
+systemd_dependent:
+  - sddm
+  - sddm-kcm
+  - powerdevil
+  - bluedevil
+  - kwallet-pam
+  - ksshaskpass
+  - plasma-nm
+  - plasma-pa
+  - kscreen
+  - kgamma
+  - ksystemstats
+  - libksysguard
+  - plasma-systemmonitor
+  - drkonqi
+  - polkit-kde-agent-1
+  - xdg-desktop-portal-kde
+  - plasma-disks
+  - plasma-firewall
+  - plasma-thunderbolt
+  - plasma-vault
+  - plasma-welcome
+
+# ── Devuan substitutions ─────────────────────────────────────────────────────
+#
+# On Devuan, systemd-dependent packages are either masked or replaced.
+# Keys are KPort package names; values are replacement package names
+# (empty string = mask/skip, no replacement).
+devuan_substitutions:
+  sddm: "lightdm"
+  powerdevil: ""
+  bluedevil: ""
+  kwallet-pam: ""
+  plasma-nm: "network-manager-gnome"
+  plasma-pa: "pavucontrol"
