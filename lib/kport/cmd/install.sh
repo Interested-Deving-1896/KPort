@@ -19,6 +19,8 @@
 set -uo pipefail
 
 source "${KPORT_LIB}/resolve.sh"
+# shellcheck source=lib/kport/devuan.sh
+source "${KPORT_LIB}/devuan.sh"
 
 # ── Parse args ────────────────────────────────────────────────────────────────
 
@@ -210,6 +212,24 @@ for pkgname in "${INSTALL_ORDER[@]}"; do
     kport_info "  accept with: echo '${category}/${pkgname}: stability: [$(kport_pacscript_var "$pacscript" KNEON_CHANNEL)]' >> ~/.config/kport/package.accept_keywords"
     (( failed++ )) || true
     continue
+  fi
+
+  # ── Devuan / non-systemd gate ───────────────────────────────────────────────
+  devuan_substitute=""
+  devuan_rc=0
+  devuan_substitute="$(kport_devuan_gate "$pkgname")" || devuan_rc=$?
+  if [[ $devuan_rc -eq 1 ]]; then
+    # Package masked on this init system — skip
+    (( failed++ )) || true
+    continue
+  elif [[ $devuan_rc -eq 2 && -n "$devuan_substitute" ]]; then
+    # Redirect to substitute package — re-resolve and install it instead
+    kport_info "  → installing substitute: ${devuan_substitute}"
+    pkgname="$devuan_substitute"
+    pacscript=$(kport_find_pacscript "$pkgname") \
+      || { kport_warn "Substitute pacscript not found: ${pkgname} — skipping"; (( failed++ )) || true; continue; }
+    pkgver=$(kport_pacscript_var "$pacscript" pkgver)
+    category=$(kport_pacscript_var "$pacscript" KCATEGORY)
   fi
 
   kport_header "Installing ${pkgname} ${pkgver}"
