@@ -1,0 +1,34 @@
+{
+  "_comment": "KPort overlay for KDE module metadata. Adds use_flags and overrides to specific modules.",
+  "_format": "{ \"kde/full/path\": { \"use_flags\": [...], \"branch\": \"...\", ... } }",
+
+  "plasma/plasma-workspace": {
+    "use_flags": ["wayland", "x11"],
+    "description": "KDE Plasma desktop workspace"
+  },
+  "plasma/kwin": {
+    "use_flags": ["wayland", "x11", "opengl"],
+    "description": "KDE window manager"
+  },
+  "plasma/plasma-desktop": {
+    "use_flags": ["wayland", "x11"]
+  },
+  "plasma/plasma-mobile": {
+    "use_flags": ["wayland", "mobile"]
+  },
+  "frameworks/kconfig": {
+    "use_flags": []
+  },
+  "frameworks/ki18n": {
+    "use_flags": []
+  },
+  "frameworks/kio": {
+    "use_flags": []
+  },
+  "utilities/konsole": {
+    "use_flags": []
+  },
+  "utilities/dolphin": {
+    "use_flags": []
+  }
+}
