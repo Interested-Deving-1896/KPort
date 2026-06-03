@@ -1,0 +1,24 @@
+{
+    "cmake.buildDirectory": "%{build_dir}",
+    "cmake.generator": "%{generator}",
+    "cmake.configureSettings": {
+%{configureSettings}
+    },
+    "cmake.environment": {
+%{environment}
+    },
+    "cmake.buildArgs": [ %{buildArgs} ],
+    // Both cpptools and clangd extensions have IntelliSense completions, so they are in conflict.
+    // We disable the cpptools IntelliSense, because clangd completions work way better at the moment.
+    "C_Cpp.intelliSenseEngine": "disabled",
+    // Disable CMake Presets, which can't inherit environment variables from 
+    // `cmake.environment` above.
+    // See: https://github.com/microsoft/vscode-cmake-tools/issues/3578
+    "cmake.useCMakePresets": "never",
+    "[cpp]": {
+        "editor.rulers": [
+            160,
+        ]
+    },
+    "qttools.injectNatvisFile": false // Disable injecting natvis file in launch.json, as it currently does not work for gdb/lldb, see https://github.com/tonka3000/vscode-qt-tools/issues/44
+}
