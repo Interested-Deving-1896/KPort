@@ -1,0 +1,880 @@
+# SPDX-FileCopyrightText: 2012, 2013, 2014, 2015, 2017, 2018, 2019, 2020, 2021, 2022 Michael Pyne <mpyne@kde.org>
+# SPDX-FileCopyrightText: 2020 Johan Ouwerkerk <jm.ouwerkerk@gmail.com>
+# SPDX-FileCopyrightText: 2023 - 2024 Andrew Shark <ashark@linuxcomp.ru>
+#
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+from __future__ import annotations
+
+import inspect
+import os.path
+import re
+import subprocess
+import time
+from dataclasses import dataclass
+from typing import TYPE_CHECKING
+
+from ..kb_exception import KBRuntimeError
+from ..kb_exception import ConfigError
+from ..kb_exception import ProgramError
+from ..debug import Debug
+from ..debug import KBLogger
+from ..ipc.null import IPCNull
+from ..util.logged_subprocess import UtilLoggedSubprocess
+from ..util.util import Util
+from ..util.textwrap_mod import dedent
+
+if TYPE_CHECKING:
+    from ..build_context import BuildContext
+    from ..ipc.ipc import IPC
+    from ..module.module import Module
+
+logger_updater = KBLogger.getLogger("updater")
+
+
+class Updater:
+    """
+    Responsible for updating git-based source code modules.
+
+    Can have some features overridden by subclassing (see UpdaterKDEProject for an example).
+    """
+
+    DEFAULT_GIT_REMOTE = "origin"
+
+    def __init__(self, module: Module):
+        self.module = module
+        self.ipc: IPC | None = None
+
+    def update_internal(self, ipc=IPCNull()) -> int:
+        """
+        Update procedure.
+
+        May change the current directory as necessary.
+
+        This function could be run by both: main kde-builder process (kde-builder-build), and updater process (kde-builder-updater).
+
+        Returns:
+             Number of commits pulled.
+        """
+        self.ipc = ipc
+        num_commits = self.update_checkout()
+        self.ipc = None
+        return num_commits
+
+    @staticmethod
+    # @override(check_signature=False)
+    def name() -> str:
+        return "git"
+
+    def _resolve_branch_group(self, branch_group: str) -> str | None:
+        """
+        Resolve the requested branch-group for this Updater's module.
+
+        Returns the required branch name, or None if none is set.
+        """
+        module = self.module
+        if module.is_kde_project():
+            # If we're using a logical group we need to query the global build context to resolve it.
+            ctx = module.context
+            resolver = ctx.branch_group_resolver
+            module_path = module.get_repopath() or module.name
+            ret = resolver.resolve_branch_group(module_path, branch_group)
+            return ret
+        else:
+            raise KBRuntimeError("\t_resolve_branch_group is implemented only for KDE Projects.")
+
+    def current_revision_internal(self) -> str:
+        return self.commit_id("HEAD")
+
+    def commit_id(self, commit: str) -> str:
+        """
+        Return the current sha1 of the given git "commit-ish".
+        """
+        if commit is None:
+            raise ProgramError("\tMust specify git-commit to retrieve id for")
+        module = self.module
+
+        gitdir = module.fullpath("source") + "/.git"
+
+        # Note that the --git-dir must come before the git command itself.
+        an_id = Util.get_program_output("git", "--git-dir", gitdir, "rev-parse", commit)
+        if an_id:
+            an_id = an_id[0].removesuffix("\n")
+        else:
+            an_id = ""  # if it was empty list, make it str
+
+        return an_id
+
+    def _verify_ref_present(self, repo: str) -> None:
+        ref_value, ref_type = self.determine_preferred_checkout_source()
+
+        if Debug().pretending():
+            return
+
+        if ref_type == "none":
+            ref_value = "HEAD"
+
+        process = subprocess.Popen(f"git ls-remote --exit-code {repo} {ref_value}".split(" "), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        try:
+            _, _ = process.communicate(timeout=10)
+            result = process.returncode
+        except subprocess.TimeoutExpired:
+            process.kill()
+            _, _ = process.communicate()
+            result = -1
+
+        if result == 2:  # Connection successful, but ref_value not found
+            raise KBRuntimeError(f"\t{self.module.name} repository at {repo} has no ref y[{ref_value}]")
+        if result == 0:  # Ref is present
+            return
+
+        raise KBRuntimeError(f"\tgit had error exit {result} when verifying {ref_value} present in repository at {repo}")
+
+    def _clone(self, git_repo: str) -> int:
+        """
+        Perform a git clone to checkout the latest branch of a given git module.
+
+        Args:
+            git_repo: The repository (typically URL) to use.
+
+        Returns:
+            int: 1
+
+        Raises:
+             Exception: If an error occurs.
+        """
+        module = self.module
+        srcdir = module.fullpath("source")
+        args = ["--", git_repo, srcdir]
+
+        if not self.ipc:
+            raise ProgramError("\tMissing IPC object")
+        ipc = self.ipc
+
+        ref_value, ref_type = self.determine_preferred_checkout_source()
+
+        if ref_type != "none":
+            ref_value = ref_value.removeprefix("refs/tags/")  # git-clone -b doesn't like refs/tags/
+            args = ["-b", ref_value] + args  # Checkout branch right away
+
+        logger_updater.warning(f"\tCloning g[{module}] pointing to {ref_type} b[{ref_value}]")
+
+        Util.p_chdir(module.get_source_dir())
+
+
+        exitcode = Util.run_logged(module, "git-clone", module.get_source_dir(), ["git", "clone", "--recursive", *args])
+
+        if not exitcode == 0:
+            raise KBRuntimeError("\tFailed to make initial clone of project")
+
+        Util.p_chdir(srcdir)
+
+        # Setup user configuration
+        if name := module.get_option("git-user"):
+            username, email = None, None
+            match = re.match(r"^([^<]+) +<([^>]+)>$", name)
+            if match:
+                username, email = match.groups()
+
+            if not username or not email:
+                raise KBRuntimeError(f"\tInvalid username or email for git-user option: {name}" +
+                                     " (should be in format 'User Name <username@example.net>'")
+
+            logger_updater.debug(f"\tAdding git identity {name} for project {module}")
+            result = Util.safe_system(["git", "config", "--local", "user.name", username])
+            result = Util.safe_system(["git", "config", "--local", "user.email", email]) or result
+            if result:
+                logger_updater.warning(f"\tUnable to set user.name and/or user.email git config for y[b[{module}]!")
+        return 1  # success
+
+    @staticmethod
+    def _verify_safe_to_clone_into_source_dir(module: Module, srcdir: str) -> None:
+        """
+        Check that the required source dir is either not already present or is empty.
+
+        Throws an exception if that's not true.
+        """
+        if os.path.exists(f"{srcdir}") and os.listdir(srcdir):
+            logger_updater.error(dedent(f"""
+                \tr[*] The desired source directory for b[{module}] is: y[b[{srcdir}]
+                \tr[*] This directory already exists, but it is not empty, and it is not a git repository.
+                """))
+            raise KBRuntimeError("\tUnrecognised content in source-dir present")
+
+    def update_checkout(self) -> int:
+        """
+        Either performs the initial checkout or updates the current git checkout as appropriate.
+
+        This function could be run by both: main kde-builder process (kde-builder-build), and updater process (kde-builder-updater).
+
+        Returns:
+             Number of commits pulled.
+             If not cloned yet, and in pretending mode, pretends that 1 commit was pulled.
+             If already cloned, and in pretending mode, pretends that 0 commits were pulled.
+
+        Raises:
+             Exception: On an update error.
+        """
+        module = self.module
+        srcdir = module.fullpath("source")
+
+        git_repo: str = module.get_option("#resolved-repository")
+        if not git_repo:
+            msg = f"\tThere was no y[b[repository] specified for the {module.name}."
+            raise ConfigError(msg)
+
+        # While .git is usually a directory, it can also be a file in case of a
+        # worktree checkout (https://git-scm.com/docs/gitrepository-layout)
+        if os.path.exists(f"{srcdir}/.git"):
+            # Note that this function will throw an exception on failure.
+            return self.update_existing_clone()
+        else:
+            self._verify_safe_to_clone_into_source_dir(module, srcdir)
+
+            self._verify_ref_present(git_repo)
+
+            self._clone(git_repo)  # can handle pretending mode
+            if Debug().pretending():
+                return 1  # pretend like there was 1 commit pulled
+            else:
+                ret = int(subprocess.check_output(["git", "--git-dir", f"{srcdir}/.git", "rev-list", "HEAD", "--count"]).decode().strip())
+                return ret
+
+    def is_push_url_managed(self) -> bool:
+        """
+        Determine whether _setup_remote should manage the configuration of the git push URL for the repo.
+
+        Returns:
+             Boolean indicating whether _setup_remote should assume control over the push URL.
+        """
+        module = self.module
+        if module.is_kde_project():
+            ret = True
+        else:
+            ret = False
+        return ret
+
+    def _set_remote_url(self, remote: str) -> None:
+        """
+        Ensure the given remote is pre-configured for the module's git repository.
+
+        The remote is either set up from scratch or its URLs are updated.
+
+        Args:
+            remote: name (alias) of the remote to configure
+        """
+        module = self.module
+        repo = module.get_option("#resolved-repository")
+        has_old_remote = self.has_remote(remote)
+
+        if has_old_remote:
+            logger_updater.debug(f"\tUpdating the URL for git remote {remote} of {module} ({repo})")
+
+            old_repo = subprocess.run(f"git config --get remote.{remote}.url", shell=True, capture_output=True, text=True).stdout.strip()
+
+            if old_repo and (repo != old_repo):
+                logger_updater.warning(dedent(f"""
+                    \ty[b[*] Repository url for y[{module}] has changed
+                    \ty[b[*]   from y[{old_repo}]
+                    \ty[b[*]   to   b[{repo}]
+                    \ty[b[*] The url for git remote named b[{remote}] has been updated.
+                    """))
+            exitcode = Util.run_logged(module, "git-remote-set-url", None, ["git", "remote", "set-url", remote, repo])
+            if not exitcode == 0:
+                raise KBRuntimeError(f"\tUnable to update the URL for git remote {remote} of {module} ({repo})")
+        else:
+            logger_updater.debug(f"\tAdding new git remote {remote} of {module} ({repo})")
+            exitcode = Util.run_logged(module, "git-remote-add", None, ["git", "remote", "add", remote, repo])
+            if not exitcode == 0:
+                raise KBRuntimeError(f"\tUnable to add new git remote {remote} of {module} ({repo})")
+
+        # If we make it here, no exceptions were thrown
+        if not self.is_push_url_managed():
+            return
+
+        # pushInsteadOf does not work nicely with git remote set-url --push
+        # The result would be that the pushInsteadOf kde: prefix gets ignored.
+        #
+        # The next best thing is to remove any preconfigured pushurl and
+        # restore the kde: prefix mapping that way. This is effectively the
+        # same as updating the push URL directly because of the remote set-url
+        # executed previously by this function for the fetch URL.
+
+        existing_push_url = subprocess.run(f"git config --get remote.{remote}.pushurl", shell=True, capture_output=True, text=True).stdout.strip()
+
+        if not existing_push_url:
+            return
+
+        logger_updater.info(f"\tRemoving preconfigured push URL for git remote {remote} of {module}: {existing_push_url}")
+
+        exitcode = Util.run_logged(module, "git-remote-unset-pushurl", None, ["git", "config", "--unset", f"remote.{remote}.pushurl"])
+        if not exitcode == 0:
+            raise KBRuntimeError(f"\tUnable to remove preconfigured push URL for {module}!")
+        return
+
+    def _decide_if_refuse_to_stash(self, remote_name: str, remote_branch_name: str) -> bool:
+        """
+        Determine the case when we should skip stashing local changes.
+
+        This is to prevent stash-pop user changes to another branch.
+        I.e. user has their branch "user-branch", has uncommitted local changes, and then kde-builder is run with branch configured to "master".
+        Then if we try to stash changes, then switch branch, then stash-pop changes, there will be a problem.
+        First, highly likely there will be merge conflict.
+        Second, even if no conflict, user does not want changes to be unexpectedly applied to some another branch. See kdesrc-build issue #67.
+
+        Return:
+             True - if decided to refuse to stash, False - if decided to try stashing normally.
+        """
+        module = self.module
+
+        # Let us check if we have uncommitted changes
+        status_lines = Util.get_program_output("git", "status", "--porcelain", "--untracked-files=no")
+        have_uncommitted_changes = bool(status_lines)
+
+        if not have_uncommitted_changes:
+            return False
+
+        # Let us check if we are staying on the same branch, or will switch to another one.
+
+        current_branch = next(iter(Util.get_program_output("git", "branch", "--show-current")), None)
+        if current_branch is not None:
+            current_branch = current_branch.removesuffix("\n")
+
+        local_branch_name = self._detect_existing_local_branch_tracking_remote_branch(remote_name, remote_branch_name)
+
+        # The current_branch is empty if in "detached HEAD" state, in that case we should also refuse stashing if there are local changes.
+        if not current_branch or (current_branch != local_branch_name):
+            # Make error message make more sense
+            if not current_branch:
+                current_branch = "Detached HEAD"
+            if not local_branch_name:
+                local_branch_name = f"Not yet created branch that will point to {remote_name}/{remote_branch_name}"
+
+            logger_updater.info(dedent(f"""
+                \ty[b[*] The project y[b[{module.name}] is currently at different branch than wanted, and has local changes.
+                \ty[b[*]   Current branch:  b[{current_branch}]
+                \ty[b[*]   Wanted branch:   b[{local_branch_name}]
+                \ty[b[*]
+                \ty[b[*] To avoid conflict with your local changes, it will not be updated, and the branch will remain unchanged.
+                \ty[b[*] Please commit or stash your changes, and then rerun kde-builder update for this project.
+                """))
+
+            self._notify_post_build_message(f"y[b[*] b[{module.name}] was not updated as it had local changes on a different branch than wanted.")
+            return True
+        return False
+
+    def _update_to_remote_head(self, remote_name: str, remote_branch: str) -> int:
+        """
+        Completes the steps needed to update a git checkout to be checked-out to a given remote-tracking branch.
+
+        Any existing local branch with the given remote branch set as upstream will be used if one exists,
+        otherwise a new local branch will be created.
+        The given remote branch will be rebased into the local branch.
+
+        Args:
+            remote_name: The remote to use.
+            remote_branch: The branch to update to.
+
+        Returns:
+             boolean success flag.
+        Exception may be thrown if unable to create a local branch.
+        """
+        module = self.module
+
+        local_branch = self._detect_existing_local_branch_tracking_remote_branch(remote_name, remote_branch)
+
+        chdir_to = module.fullpath("source")
+
+        if not local_branch:
+            new_local_branch = remote_branch
+            status = subprocess.call(["git", "show-ref", "--quiet", "--verify", "--", f"refs/heads/{new_local_branch}"])
+            if status != 1:
+                raise KBRuntimeError(f"\tLocal branch y[{new_local_branch}] already exists, but it is not tracking remote branch!")
+
+            result = Util.run_logged(module, "git-checkout-branch", chdir_to, ["git", "checkout", "-b", new_local_branch, f"{remote_name}/{remote_branch}"])
+            croak_reason = f"\tUnable to perform a git checkout of {remote_name}/{remote_branch}"
+        else:
+            result = Util.run_logged(module, "git-checkout-update", chdir_to, ["git", "checkout", local_branch])
+            croak_reason = f"\tUnable to perform a git checkout to existing branch {local_branch}"
+
+            if result == 0:
+                # Given that we're starting with a "clean" checkout, it's now simply a fast-forward to the remote HEAD
+                # (previously we pulled, incurring additional network I/O).
+                result = Util.run_logged(module, "git-rebase", None, ["git", "reset", "--hard", f"{remote_name}/{remote_branch}"])
+                croak_reason = f"\t{module}: Unable to reset to remote development branch {remote_branch}"
+
+        if not result == 0:
+            raise KBRuntimeError(croak_reason)
+        return 1  # success
+
+    def _update_to_detached_head(self, commit: str) -> int:
+        """
+        Completes the steps needed to update a git checkout to be checked-out to a given commit.
+
+        The local checkout is left in a detached HEAD state,
+        even if there is a local branch which happens to be pointed to the
+        desired commit. Based the given commit is used directly, no rebase/merge
+        is performed.
+
+        No checkout is done, this should be performed first.
+        Assumes we're already in the needed source dir.
+        Assumes we're in a clean working directory (use git-stash to achieve if necessary).
+
+        Args:
+            commit: The commit to update to. This can be in pretty
+                much any format that git itself will respect (e.g. tag, sha1, etc.).
+                It is recommended to use refs/foo/bar syntax for specificity.
+
+        Returns:
+             boolean success flag.
+        """
+        module = self.module
+        srcdir = module.fullpath("source")
+
+        logger_updater.info(f"\tDetaching head to b[{commit}]")
+
+        result = Util.run_logged(module, "git-checkout-commit", srcdir, ["git", "checkout", commit])
+        result = result == 0  # need to adapt to boolean success flag
+        return result
+
+    def update_existing_clone(self) -> int:
+        """
+        Update an already existing git checkout by running git pull.
+
+        Returns:
+             Number of pulled commits.
+
+        Raises:
+            Exception: On an error.
+        """
+        module = self.module
+        cur_repo = module.get_option("#resolved-repository")
+
+        Util.p_chdir((module.fullpath("source")))
+
+        if module.get_option("hold-work-branches"):
+            current_branch = subprocess.run(f"git branch --show-current", shell=True, capture_output=True, text=True).stdout.strip()
+            if current_branch.startswith("work/") or current_branch.startswith("mr/"):
+                logger_updater.warning(f"\tHolding g[{module}] at branch b[{current_branch}]")
+                return 0
+
+        # Try to save the user if they are doing a merge or rebase
+        if os.path.exists(".git/MERGE_HEAD") or os.path.exists(".git/rebase-merge") or os.path.exists(".git/rebase-apply"):
+            raise KBRuntimeError(f"\tAborting git update for {module}, you appear to have a rebase or merge in progress!")
+
+        remote_name = self._determine_remote_name()
+        self._set_remote_url(remote_name)
+        logger_updater.info(f"\tFetching remote changes to g[{module}]")
+        exitcode = Util.run_logged(module, "git-fetch", None, ["git", "fetch", "-f", "--tags", remote_name])
+
+        # Download updated objects. This also updates remote heads so do this
+        # before we start comparing branches and such.
+
+        if not exitcode == 0:
+            raise KBRuntimeError(f"\tUnable to perform git fetch for {remote_name} ({cur_repo})")
+
+        # Now we need to figure out if we should update a branch, or simply
+        # checkout a specific tag/SHA1/etc.
+        ref_value, ref_type = self.determine_preferred_checkout_source()
+        if ref_type == "none":
+            ref_type = "branch"
+            ref_value = self._detect_default_remote_head(remote_name)
+
+        logger_updater.warning(f"\tMerging g[{module}] changes from {ref_type} b[{ref_value}]")
+        start_commit = self.commit_id("HEAD")
+
+        self.stash_and_update(ref_type, remote_name, ref_value)
+        ret = int(subprocess.check_output(["git", "rev-list", f"{start_commit}..HEAD", "--count"]).decode().strip())
+        return ret
+
+    @staticmethod
+    def _detect_default_remote_head(remote_name: str) -> str:
+        """
+        Try to determine the best remote branch name to use as a default if the user hasn't selected one.
+
+        Determination is done by resolving the remote symbolic ref "HEAD" from
+        its entry in the .git dir. This can also be found by introspecting the
+        output of "git remote show $REMOTE_NAME" or "git branch -r" but these are
+        incredibly slow.
+        """
+        if not os.path.isdir(".git"):
+            caller_name = inspect.currentframe().f_back.f_code.co_name
+            raise ProgramError("\tRun " + caller_name + " from git repo!")
+
+        with open(f".git/refs/remotes/{remote_name}/HEAD", "r") as file:
+            data = file.read()
+
+        if not data:
+            data = ""
+
+        match = re.search(r"^ref: *refs/remotes/[^/]+/([^/]+)$", data)
+        head = match.group(1) if match else None
+        if not head:
+            raise KBRuntimeError(f"\tCan't find HEAD for remote {remote_name}")
+
+        head = head.removesuffix("\n")
+        return head
+
+    def determine_preferred_checkout_source(self) -> tuple[str, str]:
+        """
+        Goes through all the various combination of git checkout selection options in various orders of priority.
+
+        Returns:
+            Tuple containing:
+            1 - git ref value (symbolic or SHA1).
+            2 - git ref type ("branch" or "tag"), to determine if something like git-pull would be suitable or whether you have a detached HEAD.
+        """
+        module = self.module
+
+        @dataclass
+        class CheckoutSource:
+            option_name: str
+            inherit_mode: str
+            git_type: str
+
+        priority_ordered_checkout_sources = [
+            CheckoutSource(option_name="commit",       inherit_mode="module",        git_type="tag"   ),
+            CheckoutSource(option_name="revision",     inherit_mode="module",        git_type="tag"   ),
+            CheckoutSource(option_name="tag",          inherit_mode="module",        git_type="tag"   ),
+            CheckoutSource(option_name="branch",       inherit_mode="module",        git_type="branch"),
+            CheckoutSource(option_name="branch-group", inherit_mode="module",        git_type="branch"),
+            # "commit", "revision", "tag" - don't make sense for git as globals
+            CheckoutSource(option_name="branch",       inherit_mode="allow-inherit", git_type="branch"),
+            CheckoutSource(option_name="branch-group", inherit_mode="allow-inherit", git_type="branch"),
+        ]
+
+        if not module.is_kde_project():
+            priority_ordered_checkout_sources = [checkout_source for checkout_source in priority_ordered_checkout_sources if checkout_source.option_name != "branch-group"]
+
+        ref_string = ""
+
+        matched_checkout_source = None
+        for checkout_source in priority_ordered_checkout_sources:
+            if ref_string := module.get_option(checkout_source.option_name, checkout_source.inherit_mode):
+                matched_checkout_source = checkout_source
+                break
+
+        # The user has no clear desire here (either set for the module or globally).
+        # Note that the default config doesn't generate a global "branch" setting.
+        # In this case it's unclear which convention source modules will use between
+        # "master", "main", or something entirely different. So just don't guess.
+        if matched_checkout_source is None:
+            logger_updater.debug(f"\tNo branch specified for {module}, will use whatever git gives us")
+            return "none", "none"
+
+        if matched_checkout_source.option_name == "branch-group":
+            #  ref_string is currently the branch-group to be resolved.
+            ref_string = self._resolve_branch_group(ref_string)
+
+            if not ref_string:
+                branch_group = module.get_option("branch-group")
+                logger_updater.debug(f"\tNo specific branch set for {module} and {branch_group}, using master!")
+                ref_string = "master"
+
+        if matched_checkout_source.option_name == "tag" and not ref_string.startswith("refs/tags/"):
+            ref_string = f"refs/tags/{ref_string}"
+
+        return ref_string, matched_checkout_source.git_type
+
+    @staticmethod
+    def _has_submodules() -> bool:
+        """
+        Try to check whether the git module is using submodules or not.
+
+        Currently, we just check the .git/config file (using git-config) to determine whether
+        there are any "active" submodules.
+
+        MUST BE RUN FROM THE SOURCE DIR
+        """
+        # The git-config line shows all option names of the form submodule.foo.active,
+        # filtering down to options for which the option is set to "true"
+        config_lines = Util.get_program_output("git", "config", "--local", "--get-regexp", r"^submodule\..*\.active", "true")
+        return len(config_lines) > 0
+
+    @staticmethod
+    def _split_uri(uri) -> tuple[str, str, str, str, str]:
+        match = re.match(r"(?:([^:/?#]+):)?(?://([^/?#]*))?([^?#]*)(?:\?([^#]*))?(?:#(.*))?", uri)
+        scheme, authority, path, query, fragment = match.groups()
+        return scheme, authority, path, query, fragment
+
+    def count_stash(self, description=None) -> int:
+        module = self.module
+
+        if os.path.exists(".git/refs/stash"):
+            p = subprocess.run("git rev-list --walk-reflogs --count refs/stash", shell=True, text=True, capture_output=True)
+            print(p.stderr, end="")  # pl2py: in case git warns about something, for example about deprecated grafts. Unfortunately, subprocess washes the colors, but not a big deal.
+            count = p.stdout
+            if count:
+                count = count.removesuffix("\n")
+            logger_updater.debug(f"\tNumber of stashes found for b[{module}] is: b[{count}]")
+            return int(count)
+        else:
+            logger_updater.debug(f"\tIt appears there is no stash for b[{module}]")
+            return 0
+
+    def _notify_post_build_message(self, mesg: str) -> None:
+        """
+        Send a post-build (warning) message via the IPC object.
+
+        This just takes care of the boilerplate to forward its arguments as message.
+
+        This function could be run by both: main kde-builder process (kde-builder-build), and updater process (kde-builder-updater).
+        """
+        module = self.module
+        self.ipc.notify_new_post_build_message(module.name, mesg)
+
+    def stash_and_update(self, commit_type: str, remote_name: str, commit_id: str) -> int:
+        """
+        Stashes existing changes if necessary, and then runs appropriate update function.
+
+        Update function (_update_to_remote_head or _update_to_detached_head) is run in order to advance the given module to the desired head.
+        Finally, if changes were stashed, they are applied and the stash stack is popped.
+
+        It is assumed that the required remote has been set up already, that we
+        are on the right branch, and that we are already in the correct
+        directory.
+
+        Returns:
+             1 or raises exception on error.
+        """
+        module = self.module
+        date = time.strftime("%F-%R", time.gmtime())  # ISO Date, hh:mm time
+        stash_name = f"kde-builder auto-stash at {date}"
+
+        # first, log the git status prior to kde-builder taking over the reins in the repo
+        result = Util.run_logged(module, "git-status-before-update", None, ["git", "status"])
+
+        old_stash_count = self.count_stash()
+
+        logger_updater.debug("\tStashing local changes if any...")
+
+        if Debug().pretending():  # probably best not to do anything if pretending
+            result = 0
+        else:
+            will_refuse_stashing = self._decide_if_refuse_to_stash(remote_name, commit_id)
+            if will_refuse_stashing:
+                raise KBRuntimeError(f"\tRefusing to stash changes from other branch.")
+            result = Util.run_logged(module, "git-stash-push", None, ["git", "stash", "push", "--quiet", "--message", stash_name])
+
+        if result == 0:
+            pass
+        else:
+            # Might happen if the repo is already in merge conflict state.
+            # We could mark everything as resolved using git add . before stashing,
+            # but that might not always be appreciated by people having to figure
+            # out what the original merge conflicts were afterwards.
+            self._notify_post_build_message(f"b[{module}] may have local changes that we couldn't handle, so the project was left alone.")
+
+            result = Util.run_logged(module, "git-status-after-error", None, ["git", "status"])
+            raise KBRuntimeError(f"\tUnable to stash local changes (if any) for {module}, aborting update.")
+
+        # next: check if the stash was truly necessary.
+        # compare counts (not just testing if there is *any* stash) because there
+        # might have been a genuine user's stash already prior to kde-builder
+        # taking over the reins in the repo.
+        new_stash_count = self.count_stash()
+
+        # finally, update to remote head
+        if commit_type == "branch":
+            result = self._update_to_remote_head(remote_name, commit_id)
+        else:
+            result = self._update_to_detached_head(commit_id)
+
+        if result:
+            result = 1
+        else:
+            result = Util.run_logged(module, "git-status-after-error", None, ["git", "status"])
+            raise KBRuntimeError(f"\tUnable to update source code for {module}")
+
+        # we ignore git-status exit code deliberately, it's a debugging aid
+
+        if new_stash_count == old_stash_count:
+            result = 1  # success
+        else:
+            # If the stash had been needed then try to re-apply it before we build, so
+            # that KDE developers working on changes do not have to manually re-apply.
+            exitcode = Util.run_logged(module, "git-stash-pop", None, ["git", "stash", "pop"])
+            if exitcode != 0:
+                message = f"r[b[*] Unable to restore local changes for b[{module}]! You should manually inspect the new stash: b[{stash_name}]"
+                logger_updater.warning(f"\t{message}")
+                self._notify_post_build_message(message)
+            else:
+                logger_updater.info(f"\tb[*] You had local changes to b[{module}], which have been re-applied.")
+
+            result = 1  # success
+
+        return result
+
+    @staticmethod
+    def _detect_existing_local_branch_tracking_remote_branch(remote_name: str, remote_branch: str) -> str:
+        """
+        Determine if there is existing local branch that tracks specified remote branch of the specified remote.
+
+        Note that local branch name may be different from the name of remote branch.
+        For example, the user has local branch called "my-master", and that branch is tracking remote branch "master".
+        In this case, invoking this function with remote_branch "master" would return "my-master".
+
+        Args:
+            remote_name: The git remote to use (normally origin).
+            remote_branch: The remote head name to find a local branch for.
+
+        Returns:
+            Empty string if no match is found, or the name of the local remote-tracking branch if one exists.
+        """
+        lines = Util.get_program_output("git", "for-each-ref", "refs/heads", "--format", "%(refname) %(upstream)")
+        for line in lines:
+            line = line.removesuffix("\n")
+            refname, upstream = line.split(" ")
+            if upstream == f"refs/remotes/{remote_name}/{remote_branch}":
+                local_branch = refname.removeprefix("refs/heads/")
+                return local_branch
+        return ""
+
+    def _determine_remote_name(self) -> str:
+        """
+        Determine the remote name that have the wanted repository URL.
+
+        99% of the time the "origin" remote will be what we want anyway, and
+        0.5% of the rest the user will have manually added a remote, which we
+        should try to utilize when doing checkouts for instance. To aid in this, this function is run.
+
+        We will get the "repository" value from user config (to be precise, the resolved value "#resolved-repository").
+        Then we will get list of existing remotes, and check which remote has the url that is equal to "#resolved-repository".
+        If we found one, that will be the remote name to use.
+        If we do not found appropriate remote, we will fall back to "origin".
+
+        Assumes that we are already in the proper source directory.
+
+        Returns:
+            A name of the remote to use.
+        """
+        module = self.module
+        resolved_repository = module.get_option("#resolved-repository")
+
+        lines = Util.get_program_output("git", "config", "--get-regexp", r"remote\..*\.url", ".")
+
+        for line in lines:
+            line = line.removesuffix("\n")
+            remote_name, remote_url = line.split(" ")
+
+            remote_name = remote_name.removeprefix("remote.").removesuffix(".url")  # remove the cruft
+
+            if remote_url == resolved_repository:
+                is_plausible_url = True
+            elif module.is_kde_project():
+                is_plausible_url = remote_url.startswith("kde:")
+            else:
+                is_plausible_url = False
+
+            if is_plausible_url:
+                return remote_name
+            else:
+                continue
+        return Updater.DEFAULT_GIT_REMOTE
+
+    @staticmethod
+    def has_remote(remote: str) -> bool:
+        """
+        Return true if the git module in the current directory has a remote of the name given by the first parameter.
+        """
+        has_remote = False
+
+        existing_remotes = Util.get_program_output("git", "remote")
+        existing_remotes = [el.removesuffix("\n") for el in existing_remotes]
+
+        for existing_remote in existing_remotes:
+            if not has_remote:
+                has_remote = existing_remote == remote
+        return has_remote
+
+    @staticmethod
+    def verify_git_config(context_options: BuildContext) -> bool:
+        """
+        Add the "kde:" alias to the user's git config if it's not already set.
+
+        Call this as a static class function, not as an object method
+        (i.e. Updater_Git.verify_git_config, not foo.verify_git_config)
+
+        Returns:
+             False on failure of any sort, True otherwise.
+        """
+        protocol = context_options.get_option("git-push-protocol") or "git"
+
+        push_url_prefix = ""
+        other_push_url_prefix = ""
+
+        if protocol == "git" or protocol == "https":
+            push_url_prefix = "ssh://git@invent.kde.org/" if protocol == "git" else "https://invent.kde.org/"
+            other_push_url_prefix = "https://invent.kde.org/" if protocol == "git" else "ssh://git@invent.kde.org/"
+        else:
+            logger_updater.error(f"\tb[y[*] Invalid b[git-push-protocol] {protocol}")
+            logger_updater.error("\tb[y[*] Try setting this option to \"git\" if you're not using a proxy")
+            raise KBRuntimeError(f"\tInvalid git-push-protocol: {protocol}")
+
+        p = subprocess.run("git config --global --includes --get url.https://invent.kde.org/.insteadOf kde:", shell=True, capture_output=True, text=True)
+        config_output = p.stdout.removesuffix("\n")
+        err_num = p.returncode
+
+        # 0 means no error, 1 means no such section exists -- which is OK
+        if err_num >= 2:
+            error = f"Code {err_num}"
+            errors = {
+                1: "Invalid section or key",
+                2: "No section was provided to git-config",
+                3: "Invalid config file (~/.gitconfig)",
+                4: "Could not write to ~/.gitconfig",
+                5: "Tried to set option that had no (or multiple) values",
+                6: "Invalid regexp with git-config",
+                128: "HOME environment variable is not set (?)",
+            }
+
+            if err_num in errors:
+                error = errors[err_num]
+            logger_updater.error(f"\tr[*] Unable to run b[git] command:\n\t{error}")
+            return False
+
+        # If we make it here, I'm just going to assume git works from here on out
+        # on this simple task.
+        if not re.search(r"^kde:\s*$", config_output):
+            logger_updater.debug("\tAdding git download kde: alias (fetch: https://invent.kde.org/)")
+            result = Util.safe_system("git config --global --add url.https://invent.kde.org/.insteadOf kde:".split(" "))
+            if result != 0:
+                return False
+
+        config_output = subprocess.run(f"git config --global --includes --get url.{push_url_prefix}.pushInsteadOf kde:", shell=True, capture_output=True, text=True).stdout.removesuffix("\n")
+        if not re.search(r"^kde:\s*$", config_output):
+            logger_updater.debug(f"\tAdding git upload kde: alias (push: {push_url_prefix})")
+            result = Util.safe_system(["git", "config", "--global", "--add", f"url.{push_url_prefix}.pushInsteadOf", "kde:"])
+            if result != 0:
+                return False
+
+        # Remove old kde-builder installed aliases (kde: -> git://anongit.kde.org/)
+        config_output = subprocess.run("git config --global --get url.git://anongit.kde.org/.insteadOf kde:", shell=True, capture_output=True, text=True).stdout.removesuffix("\n")
+        if re.search(r"^kde:\s*$", config_output):
+            logger_updater.debug("\tRemoving outdated kde: alias (fetch: git://anongit.kde.org/)")
+            result = Util.safe_system("git config --global --unset-all url.git://anongit.kde.org/.insteadOf kde:".split(" "))
+            if result != 0:
+                return False
+
+        config_output = subprocess.run("git config --global --get url.https://anongit.kde.org/.insteadOf kde:", shell=True, capture_output=True, text=True).stdout.removesuffix("\n")
+        if re.search(r"^kde:\s*$", config_output):
+            logger_updater.debug("\tRemoving outdated kde: alias (fetch: https://anongit.kde.org/)")
+            result = Util.safe_system("git config --global --unset-all url.https://anongit.kde.org/.insteadOf kde:".split(" "))
+            if result != 0:
+                return False
+
+        config_output = subprocess.run("git config --global --get url.git@git.kde.org:.pushInsteadOf kde:", shell=True, capture_output=True, text=True).stdout.removesuffix("\n")
+        if re.search(r"^kde:\s*$", config_output):
+            logger_updater.debug("\tRemoving outdated kde: alias (push: git@git.kde.org)")
+            result = Util.safe_system("git config --global --unset-all url.git@git.kde.org:.pushInsteadOf kde:".split(" "))
+            if result != 0:
+                return False
+
+        # remove outdated alias if git-push-protocol gets flipped
+        config_output = subprocess.run(f"git config --global --get url.{other_push_url_prefix}.pushInsteadOf kde:", shell=True, capture_output=True, text=True).stdout.removesuffix("\n")
+        if re.search(r"^kde:\s*$", config_output):
+            logger_updater.debug(f"\tRemoving outdated kde: alias (push: {other_push_url_prefix})")
+            result = Util.safe_system(["git", "config", "--global", "--unset-all", f"url.{other_push_url_prefix}.pushInsteadOf", "kde:"])
+            if result != 0:
+                return False
+        return True
