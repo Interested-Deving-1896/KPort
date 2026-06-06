@@ -21,14 +21,19 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    permissions:
+      contents: write  # Add permissions to allow dispatching events
+      actions: write    # Added permissions for actions
+      repository_dispatch: write  # Added permissions for dispatching events
+      workflows: write  # Added permissions to trigger workflows
     steps:
       - name: Dispatch to fork-sync-all
         env:
-          GH_TOKEN: ${{ secrets.SYNC_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}  # Ensure the correct secret is used
         run: |
           curl -sf \
             -X POST \
-            -H "Authorization: token ${GH_TOKEN}" \
+            -H "Authorization: token ${GITHUB_TOKEN}" \
             -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/Interested-Deving-1896/fork-sync-all/dispatches" \
             -d '{

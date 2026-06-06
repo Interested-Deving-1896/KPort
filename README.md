@@ -4,33 +4,32 @@
 [![Built with Ona](https://ona.com/build-with-ona.svg)](https://app.ona.com/#https://github.com/Interested-Deving-1896/KPort)
 
 <!-- AI:start:what-it-does -->
-KPort provides a Portage-inspired package management system for KDE Neon, integrating Pacstall with support for USE flags and hardware compatibility layers for CPU, GPU, and NPU. It automates the generation of pacscripts from KDE Neon packaging, enabling users to customize and optimize software installations for their specific hardware and preferences.
+KPort provides a Portage-inspired package management system for KDE Neon, integrating features like USE flags, hardware compatibility layers for CPU/GPU/NPU, and automated pacscript generation. It is designed for developers and power users who need customizable package builds and enhanced hardware-specific optimizations.
 <!-- AI:end:what-it-does -->
 
 ## Architecture
 
 <!-- AI:start:architecture -->
-KPort consists of several key components that work together to manage and build packages for KDE Neon with enhanced hardware compatibility and customization. The `bin` directory contains executable scripts for package management tasks. `config` holds configuration files, while `db` manages package metadata. `generated` contains auto-generated pacscripts derived from KDE Neon packaging. `lib` provides shared library scripts used across the project. `overlays` includes custom package overlays, and `packages` stores user-defined package definitions. The `scripts` directory contains utility scripts for automation. Workflows like `hardware-detect.yml` and `pacscript-ci.yml` automate hardware detection and pacscript validation. The directory structure is as follows:
+KPort consists of modular components designed for package management and hardware compatibility. The repository integrates KDE Neon packaging with Pacstall, enabling USE flags and hardware-specific optimizations for CPU, GPU, and NPU. Automated workflows handle hardware detection, pacscript generation, and upstream contributions. The directory structure organizes scripts, configurations, and generated files for maintainability.
 
 ```plaintext
 .
-├── .devcontainer/
-├── .github/
-├── .gitignore
-├── .gitlab-ci.yml
-├── .gitlab/
-├── LICENSE
-├── README.md
-├── bin/
-├── config/
-├── db/
-├── dep-graph/
-├── generated/
-├── lib/
-├── overlays/
-├── packages/
-└── scripts/
+├── .devcontainer/         # Development container configuration
+├── .github/               # GitHub Actions workflows
+├── .gitlab-ci.yml         # GitLab CI pipeline configuration
+├── bin/                   # Executable scripts for package management
+├── config/                # Configuration files for build and runtime
+├── db/                    # Metadata and database files for packages
+├── dep-graph/             # Dependency graph generation and analysis
+├── generated/             # Auto-generated pacscripts and related files
+├── lib/                   # Shared library scripts
+├── overlays/              # Custom package overlays
+├── packages/              # Package definitions and metadata
+├── scripts/               # Utility and automation scripts
+└── README.md              # Project documentation
 ```
+
+Components interact through shared libraries and workflows. Hardware detection triggers compatibility adjustments, while automated scripts generate and manage pacscripts based on KDE Neon packaging. CI pipelines ensure consistency and integration with upstream repositories.
 <!-- AI:end:architecture -->
 
 ## Install
@@ -53,9 +52,10 @@ cd KPort
 ## CI
 
 <!-- AI:start:ci -->
-- **hardware-detect.yml**: Detects and logs CPU, GPU, and NPU hardware compatibility layers for package builds. No secrets required.
-
-- **pacscript-ci.yml**: Validates and tests automated pacscript generation from KDE Neon packaging. Requires the `PACSTALL_TOKEN` secret for authentication with Pacstall.
+- `hardware-detect.yml`: Detects CPU, GPU, and NPU hardware compatibility layers. No secrets required.  
+- `neon-build-ci.yml`: Builds KDE Neon-based packages using Pacstall and USE flags. No secrets required.  
+- `notify-hw-detect-consumers.yml`: Sends notifications to dependent systems about hardware detection updates. Requires `WEBHOOK_URL` secret.  
+- `pacscript-ci.yml`: Generates and validates pacscripts from KDE Neon packaging. No secrets required.  
 <!-- AI:end:ci -->
 
 ## Mirror chain
@@ -75,7 +75,7 @@ Direct commits to OSP or OOC are detected and opened as PRs back to `Interested-
 ## Contributors
 
 <!-- AI:start:contributors -->
-[@Interested-Deving-1896](https://github.com/Interested-Deving-1896): 184 commits
+[@Interested-Deving-1896](https://github.com/Interested-Deving-1896): 206 commits
 
 *Note: This repository is a mirror. Please refer to the upstream source for the original project.*
 <!-- AI:end:contributors -->
@@ -115,7 +115,6 @@ It was created from the following upstream inspirations:
 | File | Description |
 |---|---|
 | [dep-graph/origins.md](https://github.com/Interested-Deving-1896/KPort/blob/main/dep-graph/origins.md) | Dependency graph (Markdown table) |
-| [.gitlab/merge_request_templates/Default.md](https://github.com/Interested-Deving-1896/KPort/blob/main/.gitlab/merge_request_templates/Default.md) | GitLab MR template |
 <!-- AI:end:resources -->
 
 ## License
