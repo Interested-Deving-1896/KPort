@@ -9,3 +9,4 @@ db/index.json
 .ci-db-*
 generated/*
 !generated/README.md
+lib/build/__pycache__/
