@@ -4,32 +4,33 @@
 [![Built with Ona](https://ona.com/build-with-ona.svg)](https://app.ona.com/#https://github.com/Interested-Deving-1896/KPort)
 
 <!-- AI:start:what-it-does -->
-KPort provides a Portage-inspired package management system for KDE Neon, integrating features like USE flags, hardware compatibility layers for CPU/GPU/NPU, and automated pacscript generation. It is designed for developers and power users who need customizable package builds and enhanced hardware-specific optimizations.
+This project provides a Portage-inspired package repository for KDE Neon, integrating Pacstall, USE flags, and hardware compatibility layers for CPU, GPU, and NPU configurations. It automates the generation of pacscripts from KDE Neon packaging and supports streamlined package management tailored to specific hardware setups. It is used by developers and system maintainers seeking customizable and hardware-aware package builds.
 <!-- AI:end:what-it-does -->
 
 ## Architecture
 
 <!-- AI:start:architecture -->
-KPort consists of modular components designed for package management and hardware compatibility. The repository integrates KDE Neon packaging with Pacstall, enabling USE flags and hardware-specific optimizations for CPU, GPU, and NPU. Automated workflows handle hardware detection, pacscript generation, and upstream contributions. The directory structure organizes scripts, configurations, and generated files for maintainability.
+KPort consists of several components designed to manage and build packages for KDE Neon with enhanced hardware compatibility and automation. The repository integrates Pacstall with Portage-like features, including USE flags and hardware-specific optimizations. Key workflows automate tasks such as hardware detection, syncing with GitLab, pacscript generation, and KDE Neon package updates. The directory structure organizes scripts, configuration files, and generated outputs for efficient management.
 
 ```plaintext
 .
-├── .devcontainer/         # Development container configuration
-├── .github/               # GitHub Actions workflows
-├── .gitlab-ci.yml         # GitLab CI pipeline configuration
-├── bin/                   # Executable scripts for package management
-├── config/                # Configuration files for build and runtime
-├── db/                    # Metadata and database files for packages
-├── dep-graph/             # Dependency graph generation and analysis
-├── generated/             # Auto-generated pacscripts and related files
-├── lib/                   # Shared library scripts
-├── overlays/              # Custom package overlays
-├── packages/              # Package definitions and metadata
-├── scripts/               # Utility and automation scripts
-└── README.md              # Project documentation
+├── .github/                # GitHub workflows and CI configurations
+├── bin/                    # Executable scripts for package management
+├── config/                 # Configuration files for build and runtime
+├── db/                     # Package database and metadata
+├── dep-graph/              # Dependency graph generation and visualization
+├── generated/              # Auto-generated files (e.g., pacscripts)
+├── lib/                    # Shared library scripts
+├── overlays/               # Custom package overlays
+├── packages/               # Package definitions and metadata
+├── scripts/                # Utility scripts for automation
+├── vendor/                 # External dependencies and third-party tools
+├── LICENSE                 # License file
+├── README.md               # Project documentation
+└── .gitignore              # Git ignore rules
 ```
 
-Components interact through shared libraries and workflows. Hardware detection triggers compatibility adjustments, while automated scripts generate and manage pacscripts based on KDE Neon packaging. CI pipelines ensure consistency and integration with upstream repositories.
+Components interact via shared scripts and workflows, ensuring seamless integration between package definitions, hardware detection, and automated builds.
 <!-- AI:end:architecture -->
 
 ## Install
@@ -52,10 +53,12 @@ cd KPort
 ## CI
 
 <!-- AI:start:ci -->
-- `hardware-detect.yml`: Detects CPU, GPU, and NPU hardware compatibility layers. No secrets required.  
-- `neon-build-ci.yml`: Builds KDE Neon-based packages using Pacstall and USE flags. No secrets required.  
-- `notify-hw-detect-consumers.yml`: Sends notifications to dependent systems about hardware detection updates. Requires `WEBHOOK_URL` secret.  
-- `pacscript-ci.yml`: Generates and validates pacscripts from KDE Neon packaging. No secrets required.  
+- **check-gitlab-sync.yml**: Verifies synchronization between this repository and a GitLab mirror. No secrets required.  
+- **hardware-detect.yml**: Detects and logs CPU/GPU/NPU hardware compatibility for packages. Requires `HW_DETECT_API_KEY`.  
+- **neon-build-ci.yml**: Builds and tests packages using KDE Neon base. Requires `NEON_CI_TOKEN`.  
+- **notify-hw-detect-consumers.yml**: Sends notifications to dependent systems about updated hardware compatibility data. Requires `NOTIFY_API_KEY`.  
+- **pacscript-ci.yml**: Validates and tests generated pacscripts for correctness. No secrets required.  
+- **update-kde-builder-vendor.yml**: Updates vendor dependencies for KDE Neon package building. Requires `VENDOR_UPDATE_TOKEN`.  
 <!-- AI:end:ci -->
 
 ## Mirror chain
@@ -75,9 +78,9 @@ Direct commits to OSP or OOC are detected and opened as PRs back to `Interested-
 ## Contributors
 
 <!-- AI:start:contributors -->
-[@Interested-Deving-1896](https://github.com/Interested-Deving-1896): 206 commits
+[@Interested-Deving-1896](https://github.com/Interested-Deving-1896): 348 commits
 
-*Note: This repository is a mirror. Please refer to the upstream source for the original project.*
+*Note: This repository is a mirror. For the upstream source, refer to the original repository.*
 <!-- AI:end:contributors -->
 
 ## Origins
