@@ -55,12 +55,12 @@ cd KPort
 ## CI
 
 <!-- AI:start:ci -->
-- **check-gitlab-sync.yml**: Verifies synchronization between this repository and a GitLab mirror. No secrets required.  
-- **hardware-detect.yml**: Detects CPU, GPU, and NPU compatibility layers for package optimizations. Requires `HW_DETECT_API_KEY`.  
+- **check-gitlab-sync.yml**: Verifies synchronization between GitHub and GitLab repositories. No secrets required.  
+- **hardware-detect.yml**: Detects CPU, GPU, and NPU compatibility for package builds. Requires `HW_DETECT_API_KEY`.  
 - **neon-build-ci.yml**: Builds and tests packages against KDE Neon base. Requires `NEON_CI_TOKEN`.  
-- **notify-hw-detect-consumers.yml**: Notifies dependent systems of updated hardware compatibility data. Requires `NOTIFY_API_URL` and `NOTIFY_API_KEY`.  
-- **pacscript-ci.yml**: Validates and generates pacscripts from KDE Neon packaging metadata. No secrets required.  
-- **update-kde-builder-vendor.yml**: Updates vendor dependencies for KDE builder scripts. Requires `VENDOR_UPDATE_TOKEN`.  
+- **notify-hw-detect-consumers.yml**: Notifies dependent systems of updated hardware compatibility data. Requires `NOTIFY_WEBHOOK_URL`.  
+- **pacscript-ci.yml**: Validates and tests generated pacscripts for correctness. No secrets required.  
+- **update-kde-builder-vendor.yml**: Updates vendor dependencies for KDE package builders. Requires `VENDOR_UPDATE_TOKEN`.  
 <!-- AI:end:ci -->
 
 ## Mirror chain
@@ -80,7 +80,7 @@ Direct commits to OSP or OOC are detected and opened as PRs back to `Interested-
 ## Contributors
 
 <!-- AI:start:contributors -->
-[@Interested-Deving-1896](https://github.com/Interested-Deving-1896) - 349 commits
+[@Interested-Deving-1896](https://github.com/Interested-Deving-1896): 349 commits
 
 *Note: This repository is a mirror. Please refer to the upstream source for the original project.*
 <!-- AI:end:contributors -->
