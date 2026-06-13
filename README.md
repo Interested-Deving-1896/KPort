@@ -4,13 +4,15 @@
 [![Built with Ona](https://ona.com/build-with-ona.svg)](https://app.ona.com/#https://github.com/Interested-Deving-1896/KPort)
 
 <!-- AI:start:what-it-does -->
-This project provides a Portage-inspired package repository for KDE Neon, integrating Pacstall, USE flags, and hardware compatibility layers for CPU, GPU, and NPU configurations. It automates the generation of pacscripts from KDE Neon packaging and supports streamlined package management tailored to specific hardware setups. It is used by developers and system maintainers seeking customizable and hardware-aware package builds.
+This project provides a Portage-inspired package repository tailored for KDE Neon, integrating Pacstall for package management. It addresses the need for customizable builds with USE flags, hardware compatibility layers for CPU/GPU/NPU, and automated pacscript generation. It is used by developers and system maintainers seeking fine-grained control over KDE Neon package customization and deployment.
 <!-- AI:end:what-it-does -->
 
 ## Architecture
 
 <!-- AI:start:architecture -->
-KPort consists of several components designed to manage and build packages for KDE Neon with enhanced hardware compatibility and automation. The repository integrates Pacstall with Portage-like features, including USE flags and hardware-specific optimizations. Key workflows automate tasks such as hardware detection, syncing with GitLab, pacscript generation, and KDE Neon package updates. The directory structure organizes scripts, configuration files, and generated outputs for efficient management.
+KPort consists of several key components designed to manage and build packages for KDE Neon with enhanced hardware compatibility and automation. The repository integrates Pacstall for package management, USE flags for feature toggling, and hardware detection layers for CPU, GPU, and NPU optimization. Automated workflows handle tasks such as syncing with GitLab, hardware detection, pacscript generation, and KDE Neon package builds.
+
+The directory structure is organized as follows:
 
 ```plaintext
 .
@@ -30,7 +32,7 @@ KPort consists of several components designed to manage and build packages for K
 └── .gitignore              # Git ignore rules
 ```
 
-Components interact via shared scripts and workflows, ensuring seamless integration between package definitions, hardware detection, and automated builds.
+Components interact through shared scripts and workflows, ensuring seamless integration between package definitions, hardware detection, and automated builds.
 <!-- AI:end:architecture -->
 
 ## Install
@@ -54,11 +56,11 @@ cd KPort
 
 <!-- AI:start:ci -->
 - **check-gitlab-sync.yml**: Verifies synchronization between this repository and a GitLab mirror. No secrets required.  
-- **hardware-detect.yml**: Detects and logs CPU/GPU/NPU hardware compatibility for packages. Requires `HW_DETECT_API_KEY`.  
-- **neon-build-ci.yml**: Builds and tests packages using KDE Neon base. Requires `NEON_CI_TOKEN`.  
-- **notify-hw-detect-consumers.yml**: Sends notifications to dependent systems about updated hardware compatibility data. Requires `NOTIFY_API_KEY`.  
-- **pacscript-ci.yml**: Validates and tests generated pacscripts for correctness. No secrets required.  
-- **update-kde-builder-vendor.yml**: Updates vendor dependencies for KDE Neon package building. Requires `VENDOR_UPDATE_TOKEN`.  
+- **hardware-detect.yml**: Detects CPU, GPU, and NPU compatibility layers for package optimizations. Requires `HW_DETECT_API_KEY`.  
+- **neon-build-ci.yml**: Builds and tests packages against KDE Neon base. Requires `NEON_CI_TOKEN`.  
+- **notify-hw-detect-consumers.yml**: Notifies dependent systems of updated hardware compatibility data. Requires `NOTIFY_API_URL` and `NOTIFY_API_KEY`.  
+- **pacscript-ci.yml**: Validates and generates pacscripts from KDE Neon packaging metadata. No secrets required.  
+- **update-kde-builder-vendor.yml**: Updates vendor dependencies for KDE builder scripts. Requires `VENDOR_UPDATE_TOKEN`.  
 <!-- AI:end:ci -->
 
 ## Mirror chain
@@ -78,9 +80,9 @@ Direct commits to OSP or OOC are detected and opened as PRs back to `Interested-
 ## Contributors
 
 <!-- AI:start:contributors -->
-[@Interested-Deving-1896](https://github.com/Interested-Deving-1896): 348 commits
+[@Interested-Deving-1896](https://github.com/Interested-Deving-1896) - 349 commits
 
-*Note: This repository is a mirror. For the upstream source, refer to the original repository.*
+*Note: This repository is a mirror. Please refer to the upstream source for the original project.*
 <!-- AI:end:contributors -->
 
 ## Origins
