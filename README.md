@@ -80,9 +80,9 @@ Direct commits to OSP or OOC are detected and opened as PRs back to `Interested-
 ## Contributors
 
 <!-- AI:start:contributors -->
-[@Interested-Deving-1896](https://github.com/Interested-Deving-1896): 349 commits
+[@Interested-Deving-1896](https://github.com/Interested-Deving-1896): 353 commits
 
-*Note: This repository is a mirror. Please refer to the upstream source for the original project.*
+*This repository is a mirror. The upstream source can be found [here](https://github.com/Interested-Deving-1896/KPort).*
 <!-- AI:end:contributors -->
 
 ## Origins
