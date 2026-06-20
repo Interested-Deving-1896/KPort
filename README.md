@@ -4,35 +4,35 @@
 [![Built with Ona](https://ona.com/build-with-ona.svg)](https://app.ona.com/#https://github.com/Interested-Deving-1896/KPort)
 
 <!-- AI:start:what-it-does -->
-This project provides a Portage-inspired package repository tailored for KDE Neon, integrating Pacstall for package management. It addresses the need for customizable builds with USE flags, hardware compatibility layers for CPU/GPU/NPU, and automated pacscript generation. It is used by developers and system maintainers seeking fine-grained control over KDE Neon package customization and deployment.
+This project provides a Portage-inspired package repository tailored for KDE Neon, integrating Pacstall with support for USE flags and hardware compatibility layers for CPU, GPU, and NPU. It automates the generation of pacscripts from KDE Neon packaging, streamlining package management and customization for developers and users working with KDE Neon systems.
 <!-- AI:end:what-it-does -->
 
 ## Architecture
 
 <!-- AI:start:architecture -->
-KPort consists of several key components designed to manage and build packages for KDE Neon with enhanced hardware compatibility and automation. The repository integrates Pacstall for package management, USE flags for feature toggling, and hardware detection layers for CPU, GPU, and NPU optimization. Automated workflows handle tasks such as syncing with GitLab, hardware detection, pacscript generation, and KDE Neon package builds.
+KPort consists of several components designed to manage and build packages for KDE Neon with enhanced hardware compatibility and automation. The repository integrates Pacstall with Portage-like features such as USE flags and hardware-specific optimizations. Key workflows automate tasks like hardware detection, pacscript generation, and syncing with KDE Neon packaging.
 
 The directory structure is organized as follows:
 
 ```plaintext
 .
-├── .github/                # GitHub workflows and CI configurations
-├── bin/                    # Executable scripts for package management
-├── config/                 # Configuration files for build and runtime
-├── db/                     # Package database and metadata
-├── dep-graph/              # Dependency graph generation and visualization
-├── generated/              # Auto-generated files (e.g., pacscripts)
-├── lib/                    # Shared library scripts
-├── overlays/               # Custom package overlays
-├── packages/               # Package definitions and metadata
-├── scripts/                # Utility scripts for automation
-├── vendor/                 # External dependencies and third-party tools
-├── LICENSE                 # License file
-├── README.md               # Project documentation
-└── .gitignore              # Git ignore rules
+├── .github/               # GitHub workflows for CI/CD
+├── bin/                   # Executable scripts for package management
+├── config/                # Configuration files for build and hardware layers
+├── db/                    # Metadata and dependency graphs
+├── dep-graph/             # Dependency graph generation tools
+├── generated/             # Auto-generated pacscripts and metadata
+├── lib/                   # Shared library scripts
+├── overlays/              # Custom package overlays
+├── packages/              # Package definitions and metadata
+├── scripts/               # Utility scripts for automation
+├── vendor/                # External dependencies and third-party tools
+├── LICENSE                # License file
+├── README.md              # Project documentation
+└── .gitignore             # Git ignore rules
 ```
 
-Components interact through shared scripts and workflows, ensuring seamless integration between package definitions, hardware detection, and automated builds.
+Components interact through shared scripts and configuration files, with workflows triggering automated tasks such as hardware detection (`hardware-detect.yml`) and package builds (`neon-build-ci.yml`).
 <!-- AI:end:architecture -->
 
 ## Install
