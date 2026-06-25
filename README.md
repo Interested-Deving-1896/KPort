@@ -10,18 +10,19 @@ KPort provides a Portage-inspired package management system tailored for KDE Neo
 ## Architecture
 
 <!-- AI:start:architecture -->
-KPort consists of several components designed to manage KDE Neon packages with enhanced hardware compatibility and automation. The repository integrates Pacstall for package management, USE flags for feature toggling, and hardware compatibility layers for CPU, GPU, and NPU optimizations. Automated workflows handle tasks such as syncing with GitLab, detecting hardware, building packages, and generating pacscripts.
+KPort consists of modular components for managing a KDE Neon-inspired package repository with advanced hardware compatibility and automated pacscript generation. The architecture integrates hardware detection, package building, and synchronization workflows. Key components include:
 
-Key components include:
-- `bin/`: Executable scripts for package management tasks.
+- `bin/`: Executables for package management and automation.
 - `config/`: Configuration files for repository and build settings.
-- `db/`: Metadata and dependency information for packages.
-- `generated/`: Auto-generated files, including pacscripts.
-- `lib/`: Shared library scripts used across workflows.
-- `overlays/`: Custom package overlays for additional functionality.
-- `packages/`: Definitions and metadata for individual packages.
-- `scripts/`: Utility scripts for automation and maintenance.
+- `db/`: Metadata storage for packages and dependencies.
+- `generated/`: Auto-generated pacscripts and related files.
+- `lib/`: Shared libraries and utility scripts.
+- `overlays/`: Custom package overlays with USE flag support.
+- `packages/`: Source definitions for KDE Neon packages.
+- `scripts/`: Helper scripts for CI/CD and repository maintenance.
 - `vendor/`: External dependencies and third-party tools.
+
+Workflows automate tasks such as syncing with GitLab (`check-gitlab-sync.yml`), hardware detection (`hardware-detect.yml`), package builds (`neon-build-ci.yml`), and pacscript validation (`pacscript-ci.yml`).
 
 Directory structure:
 ```plaintext
@@ -39,10 +40,7 @@ Directory structure:
 ├── vendor/
 ├── LICENSE
 ├── README.md
-└── .gitignore
 ```
-
-Components interact through workflows defined in `.github/workflows/`, which automate tasks like hardware detection (`hardware-detect.yml`), package builds (`neon-build-ci.yml`), and pacscript updates (`pacscript-ci.yml`).
 <!-- AI:end:architecture -->
 
 ## Install
