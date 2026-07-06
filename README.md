@@ -10,29 +10,36 @@ KPort provides a Portage-inspired package repository for KDE Neon, integrating P
 ## Architecture
 
 <!-- AI:start:architecture -->
-KPort consists of modular components designed to manage KDE Neon packages with enhanced hardware compatibility and automated workflows. The repository integrates Pacstall with Portage-like features, including USE flags and hardware-specific optimizations for CPU, GPU, and NPU. Automated pacscript generation is supported via CI workflows. Key workflows handle tasks such as syncing with GitLab, hardware detection, package building, and vendor updates.
+KPort consists of modular components for managing KDE Neon packages with Pacstall, leveraging USE flags and hardware compatibility layers. The repository automates pacscript generation and integrates workflows for CI/CD, hardware detection, and repository synchronization. Key components include:
 
-The directory structure is organized as follows:
+- `bin/`: Executables for package management and script utilities.
+- `config/`: Configuration files for repository and build settings.
+- `db/`: Metadata and dependency information for packages.
+- `generated/`: Auto-generated pacscripts and related files.
+- `lib/`: Shared libraries and helper scripts.
+- `overlays/`: Custom package overlays for specific configurations.
+- `packages/`: Source definitions for KDE Neon packages.
+- `scripts/`: Automation scripts for tasks like hardware detection and CI.
+- `vendor/`: External dependencies and third-party tools.
 
+Workflows in `.github/workflows/` handle tasks such as syncing with GitLab, detecting hardware, building packages, and maintaining pacscripts.
+
+Directory structure:
 ```plaintext
 .
-├── .github/               # GitHub workflows and CI configurations
-├── bin/                   # Executable scripts for package management
-├── config/                # Configuration files for build and runtime
-├── db/                    # Metadata and database files for packages
-├── dep-graph/             # Dependency graph generation and management
-├── generated/             # Auto-generated files (e.g., pacscripts)
-├── lib/                   # Shared library scripts
-├── overlays/              # Custom package overlays
-├── packages/              # Package definitions and metadata
-├── scripts/               # Utility scripts for development and CI
-├── vendor/                # Third-party dependencies
-├── LICENSE                # License file
-├── README.md              # Project documentation
-└── .gitignore             # Git ignore rules
+├── .github/
+│   └── workflows/
+├── bin/
+├── config/
+├── db/
+├── dep-graph/
+├── generated/
+├── lib/
+├── overlays/
+├── packages/
+├── scripts/
+└── vendor/
 ```
-
-Components interact through shared scripts, configuration files, and CI workflows to ensure seamless package management and hardware-specific optimizations.
 <!-- AI:end:architecture -->
 
 ## Install
@@ -55,13 +62,13 @@ cd KPort
 ## CI
 
 <!-- AI:start:ci -->
-- **check-gitlab-sync.yml**: Verifies synchronization between GitHub and GitLab repositories. No secrets required.  
-- **hardware-detect.yml**: Detects CPU/GPU/NPU hardware compatibility layers. Requires `HW_DETECT_API_KEY` secret.  
-- **neon-build-ci.yml**: Builds and tests KDE Neon packages. Requires `NEON_CI_TOKEN` secret.  
-- **notify-hw-detect-consumers.yml**: Sends notifications to dependent systems after hardware detection updates. Requires `NOTIFY_API_KEY` secret.  
+- **check-gitlab-sync.yml**: Verifies synchronization between this repository and a GitLab mirror. No secrets required.  
+- **hardware-detect.yml**: Detects CPU, GPU, and NPU hardware compatibility layers. Requires `HW_DETECT_API_KEY` secret.  
+- **neon-build-ci.yml**: Builds and tests KDE Neon packages for compatibility. Requires `NEON_CI_TOKEN` secret.  
+- **notify-hw-detect-consumers.yml**: Notifies downstream consumers of hardware detection updates. Requires `WEBHOOK_URL` secret.  
 - **pacscript-ci.yml**: Validates and generates pacscripts from KDE Neon packaging. No secrets required.  
-- **rebase-prs.yml**: Automatically rebases open pull requests. Requires `GITHUB_TOKEN` secret.  
-- **update-kde-builder-vendor.yml**: Updates vendor dependencies for KDE builder. No secrets required.  
+- **rebase-prs.yml**: Automatically rebases open pull requests on the latest `main` branch. No secrets required.  
+- **update-kde-builder-vendor.yml**: Updates vendor dependencies for KDE Neon package building. No secrets required.  
 <!-- AI:end:ci -->
 
 ## Mirror chain
