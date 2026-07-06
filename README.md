@@ -10,27 +10,29 @@ KPort provides a Portage-inspired package repository for KDE Neon, integrating P
 ## Architecture
 
 <!-- AI:start:architecture -->
-KPort consists of several key components that enable package management and hardware compatibility. The repository integrates KDE Neon packaging with Pacstall, leveraging USE flags and hardware detection layers for CPU, GPU, and NPU compatibility. Automated workflows handle pacscript generation, repository synchronization, and CI/CD tasks. The directory structure organizes scripts, configuration files, and generated artifacts.
+KPort consists of modular components designed to manage KDE Neon packages with enhanced hardware compatibility and automated workflows. The repository integrates Pacstall with Portage-like features, including USE flags and hardware-specific optimizations for CPU, GPU, and NPU. Automated pacscript generation is supported via CI workflows. Key workflows handle tasks such as syncing with GitLab, hardware detection, package building, and vendor updates.
+
+The directory structure is organized as follows:
 
 ```plaintext
 .
-├── .github/                # GitHub workflows and CI/CD configurations
-├── bin/                    # Executable scripts for package management
-├── config/                 # Configuration files for build and runtime
-├── db/                     # Database files for package metadata
-├── dep-graph/              # Dependency graph generation and analysis
-├── generated/              # Auto-generated pacscripts and artifacts
-├── lib/                    # Shared library scripts
-├── overlays/               # Custom overlays for package modifications
-├── packages/               # Package definitions and metadata
-├── scripts/                # Utility scripts for automation
-├── vendor/                 # External dependencies and third-party tools
-├── LICENSE                 # License file
-├── README.md               # Project documentation
-└── .gitignore              # Git ignore rules
+├── .github/               # GitHub workflows and CI configurations
+├── bin/                   # Executable scripts for package management
+├── config/                # Configuration files for build and runtime
+├── db/                    # Metadata and database files for packages
+├── dep-graph/             # Dependency graph generation and management
+├── generated/             # Auto-generated files (e.g., pacscripts)
+├── lib/                   # Shared library scripts
+├── overlays/              # Custom package overlays
+├── packages/              # Package definitions and metadata
+├── scripts/               # Utility scripts for development and CI
+├── vendor/                # Third-party dependencies
+├── LICENSE                # License file
+├── README.md              # Project documentation
+└── .gitignore             # Git ignore rules
 ```
 
-Components interact through workflows such as `hardware-detect.yml` for hardware profiling, `neon-build-ci.yml` for KDE Neon builds, and `pacscript-ci.yml` for pacscript validation. These workflows automate repository updates, hardware compatibility checks, and package builds.
+Components interact through shared scripts, configuration files, and CI workflows to ensure seamless package management and hardware-specific optimizations.
 <!-- AI:end:architecture -->
 
 ## Install
