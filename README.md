@@ -1,7 +1,8 @@
 [update-readmes]   Mode: rewrite — migrating to template structure...
 # KPort
 
-[![Built with Ona](https://ona.com/build-with-ona.svg)](https://app.ona.com/#https://github.com/Interested-Deving-1896/KPort)
+[![Built with Ona](https://ona.com/build-with-ona.svg)](https://app.ona.com/#https://github.com/Interested-Deving-1896/KPort) [![KDE Eco](https://img.shields.io/badge/KDE%20Eco-certified-brightgreen?logo=kde&logoColor=white&style=flat-square)](https://eco.kde.org/) [![Blue Angel](https://img.shields.io/badge/Blue%20Angel-DE--UZ%20215-0055a4?style=flat-square)](https://www.blauer-engel.de/en/certification/criteria) [![Energy](https://api.green-coding.io/v1/ci/badge/get?repo=Interested-Deving-1896%2FKPort&branch=main&workflow=eco-audit.yml)](https://metrics.green-coding.io/ci-index.html)
+
 
 <!-- AI:start:what-it-does -->
 KPort provides a Portage-inspired package repository for KDE Neon, integrating Pacstall with support for USE flags and hardware compatibility layers for CPU, GPU, and NPU. It automates pacscript generation from KDE Neon packaging, enabling developers and advanced users to customize and optimize software builds for specific hardware configurations.
@@ -62,13 +63,13 @@ cd KPort
 ## CI
 
 <!-- AI:start:ci -->
-- **check-gitlab-sync.yml**: Verifies synchronization between this repository and a GitLab mirror. No secrets required.  
-- **hardware-detect.yml**: Detects CPU, GPU, and NPU hardware compatibility layers. Requires `HW_DETECT_API_KEY` secret.  
-- **neon-build-ci.yml**: Builds and tests KDE Neon packages for compatibility. Requires `NEON_CI_TOKEN` secret.  
-- **notify-hw-detect-consumers.yml**: Notifies downstream consumers of hardware detection updates. Requires `WEBHOOK_URL` secret.  
-- **pacscript-ci.yml**: Validates and generates pacscripts from KDE Neon packaging. No secrets required.  
-- **rebase-prs.yml**: Automatically rebases open pull requests on the latest `main` branch. No secrets required.  
-- **update-kde-builder-vendor.yml**: Updates vendor dependencies for KDE Neon package building. No secrets required.  
+- **check-gitlab-sync.yml**: Verifies synchronization between this repository and a GitLab mirror. No secrets required.
+- **hardware-detect.yml**: Detects CPU, GPU, and NPU hardware compatibility layers. Requires `HW_DETECT_API_KEY` secret.
+- **neon-build-ci.yml**: Builds and tests KDE Neon packages for compatibility. Requires `NEON_CI_TOKEN` secret.
+- **notify-hw-detect-consumers.yml**: Notifies downstream consumers of hardware detection updates. Requires `WEBHOOK_URL` secret.
+- **pacscript-ci.yml**: Validates and generates pacscripts from KDE Neon packaging. No secrets required.
+- **rebase-prs.yml**: Automatically rebases open pull requests on the latest `main` branch. No secrets required.
+- **update-kde-builder-vendor.yml**: Updates vendor dependencies for KDE Neon package building. No secrets required.
 <!-- AI:end:ci -->
 
 ## Mirror chain
@@ -129,6 +130,20 @@ It was created from the following upstream inspirations:
 |---|---|
 | [dep-graph/origins.md](https://github.com/Interested-Deving-1896/KPort/blob/main/dep-graph/origins.md) | Dependency graph (Markdown table) |
 <!-- AI:end:resources -->
+
+<!-- AI:start:accessibility -->
+This repo uses automated accessibility auditing via `check-accessibility.yml`.
+
+Checks include: CODEOWNERS ownership coverage, README screen-reader compatibility,
+WCAG 2.1 AA HTML compliance, audio overview (espeak-ng), and Braille output (liblouis).
+
+
+
+
+Run the [Check Accessibility](https://github.com/Interested-Deving-1896/KPort/actions/workflows/check-accessibility.yml)
+workflow to generate the first report and accessibility artifacts.
+See [DOCS/accessibility.md](https://github.com/Interested-Deving-1896/KPort/blob/main/DOCS/accessibility.md) for the full reference.
+<!-- AI:end:accessibility -->
 
 ## License
 
