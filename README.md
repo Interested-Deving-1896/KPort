@@ -132,6 +132,8 @@ It was created from the following upstream inspirations:
 | [dep-graph/origins.md](https://github.com/Interested-Deving-1896/KPort/blob/main/dep-graph/origins.md) | Dependency graph (Markdown table) |
 <!-- AI:end:resources -->
 
+## Accessibility
+
 <!-- AI:start:accessibility -->
 This repo uses automated accessibility auditing via `check-accessibility.yml`.
 
