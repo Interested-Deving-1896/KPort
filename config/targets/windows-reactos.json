@@ -1,0 +1,139 @@
+{
+  "schema_version": "1.0.0",
+  "project": "KPort",
+  "purpose": "Initial planning registry for Windows and ReactOS target adapters; entries do not imply implemented or verified support.",
+  "operations": [
+    "native-build",
+    "cross-build",
+    "cross-compile",
+    "repackage-export"
+  ],
+  "evidence_states": [
+    "planned",
+    "candidate",
+    "build-passed",
+    "package-passed",
+    "runtime-tested",
+    "supported",
+    "unsupported",
+    "unknown"
+  ],
+  "targets": [
+    {
+      "id": "windows-x86_64-msvc",
+      "os": "windows",
+      "architecture": "x86_64",
+      "compiler": "msvc",
+      "build_system": "kde-craft",
+      "status": "planned",
+      "package_formats": [
+        "portable-zip",
+        "nsis-exe"
+      ],
+      "optional_package_formats": [
+        "msi-wix",
+        "appx-msix"
+      ],
+      "test_requirements": [
+        "build",
+        "package-structure",
+        "install",
+        "launch",
+        "upgrade",
+        "uninstall"
+      ],
+      "notes": "Use only where upstream Craft blueprints and complete dependency closure support this compiler ABI."
+    },
+    {
+      "id": "windows-x86_64-mingw",
+      "os": "windows",
+      "architecture": "x86_64",
+      "compiler": "mingw-w64",
+      "build_system": "kde-craft",
+      "status": "planned",
+      "package_formats": [
+        "portable-zip",
+        "nsis-exe"
+      ],
+      "optional_package_formats": [
+        "msi-wix",
+        "appx-msix"
+      ],
+      "test_requirements": [
+        "build",
+        "package-structure",
+        "install",
+        "launch",
+        "upgrade",
+        "uninstall"
+      ],
+      "notes": "Separate ABI from MSVC; do not mix compiler runtimes or binary dependencies."
+    },
+    {
+      "id": "windows-arm64",
+      "os": "windows",
+      "architecture": "arm64",
+      "compiler": "arm64-toolchain",
+      "build_system": "kde-craft",
+      "status": "planned",
+      "package_formats": [
+        "portable-zip"
+      ],
+      "optional_package_formats": [
+        "nsis-exe",
+        "msi-wix",
+        "appx-msix"
+      ],
+      "test_requirements": [
+        "dependency-closure",
+        "build",
+        "package-structure",
+        "install",
+        "launch",
+        "upgrade",
+        "uninstall"
+      ],
+      "notes": "Enable only after all required Qt/KDE and third-party dependencies support ARM64."
+    },
+    {
+      "id": "reactos-x86",
+      "os": "reactos",
+      "architecture": "x86",
+      "compiler": "pe-coff-toolchain-candidate",
+      "build_system": "target-adapter",
+      "status": "experimental",
+      "package_formats": [
+        "portable-zip"
+      ],
+      "optional_package_formats": [
+        "exe-installer",
+        "msi-wix"
+      ],
+      "test_requirements": [
+        "pinned-vm-image",
+        "install-or-extract",
+        "launch",
+        "core-smoke",
+        "uninstall-if-installer"
+      ],
+      "notes": "Windows build success is not ReactOS evidence. Verify API, runtime and installer compatibility on each pinned ReactOS image."
+    }
+  ],
+  "policy": {
+    "windows_support_does_not_imply_reactos_support": true,
+    "cross_compile_does_not_imply_runtime_compatibility": true,
+    "unsigned_untrusted_pr_artifacts_only": true,
+    "signing_requires_protected_release_workflow": true,
+    "publish_from_untrusted_pull_requests": false
+  },
+  "integration": {
+    "repository": "Interested-Deving-1896/incus-windows-toolkit",
+    "role": [
+      "isolated-windows-vm-provisioning",
+      "build-and-test-execution",
+      "artifact-staging",
+      "optional-host-side-bdfs-storage"
+    ],
+    "reactos_profile": "not-yet-available; do not assume ReactOS VM support"
+  }
+}
