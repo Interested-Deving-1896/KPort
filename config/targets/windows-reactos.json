@@ -135,5 +135,6 @@
       "optional-host-side-bdfs-storage"
     ],
     "reactos_profile": "not-yet-available; do not assume ReactOS VM support"
-  }
+  },
+  "$schema": "./windows-reactos.schema.json"
 }
