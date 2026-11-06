@@ -89,7 +89,7 @@ def validate_registry(data: dict[str, Any], schema: dict[str, Any]) -> None:
             fail(f"{where} must be an object")
         _require_keys(target, required_target_keys, where)
         target_id = target["id"]
-        if not isinstance(target_id, str) or not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", target_id):
+        if not isinstance(target_id, str) or not re.fullmatch(r"[a-z0-9]+(?:[-_][a-z0-9]+)*", target_id):
             fail(f"{where}: invalid target id")
         ids.append(target_id)
         if target["os"] not in ALLOWED_OS or target["architecture"] not in ALLOWED_ARCH:
