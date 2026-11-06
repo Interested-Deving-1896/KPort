@@ -1,0 +1,215 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Interested-Deving-1896/KPort/blob/main/config/targets/windows-reactos.schema.json",
+  "title": "KPort Windows and ReactOS target registry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project",
+    "purpose",
+    "operations",
+    "evidence_states",
+    "targets",
+    "policy",
+    "integration"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "schema_version": {
+      "type": "string",
+      "pattern": "^1\\.0\\.0$"
+    },
+    "project": {
+      "const": "KPort"
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "operations": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "native-build",
+          "cross-build",
+          "cross-compile",
+          "repackage-export"
+        ]
+      }
+    },
+    "evidence_states": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "planned",
+          "candidate",
+          "build-passed",
+          "package-passed",
+          "runtime-tested",
+          "supported",
+          "unsupported",
+          "unknown"
+        ]
+      }
+    },
+    "targets": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "os",
+          "architecture",
+          "compiler",
+          "build_system",
+          "status",
+          "package_formats",
+          "optional_package_formats",
+          "test_requirements",
+          "notes"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[-_][a-z0-9]+)*$"
+          },
+          "os": {
+            "enum": [
+              "windows",
+              "reactos"
+            ]
+          },
+          "architecture": {
+            "enum": [
+              "x86_64",
+              "arm64",
+              "x86"
+            ]
+          },
+          "compiler": {
+            "type": "string",
+            "minLength": 1
+          },
+          "build_system": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "planned",
+              "candidate",
+              "experimental",
+              "build-passed",
+              "package-passed",
+              "runtime-tested",
+              "supported",
+              "unsupported",
+              "unknown"
+            ]
+          },
+          "package_formats": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "portable-zip",
+                "nsis-exe",
+                "exe-installer",
+                "msi-wix",
+                "appx-msix"
+              ]
+            }
+          },
+          "optional_package_formats": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "portable-zip",
+                "nsis-exe",
+                "exe-installer",
+                "msi-wix",
+                "appx-msix"
+              ]
+            }
+          },
+          "test_requirements": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "notes": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "windows_support_does_not_imply_reactos_support",
+        "cross_compile_does_not_imply_runtime_compatibility",
+        "unsigned_untrusted_pr_artifacts_only",
+        "signing_requires_protected_release_workflow",
+        "publish_from_untrusted_pull_requests"
+      ],
+      "properties": {
+        "windows_support_does_not_imply_reactos_support": {
+          "const": true
+        },
+        "cross_compile_does_not_imply_runtime_compatibility": {
+          "const": true
+        },
+        "unsigned_untrusted_pr_artifacts_only": {
+          "const": true
+        },
+        "signing_requires_protected_release_workflow": {
+          "const": true
+        },
+        "publish_from_untrusted_pull_requests": {
+          "const": false
+        }
+      }
+    },
+    "integration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repository",
+        "role",
+        "reactos_profile"
+      ],
+      "properties": {
+        "repository": {
+          "const": "Interested-Deving-1896/incus-windows-toolkit"
+        },
+        "role": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string"
+          }
+        },
+        "reactos_profile": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

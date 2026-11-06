@@ -74,3 +74,13 @@ jobs:
 
       - name: Run resolver check
         run: bash scripts/kport/resolver-check.sh
+
+  target-registry:
+    name: Validate Windows and ReactOS target registry
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Validate target registry and compatibility policy
+        run: python3 scripts/validate-target-registry.py
