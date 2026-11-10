@@ -67,19 +67,23 @@ jobs:
       - name: Pull subtree update
         if: inputs.dry_run != true
         run: |
-          GIT_EXEC_PATH=/usr/lib/git-core git subtree pull \
-            --prefix=vendor/kde-builder \
-            kde-builder \
-            ${{ inputs.ref || 'master' }} \
-            --squash \
-            -m "vendor: update kde-builder to $(git rev-parse --short FETCH_HEAD)
+          commit_message="$(cat <<EOF
+vendor: update kde-builder to $(git rev-parse --short FETCH_HEAD)
 
 Pulled from https://github.com/KDE/kde-builder @ ${{ inputs.ref || 'master' }}
 
 Review lib/build/ for any upstream changes that should be reflected in:
   - lib/build/module_resolver.py
   - lib/build/dependency_resolver.py
-  - lib/build/kde_projects_reader.py"
+  - lib/build/kde_projects_reader.py
+EOF
+)"
+          GIT_EXEC_PATH=/usr/lib/git-core git subtree pull \
+            --prefix=vendor/kde-builder \
+            kde-builder \
+            ${{ inputs.ref || 'master' }} \
+            --squash \
+            -m "$commit_message"
 
       - name: Push
         if: inputs.dry_run != true
