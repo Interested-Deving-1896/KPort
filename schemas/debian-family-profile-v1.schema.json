@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/Interested-Deving-1896/KPort/blob/main/schemas/debian-family-profile-v1.schema.json",
+  "title": "KPort Debian-family consumer profile",
+  "description": "Read-only, pinned Debian-family input contract. Support is evidence-scoped and never inferred from ancestry.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "profile_id", "distribution", "release", "architecture", "backend", "source", "support"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "profile_id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{1,127}$" },
+    "distribution": {
+      "type": "object", "additionalProperties": false,
+      "required": ["family", "id"],
+      "properties": {
+        "family": { "const": "debian-family" },
+        "id": { "enum": ["debian", "devuan", "ubuntu", "kde-neon"] }
+      }
+    },
+    "release": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "status"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["supported", "oldstable", "stable", "testing", "unstable", "lts", "eol", "unknown"] }
+      }
+    },
+    "architecture": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "aliases"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9_-]*$" },
+        "aliases": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "backend": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": { "enum": ["apt", "pacstall"] },
+        "repositories": { "type": "array", "items": { "$ref": "#/$defs/repository" } }
+      }
+    },
+    "source": {
+      "type": "object", "additionalProperties": false,
+      "required": ["revision"],
+      "properties": {
+        "revision": { "type": "string", "pattern": "^[0-9a-f]{40,64}$" },
+        "uri": { "type": "string", "format": "uri" }
+      }
+    },
+    "support": {
+      "type": "object", "additionalProperties": false,
+      "required": ["state", "evidence"],
+      "properties": {
+        "state": { "enum": ["upstream-supported", "source-available", "buildable", "tested", "unavailable", "unverified"] },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["operation", "artifact", "result", "reference"],
+            "properties": {
+              "operation": { "enum": ["metadata", "resolve", "build", "test", "package", "boot"] },
+              "artifact": { "type": "string", "minLength": 1 },
+              "result": { "enum": ["pass", "fail", "not-run"] },
+              "reference": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
+    "neon": {
+      "type": "object", "additionalProperties": false,
+      "required": ["ubuntu_base_release", "overlay"],
+      "properties": {
+        "ubuntu_base_release": { "type": "string", "minLength": 1 },
+        "overlay": { "type": "string", "minLength": 1 }
+      }
+    }
+  },
+  "$defs": {
+    "repository": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "uri", "suite", "components", "architectures", "keyring", "metadata_policy"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "uri": { "type": "string", "pattern": "^https://" },
+        "suite": { "type": "string", "minLength": 1 },
+        "components": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "architectures": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "keyring": { "type": "string", "minLength": 1 },
+        "metadata_policy": { "enum": ["signed-inrelease-or-release-gpg-sha256"] }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "distribution": { "properties": { "id": { "const": "kde-neon" } }, "required": ["id"] } }, "required": ["distribution"] },
+      "then": { "required": ["neon"], "properties": { "backend": { "properties": { "kind": { "const": "apt" } } } } },
+      "else": { "not": { "required": ["neon"] } }
+    },
+    {
+      "if": { "properties": { "backend": { "properties": { "kind": { "const": "apt" } }, "required": ["kind"] } }, "required": ["backend"] },
+      "then": { "properties": { "backend": { "required": ["repositories"], "properties": { "repositories": { "minItems": 1 } } } } }
+    }
+  ]
+}

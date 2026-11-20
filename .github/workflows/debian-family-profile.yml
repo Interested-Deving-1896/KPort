@@ -1,0 +1,28 @@
+name: Debian-family profile contract
+
+on:
+  pull_request:
+    paths:
+      - 'schemas/debian-family-profile-v1.schema.json'
+      - 'scripts/validate-debian-family-profile.py'
+      - 'tests/test_debian_family_profile.py'
+      - '.github/workflows/debian-family-profile.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'schemas/debian-family-profile-v1.schema.json'
+      - 'scripts/validate-debian-family-profile.py'
+      - 'tests/test_debian_family_profile.py'
+      - '.github/workflows/debian-family-profile.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - name: Validate profile contract fixtures
+        run: python3 -m unittest discover -s tests -p 'test_debian_family_profile.py' -v
