@@ -1,7 +1,13 @@
-import copy
+import importlib.util
 import unittest
+from pathlib import Path
 
-from scripts.validate_debian_family_profile import validate_profile
+_VALIDATOR = Path(__file__).resolve().parents[1] / "scripts" / "validate-debian-family-profile.py"
+_SPEC = importlib.util.spec_from_file_location("debian_family_profile_validator", _VALIDATOR)
+_MODULE = importlib.util.module_from_spec(_SPEC)
+assert _SPEC and _SPEC.loader
+_SPEC.loader.exec_module(_MODULE)
+validate_profile = _MODULE.validate_profile
 
 
 def valid_profile():
